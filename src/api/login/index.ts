@@ -8,7 +8,7 @@
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved.
  */
 import request from '@/config/axios'
-import type { UserType } from '@/system/user/api/types'
+import type { UserType } from '@/modules/system/user/api/types'
 
 // login
 export const loginApi = (data: UserType): Promise<IResponse<UserType>> => {

@@ -8,7 +8,9 @@
  * Copyright (c) 2023 by outsider 515885633@qq.com, All Rights Reserved.
  */
 import { defineStore } from 'pinia'
-import { asyncRouterMap, constantRouterMap } from '@/router'
+
+import constantRouterMap from '@/router/constantRouter'
+import asyncRouterMap from '@/router/AsyncRouter'
 import { generateRoutesFn1, generateRoutesFn2, flatMultiLevelRoutes } from '@/utils/routerHelper'
 import { store } from '../index'
 import { cloneDeep } from 'lodash-es'

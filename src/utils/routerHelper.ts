@@ -10,9 +10,11 @@ import { isUrl } from '@/utils/is'
 import { omit, cloneDeep } from 'lodash-es'
 
 // 导入多个模块
-const modules = import.meta.glob(['../views/**/*.{vue,tsx}', '../**/views/**/*.{vue,tsx}'])
-
-//  '../system/**/views/*.{vue,tsx}',
+const modules = import.meta.glob([
+  '../views/**/*.{vue,tsx}',
+  '../**/views/**/*.{vue,tsx}',
+  '../modules/**/views/**/*.{vue,tsx}'
+])
 
 /* Layout */
 export const Layout = () => import('@/layout/Layout.vue')

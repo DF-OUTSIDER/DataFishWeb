@@ -1,6 +1,7 @@
 export default {
   common: {
     add: '新增',
+
     inputText: '请输入',
     selectText: '请选择',
     startTimeText: '开始时间',
@@ -201,6 +202,18 @@ export default {
     diagram: '图示',
     dictConfig: '字典配置'
   },
+  userInfo: {
+    title: '个人信息管理',
+    profile: '个人信息',
+    info: '资料信息',
+    basicInfo: '基本信息',
+    changePassword: '修改密码'
+  },
+  userProfileVo: {
+    title: '个人信息',
+    orgNames: '组织',
+    roleNames: '角色'
+  },
   userVo: {
     title: '用户管理',
     message: '由于是模拟数据，所以只提供了两种不同权限的帐号，开发者可根据实际情况自行改造结合。',
@@ -208,7 +221,11 @@ export default {
     action: '操作',
     username: '登录名',
     realname: '真实姓名',
+
+    oldPassword: '旧密码',
     password: '密码',
+    confirmPassword: '确认密码',
+
     encryptionType: '加密方式',
     enable: '启用',
     role: '角色',

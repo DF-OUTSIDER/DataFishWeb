@@ -1,4 +1,5 @@
-import { reactive } from 'vue'
+import { reactive, h, VNode } from 'vue'
+import { ElTag } from 'element-plus'
 import { eachTree, treeMap, filter } from '@/utils/tree'
 import { findIndex } from '@/utils'
 import { useDictStoreWithOut } from '@/store/modules/dict'
@@ -7,6 +8,15 @@ import type { AxiosPromise } from 'axios'
 import { FormSchema } from '@/types/form'
 import { TableColumn } from '@/types/table'
 import { DescriptionsSchema } from '@/types/descriptions'
+import { getTagVoApi } from '@/modules/system/dict/api'
+import { DictItemQuery } from '@/modules/system/dict/api/types'
+
+export type Formatter = (params: {
+  row: any
+  column: TableColumn
+  cellValue: any
+  index: number
+}) => VNode | string
 
 export type CrudSchema = Omit<TableColumn, 'children'> & {
   search?: CrudSearchParams
@@ -14,6 +24,7 @@ export type CrudSchema = Omit<TableColumn, 'children'> & {
   form?: CrudFormParams
   detail?: CrudDescriptionsParams
   children?: CrudSchema[]
+  //formatter?: Formatter
 }
 
 type CrudSearchParams = {
@@ -28,6 +39,8 @@ type CrudSearchParams = {
 type CrudTableParams = {
   // 是否显示表头
   show?: boolean
+  // 字典码
+  dictCode?: string
 } & Omit<FormSchema, 'field'>
 
 type CrudFormParams = {
@@ -140,16 +153,25 @@ const filterSearchSchema = (crudSchema: CrudSchema[], allSchemas: AllSchemas): F
 
   return searchSchema
 }
-
+//const formatter =
 // 过滤 table 结构
 const filterTableSchema = (crudSchema: CrudSchema[]): TableColumn[] => {
   const tableColumns = treeMap<CrudSchema>(crudSchema, {
     conversion: (schema: CrudSchema) => {
+      const tableSchemaItem = {
+        // 默认为空
+        component: schema?.table?.component || '',
+        componentProps: {},
+        ...schema.table,
+        ...schema,
+        field: schema.field
+      }
       if (schema?.table?.show !== false) {
-        return {
-          ...schema.table,
-          ...schema
-        }
+        // 是否为字典
+        // if (schema?.table?.dictCode) {
+        // }
+
+        return tableSchemaItem
       }
     }
   })

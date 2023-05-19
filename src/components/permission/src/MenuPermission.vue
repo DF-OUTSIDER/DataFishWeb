@@ -96,7 +96,11 @@ import { propTypes } from '@/utils/propTypes'
 
 import { MenuPermission } from '@/api/permission/types'
 
-import { getAuthorityListApi, saveAuthorityApi, deleteAuthorityListApi } from '@/api/permission'
+import {
+  getAuthorityListApi,
+  saveAuthorityApi,
+  deleteAuthorityListApi
+} from '@/modules/system/permission/api'
 
 import { PermissionAdd } from '@/components/permission/src/components'
 

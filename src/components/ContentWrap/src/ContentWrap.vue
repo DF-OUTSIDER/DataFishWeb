@@ -12,7 +12,6 @@ import { ElCard, ElTooltip, ElButton, ElRow, ElCol } from 'element-plus'
 import { propTypes } from '@/utils/propTypes'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useI18n } from '@/hooks/web/useI18n'
-import { Sticky } from '@/components/Sticky'
 
 const { t } = useI18n()
 

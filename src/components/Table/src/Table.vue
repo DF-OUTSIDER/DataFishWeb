@@ -1,5 +1,6 @@
 <script lang="tsx">
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
+import { componentMap } from '../../Form/src/componentMap'
 import { defineComponent, PropType, ref, computed, unref, watch, onMounted } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import { setIndex } from './helper'
@@ -13,6 +14,8 @@ import {
   TableSetPropsType,
   TreeProps
 } from '../../../types/table'
+
+import { setItemComponentSlots, setComponentProps } from '../../Form/src/helper'
 
 export default defineComponent({
   name: 'Table',
@@ -115,11 +118,11 @@ export default defineComponent({
     }
 
     // todo 未达到预期
-    const rowClick = (row: any, column: any, event: any) => {
-      if (row) {
-        unref(elTableRef)?.setCurrentRow(row)
-      }
-    }
+    // const rowClick = (row: any, column: any, event: any) => {
+    //   if (row) {
+    //     unref(elTableRef)?.setCurrentRow(row)
+    //   }
+    // }
 
     expose({
       setProps,
@@ -209,6 +212,12 @@ export default defineComponent({
     const rnderTreeTableColumn = (columnsChildren: TableColumn[]) => {
       const { align, headerAlign, showOverflowTooltip } = unref(getProps)
       return columnsChildren.map((v) => {
+        // 单独给只有options属性的组件做判断
+        const notRenderOptions = ['SelectV2', 'Cascader', 'Transfer']
+        const slotsMap: Recordable = {
+          ...setItemComponentSlots(slots, v?.componentProps?.slots, v.field)
+        }
+
         const props = { ...v }
         if (props.children) delete props.children
         return (
@@ -220,13 +229,33 @@ export default defineComponent({
             prop={v.field}
           >
             {{
-              default: (data: TableSlotDefault) =>
-                v.children && v.children.length
-                  ? rnderTableColumn(v.children)
-                  : // @ts-ignore
-                    getSlot(slots, v.field, data) ||
-                    v?.formatter?.(data.row, data.column, data.row[v.field], data.$index) ||
-                    data.row[v.field],
+              default: (data: TableSlotDefault) => {
+                if (data.$index == -1) return
+                const Com = componentMap[v.component as string] as ReturnType<
+                  typeof defineComponent
+                >
+                if (Com) {
+                  return (
+                    <Com
+                      vModel={data.row[v.field]}
+                      {...setComponentProps(v)}
+                      {...(notRenderOptions.includes(v?.component as string) &&
+                      v?.componentProps?.options
+                        ? { options: v?.componentProps?.options || [] }
+                        : {})}
+                    >
+                      {{ ...slotsMap }}
+                    </Com>
+                  )
+                } else {
+                  return v.children && v.children.length
+                    ? rnderTableColumn(v.children)
+                    : // @ts-ignore
+                      getSlot(slots, v.field, data) ||
+                        v?.formatter?.(data.row, data.column, data.row[v.field], data.$index) ||
+                        data.row[v.field]
+                }
+              },
               // @ts-ignore
               header: getSlot(slots, `${v.field}-header`)
             }}
@@ -247,6 +276,12 @@ export default defineComponent({
       } = unref(getProps)
       return [...[renderTableExpand()], ...[renderTableSelection()]].concat(
         (columnsChildren || columns).map((v) => {
+          // 单独给只有options属性的组件做判断
+          const notRenderOptions = ['SelectV2', 'Cascader', 'Transfer']
+          const slotsMap: Recordable = {
+            ...setItemComponentSlots(slots, v?.componentProps?.slots, v.field)
+          }
+
           // 自定生成序号
           if (v.type === 'index') {
             return (
@@ -275,13 +310,33 @@ export default defineComponent({
                 prop={v.field}
               >
                 {{
-                  default: (data: TableSlotDefault) =>
-                    v.children && v.children.length
-                      ? rnderTreeTableColumn(v.children)
-                      : // @ts-ignore
-                        getSlot(slots, v.field, data) ||
-                        v?.formatter?.(data.row, data.column, data.row[v.field], data.$index) ||
-                        data.row[v.field],
+                  default: (data: TableSlotDefault) => {
+                    if (data.$index == -1) return
+                    const Com = componentMap[v.component as string] as ReturnType<
+                      typeof defineComponent
+                    >
+                    if (Com) {
+                      return (
+                        <Com
+                          vModel={data.row[v.field]}
+                          {...setComponentProps(v)}
+                          {...(notRenderOptions.includes(v?.component as string) &&
+                          v?.componentProps?.options
+                            ? { options: v?.componentProps?.options || [] }
+                            : {})}
+                        >
+                          {{ ...slotsMap }}
+                        </Com>
+                      )
+                    } else {
+                      return v.children && v.children.length
+                        ? rnderTreeTableColumn(v.children)
+                        : // @ts-ignore
+                          getSlot(slots, v.field, data) ||
+                            v?.formatter?.(data.row, data.column, data.row[v.field], data.$index) ||
+                            data.row[v.field]
+                    }
+                  },
                   // @ts-ignore
                   header: () => getSlot(slots, `${v.field}-header`) || v.label
                 }}
@@ -292,8 +347,8 @@ export default defineComponent({
       )
     }
 
-    return () => (
-      <div v-loading={unref(getProps).loading}>
+    const rnderTable = () => {
+      return (
         <ElTable
           // @ts-ignore
           ref={elTableRef}
@@ -312,12 +367,21 @@ export default defineComponent({
             append: () => getSlot(slots, 'append')
           }}
         </ElTable>
+      )
+    }
+
+    return () => (
+      <div v-loading={unref(getProps).loading}>
+        {rnderTable()}
         {unref(getProps).pagination ? (
           <ElPagination
             v-model:pageSize={pageSizeRef.value}
             v-model:currentPage={currentPageRef.value}
             class="mt-10px"
             {...unref(pagination)}
+            onCurrent-change={() => {
+              // ElMessage.info(value.toString())
+            }}
           ></ElPagination>
         ) : undefined}
       </div>

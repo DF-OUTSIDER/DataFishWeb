@@ -66,7 +66,7 @@ service.interceptors.request.use(
     console.log(token)
 
     if (token) {
-      config.headers['Authorization'] = token
+      ;(config.headers as AxiosRequestHeaders)['Authorization'] = token
     }
     // ;(config.headers as AxiosRequestHeaders)['Token'] = 'test test'
     // get参数编码

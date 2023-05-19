@@ -7,13 +7,10 @@ import { Form } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
 import { PropType, reactive, watch } from 'vue'
 
-import { ElSelectV2 } from 'element-plus'
-
 import { useI18n } from 'vue-i18n'
 import { useValidator } from '@/hooks/web/useValidator'
-import { IDomEditor } from '@wangeditor/editor'
 import { FormSchema } from '@/types/form'
-import { MenuPermission } from '@/api/permission/types'
+import { MenuPermission } from '@/modules/system/permission/api/types'
 
 const { required } = useValidator()
 
@@ -73,29 +70,30 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'actionId',
     label: t('permissionVo.actionId'),
-    component: 'Select',
+    component: 'Dict',
     formItemProps: {
       rules: [required()]
     },
     componentProps: {
-      options: [
-        {
-          label: t('common.insert'),
-          value: 1
-        },
-        {
-          label: t('common.update'),
-          value: 2
-        },
-        {
-          label: t('common.delete'),
-          value: 3
-        },
-        {
-          label: t('common.list'),
-          value: 4
-        }
-      ]
+      dictCode: 'permission_action'
+      // options: [
+      //   {
+      //     label: t('common.insert'),
+      //     value: 1
+      //   },
+      //   {
+      //     label: t('common.update'),
+      //     value: 2
+      //   },
+      //   {
+      //     label: t('common.delete'),
+      //     value: 3
+      //   },
+      //   {
+      //     label: t('common.list'),
+      //     value: 4
+      //   }
+      // ]
     }
   }
 ])

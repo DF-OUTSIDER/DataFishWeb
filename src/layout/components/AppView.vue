@@ -1,7 +1,15 @@
+<!--
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \vue-element-plus-admin\src\layout\components\AppView.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <script setup lang="ts">
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useAppStore } from '@/store/modules/app'
-import { Footer } from '@/components/Footer'
+import { Footer } from '@/layout/components/Footer'
 import { computed } from 'vue'
 
 const appStore = useAppStore()

@@ -87,6 +87,16 @@ export default defineComponent({
       outsideProps.value = props
     }
 
+    const getSchema = (field: string) => {
+      const { schema } = unref(getProps)
+
+      const index = findIndex(schema, (v: FormSchema) => v.field === field)
+      if (index > -1) {
+        return schema.at(index)
+      }
+      return null
+    }
+
     const delSchema = (field: string) => {
       const { schema } = unref(getProps)
 
@@ -124,6 +134,7 @@ export default defineComponent({
       setValues,
       formModel,
       setProps,
+      getSchema,
       delSchema,
       addSchema,
       setSchema,

@@ -1,8 +1,16 @@
+<!--
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \vue-element-plus-admin\src\components\ContentDetailWrap\src\ContentDetailWrap.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <script setup lang="ts">
 import { ElCard, ElButton } from 'element-plus'
 import { propTypes } from '@/utils/propTypes'
 import { useDesign } from '@/hooks/web/useDesign'
-import { ref, onMounted, defineEmits } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Sticky } from '@/components/Sticky'
 import { useI18n } from '@/hooks/web/useI18n'
 const { t } = useI18n()

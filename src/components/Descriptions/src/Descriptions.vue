@@ -54,13 +54,18 @@ const getBindItemValue = (item: DescriptionsSchema) => {
   return obj
 }
 
-const getMetaValue = (field: string, _data: any) => {
+const getFieldValue = (field: string, _data: any) => {
   //const _meta = _data.value['meta']
-  let hasField = Reflect.has(_data, 'meta')
+  let fields = field.split('.')
+  let hasField = Reflect.has(_data, fields[0])
   if (hasField) {
-    let fields = field.split('.')
-    return _data['meta'][fields[1]]
+    return _data[fields[0]][fields[1]]
   }
+
+  // let hasField = Reflect.has(_data, '\.')
+  // if (hasField) {
+
+  // }
   return _data
 }
 
@@ -129,15 +134,15 @@ const toggleClick = () => {
             <template #default>
               <slot
                 :name="item.field"
-                v-if="item.field && item.field.indexOf('meta.') == -1"
+                v-if="item.field && item.field.indexOf('.') == -1"
                 :row="data"
                 >{{ data[item.field] }}</slot
               >
               <slot
                 :name="item.field"
-                v-if="item.field && item.field.indexOf('meta.') != -1"
+                v-if="item.field && item.field.indexOf('.') != -1"
                 :row="data"
-                >{{ getMetaValue(item.field, data) }}</slot
+                >{{ getFieldValue(item.field, data) }}</slot
               >
             </template>
           </ElDescriptionsItem>

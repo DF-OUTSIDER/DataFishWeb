@@ -21,8 +21,8 @@ import { useRouter } from 'vue-router'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { propTypes } from '@/utils/propTypes'
 
-import { saveAuthorityApi } from '@/api/permission'
-import { MenuPermission } from '@/api/permission/types'
+import { saveAuthorityApi } from '@/modules/system/permission/api'
+import { MenuPermission } from '@/modules/system/permission/api/types'
 import PermissionWrite from './PermissionWrite.vue'
 
 const { emitter } = useEmitt()

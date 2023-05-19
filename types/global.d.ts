@@ -47,4 +47,9 @@ declare global {
     code: string
     data: T extends any ? T : T & any
   }
+
+  declare interface PageParam {
+    pageIndex?: number
+    pageSize?: number
+  }
 }
