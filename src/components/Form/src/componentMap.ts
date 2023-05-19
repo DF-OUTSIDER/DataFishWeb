@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\Form\src\componentMap.ts
+ * @FilePath: \DataFishWeb\src\components\Form\src\componentMap.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -33,6 +33,7 @@ import { UploadImg, UploadImgs, UploadFile } from '@/components/UploadFile'
 import { ComponentName } from '@/types/components'
 import { IconSelect } from '@/components/Icon'
 import { DictSelect, DictTag } from '@/components/Dict'
+import { InputLinkage, NumberLinkage } from '@/components/Linkage'
 
 // mark: 组件映射
 const componentMap: Recordable<Component, ComponentName> = {
@@ -62,7 +63,9 @@ const componentMap: Recordable<Component, ComponentName> = {
   UploadImgs: UploadImgs,
   UploadFile: UploadFile,
   DictSelect: DictSelect,
-  DictTag: DictTag
+  DictTag: DictTag,
+  InputLinkage: InputLinkage,
+  NumberLinkage: NumberLinkage
 }
 
 export { componentMap }

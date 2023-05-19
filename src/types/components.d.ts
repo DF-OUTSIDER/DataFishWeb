@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\types\components.d.ts
+ * @FilePath: \DataFishWeb\src\types\components.d.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -34,6 +34,8 @@ export type ComponentName =
   | 'UploadFile'
   | 'DictSelect'
   | 'DictTag'
+  | 'InputLinkage'
+  | 'NumberLinkage'
 
 export type ColProps = {
   span?: number

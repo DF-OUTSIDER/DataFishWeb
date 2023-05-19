@@ -12,6 +12,7 @@ import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import i18n from '@/locales'
 
 import { useValidator } from '@/hooks/web/useValidator'
+import { ElMessage } from 'element-plus'
 const { required } = useValidator()
 
 const { t } = i18n.global
@@ -46,19 +47,26 @@ const kindLinkage = (formProps: any) => {
   // }
 }
 
+// 用户名联动
+const userNameLinkage = (formProps: any) => {
+  // 获取表单数据
+  const data = formProps?.formExpose?.formModel as Recordable
+  ElMessage.info(data?.username?.toString())
+}
+
 const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'username',
     label: t('userVo.username'),
     form: {
-      component: 'Input',
+      component: 'InputLinkage',
       formItemProps: {
         //rules: [required()]
+      },
+      componentProps: {
+        formProps: formProps,
+        linkage: userNameLinkage
       }
-      //,
-      // colProps: {
-      //   span: 24
-      // }
     }
   },
   {
