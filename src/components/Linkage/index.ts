@@ -8,5 +8,6 @@
  */
 import InputLinkage from './src/InputLinkage.vue'
 import NumberLinkage from './src/NumberLinkage.vue'
+import SelectLinkage from './src/SelectLinkage.vue'
 
-export { InputLinkage, NumberLinkage }
+export { InputLinkage, NumberLinkage, SelectLinkage }

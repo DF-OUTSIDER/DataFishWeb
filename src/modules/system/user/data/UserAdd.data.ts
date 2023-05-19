@@ -59,11 +59,21 @@ const crudSchemas = reactive<CrudSchema[]>([
     field: 'username',
     label: t('userVo.username'),
     form: {
-      component: 'InputLinkage',
+      component: 'NumberLinkage',
       formItemProps: {
         //rules: [required()]
       },
       componentProps: {
+        options: [
+          {
+            label: t('common.disabled'),
+            value: 0
+          },
+          {
+            label: t('common.enable'),
+            value: 1
+          }
+        ],
         formProps: formProps,
         linkage: userNameLinkage
       }

@@ -36,6 +36,7 @@ export type ComponentName =
   | 'DictTag'
   | 'InputLinkage'
   | 'NumberLinkage'
+  | 'SelectLinkage'
 
 export type ColProps = {
   span?: number
