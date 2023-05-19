@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\user\data\UserAdd.data.ts
+ * @FilePath: \DataFishWeb\src\modules\system\user\data\UserAdd.data.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -21,6 +21,30 @@ export const rules = reactive({
   realname: [required()],
   encryptionType: [required()]
 })
+
+export const formProps = {
+  formExpose: {}
+}
+
+// 字段联动
+const kindLinkage = (formProps: any) => {
+  // 获取表单数据
+  const data = formProps?.formExpose?.formModel as Recordable
+  // 表单联动测试
+  // const tenantSchema = formProps?.formExpose?.getSchema('tenantId')
+  // if (tenantSchema === null) {
+  //   formProps?.formExpose?.addSchema(
+  //     {
+  //       label: '租户',
+  //       field: 'tenantId',
+  //       component: 'Input'
+  //     } as FormSchema,
+  //     3
+  //   )
+  // } else {
+  //   formProps?.formExpose?.delSchema('tenantId')
+  // }
+}
 
 const crudSchemas = reactive<CrudSchema[]>([
   {
@@ -56,7 +80,9 @@ const crudSchemas = reactive<CrudSchema[]>([
         //rules: [required()]
       },
       componentProps: {
-        dictCode: 'encryption_type'
+        dictCode: 'encryption_type',
+        formProps: formProps,
+        linkage: kindLinkage
       }
     }
   },

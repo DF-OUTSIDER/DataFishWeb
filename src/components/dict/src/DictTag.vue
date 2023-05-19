@@ -1,14 +1,14 @@
 <!--
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\Dict\src\DictTag.vue
+ * @FilePath: \DataFishWeb\src\components\Dict\src\DictTag.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
   <ElTag :type="tagType">
-    {{ valueName }}
+    {{ label }}
   </ElTag>
 </template>
 
@@ -17,7 +17,7 @@ import { getDictItemsApi } from '@/modules/system/dict/api'
 import { DictItemQuery } from '@/modules/system/dict/api/types'
 import { propTypes } from '@/utils/propTypes'
 import { ElTag } from 'element-plus'
-import { PropType, ref, onBeforeMount, watch, unref } from 'vue'
+import { PropType, ref, watch, unref } from 'vue'
 
 const props = defineProps({
   // 字典码
@@ -37,7 +37,7 @@ const emit = defineEmits(['update:modelValue'])
 
 // 输入框的值
 const valueRef = ref(props.modelValue)
-const valueName = ref('')
+const tagLabel = ref('')
 
 let dictItemQuery = {
   dictCode: props.dictCode,
@@ -57,7 +57,7 @@ getDictItemsApi(dictItemQuery as DictItemQuery).then((res) => {
     if (Array.isArray(dictArr)) {
       dictArr.forEach((element) => {
         if (element.code === valueRef.value) {
-          valueName.value = element.label
+          tagLabel.value = element.label
           tagType.value = element.colorCode
         }
       })

@@ -1,24 +1,25 @@
 <!--
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\user\views\page\components\UserWrite.vue
+ * @FilePath: \DataFishWeb\src\modules\system\user\views\page\components\UserWrite.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-  <Form @register="register" :rules="rules" />
+  <Form ref="formRef" @register="register" :rules="rules" />
 </template>
 
 <script setup lang="ts">
 import { Form } from '@/components/Form'
 import { useForm } from '@/hooks/web/useForm'
-import { PropType, reactive, watch } from 'vue'
+import { PropType, reactive, watch, toRef } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 
 import { FormSchema } from '@/types/form'
 
 import { UserType } from '@/modules/system/user/api/types'
+import { formProps } from '../../../data/UserAdd.data'
 
 const props = defineProps({
   isShowPass: propTypes.bool.def(false),
@@ -35,6 +36,8 @@ const props = defineProps({
     default: () => []
   }
 })
+
+const formRef = toRef(formProps, 'formExpose')
 
 const schema = reactive<FormSchema[]>(props.schema)
 const rules = reactive<Recordable[]>(props.rules)

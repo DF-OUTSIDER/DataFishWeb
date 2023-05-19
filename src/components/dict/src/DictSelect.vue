@@ -1,13 +1,13 @@
 <!--
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\Dict\src\DictSelect.vue
+ * @FilePath: \DataFishWeb\src\components\Dict\src\DictSelect.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-  <ElSelect v-model="valueRef" class="m-2" placeholder="" size="default">
+  <ElSelect v-model="valueRef" placeholder="" size="default">
     <ElOption v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
   </ElSelect>
 </template>
@@ -29,6 +29,17 @@ const props = defineProps({
   modelValue: {
     type: [String, Number, Boolean] as PropType<string | number | boolean>,
     default: null
+  },
+  formProps: {
+    type: Object as PropType<any>,
+    default: null
+  },
+  linkage: {
+    type: Function as PropType<(formProps: any) => void>,
+    default(formProps: any) {
+      const data = formProps?.formExpose?.formModel as Recordable
+      console.log(data?.code?.toString())
+    }
   }
 })
 
@@ -75,6 +86,8 @@ watch(
   () => valueRef.value,
   (val: string | number | boolean) => {
     emit('update:modelValue', val)
+    // 数据联动
+    props.linkage(props.formProps)
   }
 )
 
