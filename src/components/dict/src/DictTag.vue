@@ -8,7 +8,7 @@
 -->
 <template>
   <ElTag :type="tagType">
-    {{ label }}
+    {{ tagLabel }}
   </ElTag>
 </template>
 

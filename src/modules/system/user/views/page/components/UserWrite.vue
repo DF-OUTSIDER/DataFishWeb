@@ -19,7 +19,7 @@ import { propTypes } from '@/utils/propTypes'
 import { FormSchema } from '@/types/form'
 
 import { UserType } from '@/modules/system/user/api/types'
-import { formProps } from '../../../data/UserAdd.data'
+import { formProps } from '../../../data/UserForm.data'
 
 const props = defineProps({
   isShowPass: propTypes.bool.def(false),

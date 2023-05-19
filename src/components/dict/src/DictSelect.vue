@@ -73,13 +73,14 @@ getDictItemsApi(dictItemQuery as DictItemQuery).then((res) => {
 //   valueRef.value = val
 // }
 
-// watch(
-//   () => props.modelValue,
-//   (val: string) => {
-//     if (val === unref(valueRef)) return
-//     valueRef.value = val
-//   }
-// )
+// 编辑默认值
+watch(
+  () => props.modelValue,
+  (val: string | number | boolean) => {
+    if (val === unref(valueRef)) return
+    valueRef.value = val
+  }
+)
 
 // 监听, 必须添加，否则校验无法通过
 watch(

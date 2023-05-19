@@ -13,6 +13,8 @@ import i18n from '@/locales'
 
 import { useValidator } from '@/hooks/web/useValidator'
 import { ElMessage } from 'element-plus'
+import { formProps } from './UserForm.data'
+
 const { required } = useValidator()
 
 const { t } = i18n.global
@@ -22,10 +24,6 @@ export const rules = reactive({
   realname: [required()],
   encryptionType: [required()]
 })
-
-export const formProps = {
-  formExpose: {}
-}
 
 // 字段联动
 const kindLinkage = (formProps: any) => {
@@ -55,29 +53,31 @@ const userNameLinkage = (formProps: any) => {
 }
 
 const crudSchemas = reactive<CrudSchema[]>([
+  // {
+  //   field: 'username',
+  //   label: t('userVo.username'),
+  //   form: {
+  //     component: 'NumberLinkage',
+  //     formItemProps: {},
+  //     componentProps: {
+  //       options: [
+  //         {
+  //           label: t('common.disabled'),
+  //           value: 0
+  //         },
+  //         {
+  //           label: t('common.enable'),
+  //           value: 1
+  //         }
+  //       ],
+  //       formProps: formProps,
+  //       linkage: userNameLinkage
+  //     }
+  //   }
+  // },
   {
     field: 'username',
-    label: t('userVo.username'),
-    form: {
-      component: 'NumberLinkage',
-      formItemProps: {
-        //rules: [required()]
-      },
-      componentProps: {
-        options: [
-          {
-            label: t('common.disabled'),
-            value: 0
-          },
-          {
-            label: t('common.enable'),
-            value: 1
-          }
-        ],
-        formProps: formProps,
-        linkage: userNameLinkage
-      }
-    }
+    label: t('userVo.username')
   },
   {
     field: 'realname',
