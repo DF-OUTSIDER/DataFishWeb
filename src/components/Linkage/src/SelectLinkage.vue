@@ -65,8 +65,10 @@ watch(
   () => valueRef.value,
   (val: string | number | boolean) => {
     emit('update:modelValue', val)
-    // 数据联动
-    props.linkage(props.formProps)
+    if (props.formProps) {
+      // 数据联动
+      props.linkage(props.formProps)
+    }
   }
 )
 </script>
