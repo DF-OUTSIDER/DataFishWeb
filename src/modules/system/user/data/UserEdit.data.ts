@@ -30,10 +30,13 @@ const userNameLinkage = (formProps: any) => {
   // 获取表单数据
   const data = formProps?.formExpose?.formModel as Recordable
   const usernameSchema = formProps?.formExpose?.getSchema('username')
+  const encryptionTypeSchema = formProps?.formExpose?.getSchema('encryptionType')
   if (data?.username === 'admin') {
     usernameSchema.hidden = true
+    encryptionTypeSchema.hidden = true
   } else {
     usernameSchema.hidden = false
+    encryptionTypeSchema.hidden = false
   }
 }
 

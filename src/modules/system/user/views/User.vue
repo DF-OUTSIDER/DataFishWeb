@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-11-09 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\user\views\User.vue
+ * @FilePath: \DataFishWeb\src\modules\system\user\views\User.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
@@ -15,6 +15,9 @@
       <ElButton type="primary" @click="AddAction">{{ t('exampleDemo.add') }}</ElButton>
       <ElButton :loading="delLoading" type="danger" @click="delData(null, true)">
         {{ t('exampleDemo.del') }}
+      </ElButton>
+      <ElButton :loading="delLoading" type="danger" @click="resetPassword(null, true)">
+        {{ t('common.resetPassword') }}
       </ElButton>
     </div>
 
@@ -73,7 +76,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import { useRouter } from 'vue-router'
 
 import { ref, h, reactive } from 'vue'
-import { ElButton, ElSwitch, ElTag, ElDrawer } from 'element-plus'
+import { ElButton, ElSwitch, ElTag, ElDrawer, ElMessage } from 'element-plus'
 
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 
@@ -224,6 +227,10 @@ const delData = async (row: UserType | null, multiple: boolean) => {
   ).finally(() => {
     delLoading.value = false
   })
+}
+
+const resetPassword = () => {
+  ElMessage.info('TODO 未实现')
 }
 
 const actionType = ref('')

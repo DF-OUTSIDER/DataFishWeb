@@ -70,7 +70,7 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'actionId',
     label: t('permissionVo.actionId'),
-    component: 'Dict',
+    component: 'DictSelect',
     formItemProps: {
       rules: [required()]
     },

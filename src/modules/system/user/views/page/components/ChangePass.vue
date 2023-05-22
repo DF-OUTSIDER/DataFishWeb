@@ -1,7 +1,7 @@
 <!--
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\user\views\page\components\ChangePass.vue
+ * @FilePath: \DataFishWeb\src\modules\system\user\views\page\components\ChangePass.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { PropType, ref, unref } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
-import { ElMessage } from 'element-plus'
+import { ElButton, ElMessage } from 'element-plus'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
 import { useCrudSchemas } from '@/hooks/web/useCrudSchemas'

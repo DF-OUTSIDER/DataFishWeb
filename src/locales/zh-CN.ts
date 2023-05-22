@@ -1,7 +1,6 @@
 export default {
   common: {
     add: '新增',
-
     inputText: '请输入',
     selectText: '请选择',
     startTimeText: '开始时间',
@@ -38,6 +37,7 @@ export default {
     toolDes: '用于设置定制系统',
     query: '查询',
     reset: '重置',
+    resetPassword: '重置密码',
     shrink: '收起',
     expand: '展开',
     delMessage: '是否删除所选中数据？',
