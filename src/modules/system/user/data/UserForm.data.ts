@@ -7,5 +7,6 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 export const formProps = {
-  formExpose: {}
+  formExpose: {},
+  actionType: ''
 }

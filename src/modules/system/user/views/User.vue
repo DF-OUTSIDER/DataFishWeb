@@ -154,32 +154,11 @@ const crudSchemas = reactive<CrudSchema[]>([
       }
     }
   },
-  // {
-  //   field: 'encryptionTag',
-  //   label: t('userVo.encryptionType'),
-  //   formatter: (row: UserType) => {
-  //     return h(
-  //       ElTag,
-  //       {
-  //         type: row.encryptionTag.colorStyle
-  //       },
-  //       () => row.encryptionTag.label
-  //     )
-  //   }
-  // },
   {
     field: 'enable',
     label: t('roleVo.enable'),
     formatter: (row: UserType) => {
       return h(ElSwitch, { modelValue: row.enable, disabled: true })
-      // switch (row.enable) {
-      //   case false:
-      //     return h('span', '禁用')
-      //   case true:
-      //     return h('span', '启用')
-      //   default:
-      //     return h('span', '无效')
-      // }
     }
   },
   {

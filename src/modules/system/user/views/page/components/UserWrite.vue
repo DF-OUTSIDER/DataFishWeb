@@ -20,6 +20,7 @@ import { FormSchema } from '@/types/form'
 
 import { UserType } from '@/modules/system/user/api/types'
 import { formProps } from '../../../data/UserForm.data'
+// import { ElMessage } from 'element-plus'
 
 const props = defineProps({
   isShowPass: propTypes.bool.def(false),
@@ -34,10 +35,15 @@ const props = defineProps({
   rules: {
     type: Array as PropType<Recordable[]>,
     default: () => []
-  }
+  },
+  actionType: propTypes.string.def('')
 })
 
 const formRef = toRef(formProps, 'formExpose')
+const actionType = props.actionType as string
+formProps.actionType = actionType
+
+// ElMessage.info(formProps.actionType)
 
 const schema = reactive<FormSchema[]>(props.schema)
 const rules = reactive<Recordable[]>(props.rules)

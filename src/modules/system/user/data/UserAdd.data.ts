@@ -53,32 +53,32 @@ const userNameLinkage = (formProps: any) => {
 }
 
 const crudSchemas = reactive<CrudSchema[]>([
-  // {
-  //   field: 'username',
-  //   label: t('userVo.username'),
-  //   form: {
-  //     component: 'NumberLinkage',
-  //     formItemProps: {},
-  //     componentProps: {
-  //       options: [
-  //         {
-  //           label: t('common.disabled'),
-  //           value: 0
-  //         },
-  //         {
-  //           label: t('common.enable'),
-  //           value: 1
-  //         }
-  //       ],
-  //       formProps: formProps,
-  //       linkage: userNameLinkage
-  //     }
-  //   }
-  // },
   {
     field: 'username',
-    label: t('userVo.username')
+    label: t('userVo.username'),
+    form: {
+      component: 'InputLinkage',
+      // formItemProps: {},
+      componentProps: {
+        //   options: [
+        //     {
+        //       label: t('common.disabled'),
+        //       value: 0
+        //     },
+        //     {
+        //       label: t('common.enable'),
+        //       value: 1
+        //     }
+        //   ],
+        formProps: formProps,
+        linkage: userNameLinkage
+      }
+    }
   },
+  // {
+  //   field: 'username',
+  //   label: t('userVo.username')
+  // },
   {
     field: 'realname',
     label: t('userVo.realname'),

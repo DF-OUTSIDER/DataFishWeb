@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-12-15 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\user\views\page\UserEdit.vue
+ * @FilePath: \DataFishWeb\src\modules\system\user\views\page\UserEdit.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
@@ -68,7 +68,12 @@ const save = async () => {
 
 <template>
   <ContentDetailWrap :title="t('common.edit')" @back="push('/system/user')">
-    <UserWrite ref="writeRef" :schema="allSchemas.formSchema" :current-row="currentRow" />
+    <UserWrite
+      ref="writeRef"
+      :schema="allSchemas.formSchema"
+      :current-row="currentRow"
+      actionType="update"
+    />
 
     <template #right>
       <ElButton type="primary" :loading="loading" @click="save">
