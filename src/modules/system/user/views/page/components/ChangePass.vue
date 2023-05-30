@@ -19,7 +19,7 @@ import { ElButton, ElMessage } from 'element-plus'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
 import { useCrudSchemas } from '@/hooks/web/useCrudSchemas'
-import UserWrite from './UserWrite.vue'
+import { UserWrite } from '.'
 import { crudSchemas } from '../../../data/ChangePass.data'
 
 import { UserType } from '@/modules/system/user/api/types'

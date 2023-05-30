@@ -18,8 +18,8 @@ import { saveUserApi, getUserDetailApi } from '@/modules/system/user/api'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { UserType } from '@/modules/system/user/api/types'
 
-import UserWrite from './components/UserWrite.vue'
-import { crudSchemas } from '../../data/UserEdit.data'
+import { UserWrite } from './components/index'
+import { crudSchemas } from '../../data/User.data'
 import { useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 
 const { allSchemas } = useCrudSchemas(crudSchemas)

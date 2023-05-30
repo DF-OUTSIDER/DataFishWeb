@@ -2,14 +2,14 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2023-01-04
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\user\views\page\UserDetail.vue
+ * @FilePath: \DataFishWeb\src\modules\system\user\views\page\UserDetail.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
 <template>
   <ContentDetailWrap :title="t('common.detail')" @back="push('/system/user')">
-    <Detail :current-row="currentRow" />
+    <UserDetail :current-row="currentRow" />
   </ContentDetailWrap>
 </template>
 
@@ -19,7 +19,7 @@ import { ref } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useRouter, useRoute } from 'vue-router'
 
-import Detail from './components/UserDetail.vue'
+import { UserDetail } from './components'
 import { getUserDetailApi } from '@/modules/system/user/api'
 import { UserType } from '@/modules/system/user/api/types'
 

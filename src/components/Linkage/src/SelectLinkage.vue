@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { FormProps } from '@/api/common/type'
 import { propTypes } from '@/utils/propTypes'
 import { ElSelect, ElOption } from 'element-plus'
 import { PropType, ref, watch, unref } from 'vue'
@@ -39,12 +40,12 @@ const props = defineProps({
     default: () => []
   },
   formProps: {
-    type: Object as PropType<any>,
+    type: Object as PropType<FormProps>,
     default: null
   },
   linkage: {
-    type: Function as PropType<(formProps: any) => void>,
-    default(formProps: any) {
+    type: Function as PropType<(formProps: FormProps) => void>,
+    default(formProps: FormProps) {
       const data = formProps?.formExpose?.formModel as Recordable
       console.log(data?.code?.toString())
     }

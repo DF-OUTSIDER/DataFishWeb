@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-11-09 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \DataFishWeb\src\modules\system\user\views\User.vue
+ * @FilePath: \undefinedd:\myGit\DataFishWeb\src\modules\system\user\views\User.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
@@ -78,11 +78,15 @@ import { useRouter } from 'vue-router'
 import { ref, h, reactive } from 'vue'
 import { ElButton, ElSwitch, ElTag, ElDrawer, ElMessage } from 'element-plus'
 
+import { crudSchemas } from '../data/User.data'
+
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 
 import { UserType } from '@/modules/system/user/api/types'
 import { getUserListApi, deleteUserListApi } from '@/modules/system/user/api'
 import { UserRole, UserOrganization } from '@/components/CommonTable/system'
+
+const { allSchemas } = useCrudSchemas(crudSchemas)
 
 const { push } = useRouter()
 
@@ -110,65 +114,6 @@ useEmitt({
     getList()
   }
 })
-
-const crudSchemas = reactive<CrudSchema[]>([
-  {
-    field: 'id',
-    label: t('userVo.index'),
-    type: 'index'
-  },
-  {
-    field: 'username',
-    label: t('userVo.username'),
-    search: {
-      show: true
-    },
-    formatter: (row: UserType) => {
-      return h('span', { class: 'el-tag el-tag--light el-tooltip__trigger' }, row.username)
-    }
-  },
-  {
-    field: 'realname',
-    label: t('userVo.realname'),
-    search: {
-      show: true
-    }
-  },
-  {
-    field: 'encryptionType',
-    label: t('userVo.encryptionType'),
-    table: {
-      component: 'DictTag',
-      componentProps: {
-        // disabled: true,
-        dictCode: 'encryption_type'
-      }
-    },
-    form: {
-      component: 'DictSelect',
-      formItemProps: {
-        //rules: [required()]
-      },
-      componentProps: {
-        dictCode: 'encryption_type'
-      }
-    }
-  },
-  {
-    field: 'enable',
-    label: t('roleVo.enable'),
-    formatter: (row: UserType) => {
-      return h(ElSwitch, { modelValue: row.enable, disabled: true })
-    }
-  },
-  {
-    field: 'action',
-    width: '360px',
-    label: t('tableDemo.action')
-  }
-])
-
-const { allSchemas } = useCrudSchemas(crudSchemas)
 
 // const loading = ref(true)
 

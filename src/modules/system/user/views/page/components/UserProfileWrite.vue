@@ -19,7 +19,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import { ElButton } from 'element-plus'
 
 import { useCrudSchemas } from '@/hooks/web/useCrudSchemas'
-import UserWrite from './UserWrite.vue'
+import { UserWrite } from '.'
 import { crudSchemas } from '../../../data/UserProfile.data'
 
 import { UserType } from '@/modules/system/user/api/types'

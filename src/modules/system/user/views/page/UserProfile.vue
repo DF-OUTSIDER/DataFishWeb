@@ -50,10 +50,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { UserType, UserProfileType } from '@/modules/system/user/api/types'
 import { getUserProfileDetailApi } from '@/modules/system/user/api'
 
-import UserProfileDetail from './components/UserProfileDetail.vue'
-
-import ChangePass from './components/ChangePass.vue'
-import UserProfileWrite from './components/UserProfileWrite.vue'
+import { UserProfileDetail, ChangePass, UserProfileWrite } from './components'
 
 const { t } = useI18n()
 

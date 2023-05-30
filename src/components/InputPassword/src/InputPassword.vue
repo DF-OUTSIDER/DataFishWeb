@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, unref, computed, watch } from 'vue'
+import { ref, unref, computed, watch, PropType, onMounted } from 'vue'
 import { ElInput } from 'element-plus'
 import { propTypes } from '@/utils/propTypes'
 import { useConfigGlobal } from '@/hooks/web/useConfigGlobal'
 import { zxcvbn } from '@zxcvbn-ts/core'
 import type { ZxcvbnResult } from '@zxcvbn-ts/core'
 import { useDesign } from '@/hooks/web/useDesign'
+import { FormProps } from '@/api/common/type'
 
 const { getPrefixCls } = useDesign()
 
@@ -14,7 +15,18 @@ const prefixCls = getPrefixCls('input-password')
 const props = defineProps({
   // 是否显示密码强度
   strength: propTypes.bool.def(false),
-  modelValue: propTypes.string.def('')
+  modelValue: propTypes.string.def(''),
+  formProps: {
+    type: Object as PropType<FormProps>,
+    default: null
+  },
+  linkage: {
+    type: Function as PropType<(formProps: FormProps) => void>,
+    default(formProps: FormProps) {
+      const data = formProps?.formExpose?.formModel as Recordable
+      console.log(data?.code?.toString())
+    }
+  }
 })
 
 watch(
@@ -46,6 +58,14 @@ watch(
     emit('update:modelValue', val)
   }
 )
+
+onMounted(() => {
+  // 装载后执行
+  if (props.formProps) {
+    // 数据联动
+    props.linkage(props.formProps)
+  }
+})
 
 // 获取密码强度
 const getPasswordStrength = computed(() => {

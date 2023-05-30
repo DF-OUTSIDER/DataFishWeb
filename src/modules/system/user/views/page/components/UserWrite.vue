@@ -19,7 +19,7 @@ import { propTypes } from '@/utils/propTypes'
 import { FormSchema } from '@/types/form'
 
 import { UserType } from '@/modules/system/user/api/types'
-import { formProps } from '../../../data/UserForm.data'
+import { formProps } from '../../../data/User.data'
 // import { ElMessage } from 'element-plus'
 
 const props = defineProps({
@@ -36,6 +36,7 @@ const props = defineProps({
     type: Array as PropType<Recordable[]>,
     default: () => []
   },
+  // 判断是新增还是编辑
   actionType: propTypes.string.def('')
 })
 

@@ -7,6 +7,18 @@
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
+<template>
+  <ContentDetailWrap :title="t('common.add')" @back="push('/system/user')">
+    <UserWrite ref="writeRef" :schema="allSchemas.formSchema" actionType="create" />
+
+    <template #right>
+      <ElButton type="primary" :loading="loading" @click="save">
+        {{ t('exampleDemo.save') }}
+      </ElButton>
+    </template>
+  </ContentDetailWrap>
+</template>
+
 <script setup lang="ts">
 import { ContentDetailWrap } from '@/components/ContentDetailWrap'
 
@@ -18,8 +30,8 @@ import { saveUserApi } from '@/modules/system/user/api'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { UserType } from '@/modules/system/user/api/types'
 
-import UserWrite from './components/UserWrite.vue'
-import { crudSchemas, rules } from '../../data/UserAdd.data'
+import { UserWrite } from './components'
+import { crudSchemas } from '../../data/User.data'
 import { useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 const { allSchemas } = useCrudSchemas(crudSchemas)
 
@@ -52,15 +64,3 @@ const save = async () => {
   })
 }
 </script>
-
-<template>
-  <ContentDetailWrap :title="t('common.add')" @back="push('/system/user')">
-    <UserWrite ref="writeRef" :schema="allSchemas.formSchema" actionType="create" />
-
-    <template #right>
-      <ElButton type="primary" :loading="loading" @click="save">
-        {{ t('exampleDemo.save') }}
-      </ElButton>
-    </template>
-  </ContentDetailWrap>
-</template>

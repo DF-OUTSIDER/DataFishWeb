@@ -14,16 +14,17 @@
 import { ElInputNumber } from 'element-plus'
 import { PropType, ref, onBeforeMount, watch, unref } from 'vue'
 import { propTypes } from '@/utils/propTypes'
+import { FormProps } from '@/api/common/type'
 
 const props = defineProps({
   modelValue: propTypes.number.def(0),
   formProps: {
-    type: Object as PropType<any>,
+    type: Object as PropType<FormProps>,
     default: null
   },
   linkage: {
-    type: Function as PropType<(formProps: any) => void>,
-    default(formProps: any) {
+    type: Function as PropType<(formProps: FormProps) => void>,
+    default(formProps: FormProps) {
       const data = formProps?.formExpose?.formModel as Recordable
       console.log(data?.code?.toString())
     }
