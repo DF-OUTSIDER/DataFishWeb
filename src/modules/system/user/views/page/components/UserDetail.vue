@@ -10,8 +10,10 @@
 <script setup lang="ts">
 import { PropType, reactive } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
+import { Descriptions } from '@/components/Descriptions'
 import { DescriptionsSchema } from '@/types/descriptions'
 import { UserType } from '@/modules/system/user/api/types'
+import { ElSwitch, ElSelect, ElOption } from 'element-plus'
 
 const { t } = useI18n()
 
