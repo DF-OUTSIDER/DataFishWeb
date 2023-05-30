@@ -2,11 +2,36 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-12-20 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\views\menu\page\components\MenuDetail.vue
+ * @FilePath: \DataFishWeb\src\modules\system\menu\views\page\components\MenuDetail.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
+
+<template>
+  <Descriptions :schema="schema" :data="currentRow || {}">
+    <template #enable="{ row }: { row: AppCustomRouteRecordRaw }">
+      <ElSwitch disabled v-model="row.enable" />
+    </template>
+    <template #[`meta.noCache`]="{ row }: { row: AppCustomRouteRecordRaw }">
+      <ElSwitch disabled v-model="_noCache" v-bind="getMetaValue('noCache', row)" />
+    </template>
+
+    <template #[`meta.alwaysShow`]="{ row }: { row: AppCustomRouteRecordRaw }">
+      <ElSwitch disabled v-model="_alwaysShow" v-bind="getMetaValue('alwaysShow', row)" />
+    </template>
+    <template #[`meta.noTagsView`]="{ row }: { row: AppCustomRouteRecordRaw }">
+      <ElSwitch disabled v-model="_noTagsView" v-bind="getMetaValue('noTagsView', row)" />
+    </template>
+    <template #[`meta.hidden`]="{ row }: { row: AppCustomRouteRecordRaw }">
+      <ElSwitch disabled v-model:model-value="_hidden" v-bind="getMetaValue('hidden', row)" />
+    </template>
+    <template #[`meta.canTo`]="{ row }: { row: AppCustomRouteRecordRaw }">
+      <ElSwitch disabled v-model="_canTo" v-bind="getMetaValue('canTo', row)" />
+    </template>
+  </Descriptions>
+</template>
+
 <script setup lang="ts">
 import { h, PropType, computed, ref, reactive } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -138,30 +163,6 @@ const getMetaValue = (field: string, row: any) => {
   }
 }
 </script>
-
-<template>
-  <Descriptions :schema="schema" :data="currentRow || {}">
-    <template #enable="{ row }: { row: AppCustomRouteRecordRaw }">
-      <ElSwitch disabled v-model="row.enable" />
-    </template>
-    <template #[`meta.noCache`]="{ row }: { row: AppCustomRouteRecordRaw }">
-      <ElSwitch disabled v-model="_noCache" v-bind="getMetaValue('noCache', row)" />
-    </template>
-
-    <template #[`meta.alwaysShow`]="{ row }: { row: AppCustomRouteRecordRaw }">
-      <ElSwitch disabled v-model="_alwaysShow" v-bind="getMetaValue('alwaysShow', row)" />
-    </template>
-    <template #[`meta.noTagsView`]="{ row }: { row: AppCustomRouteRecordRaw }">
-      <ElSwitch disabled v-model="_noTagsView" v-bind="getMetaValue('noTagsView', row)" />
-    </template>
-    <template #[`meta.hidden`]="{ row }: { row: AppCustomRouteRecordRaw }">
-      <ElSwitch disabled v-model:model-value="_hidden" v-bind="getMetaValue('hidden', row)" />
-    </template>
-    <template #[`meta.canTo`]="{ row }: { row: AppCustomRouteRecordRaw }">
-      <ElSwitch disabled v-model="_canTo" v-bind="getMetaValue('canTo', row)" />
-    </template>
-  </Descriptions>
-</template>
 
 <!-- <ElSelect :disabled="true" v-model="row.enable" placeholder="Select">
         <ElOption label="禁用" :value="0" />

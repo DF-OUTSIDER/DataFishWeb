@@ -2,11 +2,23 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-12-20 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\menu\views\page\MenuAdd.vue
+ * @FilePath: \DataFishWeb\src\modules\system\menu\views\page\MenuAdd.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
+<template>
+  <ContentDetailWrap :title="t('common.add')" @back="push('/system/menu')">
+    <MenuWrite ref="writeRef" :schema="allSchemas.formSchema" />
+
+    <template #right>
+      <ElButton type="primary" :loading="loading" @click="save">
+        {{ t('exampleDemo.save') }}
+      </ElButton>
+    </template>
+  </ContentDetailWrap>
+</template>
+
 <script setup lang="ts">
 import { ContentDetailWrap } from '@/components/ContentDetailWrap'
 
@@ -16,7 +28,7 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { useRouter } from 'vue-router'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
-import MenuWrite from './components/MenuWrite.vue'
+import { MenuWrite } from './components'
 import { saveMenuApi } from '@/modules/system/menu/api'
 
 import { crudSchemas } from '../../data/Menu.data'
@@ -52,15 +64,3 @@ const save = async () => {
   })
 }
 </script>
-
-<template>
-  <ContentDetailWrap :title="t('common.add')" @back="push('/system/menu')">
-    <MenuWrite ref="writeRef" :schema="allSchemas.formSchema" />
-
-    <template #right>
-      <ElButton type="primary" :loading="loading" @click="save">
-        {{ t('exampleDemo.save') }}
-      </ElButton>
-    </template>
-  </ContentDetailWrap>
-</template>

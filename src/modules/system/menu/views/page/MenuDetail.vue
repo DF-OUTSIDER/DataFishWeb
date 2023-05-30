@@ -2,14 +2,14 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-12-30 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\menu\views\page\MenuDetail.vue
+ * @FilePath: \DataFishWeb\src\modules\system\menu\views\page\MenuDetail.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
 <template>
   <ContentDetailWrap :title="t('common.detail')" @back="push('/system/menu')">
-    <Detail :current-row="currentRow" />
+    <MenuDetail :current-row="currentRow" />
   </ContentDetailWrap>
 </template>
 
@@ -18,8 +18,8 @@ import { ContentDetailWrap } from '@/components/ContentDetailWrap'
 import { ref } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useRouter, useRoute } from 'vue-router'
+import { MenuDetail } from './components'
 
-import Detail from './components/MenuDetail.vue'
 import { getMenuDetailApi } from '@/modules/system/menu/api'
 
 const { push } = useRouter()
