@@ -3,7 +3,7 @@ import { loadEnv } from 'vite'
 import type { UserConfig, ConfigEnv } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import WindiCSS from 'vite-plugin-windicss'
-// import progress from 'vite-plugin-progress'
+import progress from 'vite-plugin-progress'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import EslintPlugin from 'vite-plugin-eslint'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
@@ -13,6 +13,7 @@ import PurgeIcons from 'vite-plugin-purge-icons'
 import { viteMockServe } from 'vite-plugin-mock'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import VueMarcos from 'unplugin-vue-macros/vite'
+import { axiosPre } from './src/config/axios/httpSetting'
 
 // https://vitejs.dev/config/
 const root = process.cwd()
@@ -35,7 +36,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       Vue(),
       VueJsx(),
       WindiCSS(),
-      //progress(),
+      progress(),
       createStyleImportPlugin({
         resolves: [ElementPlusResolve()],
         libs: [{
@@ -120,8 +121,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 4000,
       proxy: {
         // 选项写法
-        '/api': {
-          target: 'http://127.0.0.1:8010',
+        [axiosPre]: {
+          target: env.VITE_TARGET_PATH,
           changeOrigin: true,
           rewrite: path => {path.replace(/^\/api/, ''); return path;}
         }
