@@ -15,6 +15,12 @@ export type BaseType = {
   enable: boolean
 } & Recordable
 
+export type Oauth2TokenType = {
+  userId: number
+  accessToken: string
+  refreshToken: string
+} & Recordable
+
 export type FormProps = {
   formExpose: FormExpose
   // example curd create\update\read\delete

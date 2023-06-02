@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-11-09
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\config\axios\service.ts
+ * @FilePath: \DataFishWeb\src\config\axios\service.ts
  * @Description:
  *
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved.
@@ -31,6 +31,7 @@ import { useRouter } from 'vue-router'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 
 import i18n from '@/locales'
+import { Oauth2TokenType } from '@/api/common/type'
 const { t } = i18n.global
 
 const tagsViewStore = useTagsViewStore()
@@ -66,7 +67,7 @@ service.interceptors.request.use(
     console.log(token)
 
     if (token) {
-      ;(config.headers as AxiosRequestHeaders)['Authorization'] = token
+      ;(config.headers as AxiosRequestHeaders)['Authorization'] = 'Bearer ' + token
     }
     // ;(config.headers as AxiosRequestHeaders)['Token'] = 'test test'
     // get参数编码
@@ -99,12 +100,20 @@ service.interceptors.response.use(
       // 如果是文件流，直接过
       return response
     } else if (response.data.code === result_code) {
+      // Deprecated
       if (typeof response.data.data === 'string') {
         const data = response.data.data as string
         if (data.startsWith('Bearer ')) {
           setToken(data, true)
         }
       }
+
+      const hasField = Reflect.has(response.data.data, 'accessToken')
+      if (hasField) {
+        const tokenVo = response.data.data as Oauth2TokenType
+        setToken(tokenVo.accessToken, true)
+      }
+
       return response.data
     } else {
       ElMessage.error(response.data.message)
