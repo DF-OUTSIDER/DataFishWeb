@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-11-09
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\config\axios\config.ts
+ * @FilePath: \DataFishWeb\src\config\axios\config.ts
  * @Description:
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved
  */
@@ -37,7 +37,7 @@ const config: {
   /**
    * 接口成功返回状态码
    */
-  result_code: '00000',
+  result_code: 200,
 
   /**
    * 接口请求超时时间
