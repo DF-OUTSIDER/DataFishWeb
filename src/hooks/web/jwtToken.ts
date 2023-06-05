@@ -2,29 +2,46 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-12-09
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\hooks\web\jwtToken.ts
+ * @FilePath: \DataFishWeb\src\hooks\web\jwtToken.ts
  * @Description:
  *
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved.
  */
+import { Oauth2TokenType } from '@/api/common/type'
 import { useCache } from '@/hooks/web/useCache'
 
 const { wsCache } = useCache()
 
-const TokenKey = 'DATA-FISH-TOKEN'
+const AccessTokenKey = 'DF_ACCESS_TOKEN'
+const RefreshTokenKey = 'DF_REFRESH_TOKEN'
 
-export const getToken = () => {
-  const token = wsCache.get(TokenKey)
+export const getAccessToken = () => {
+  const token = wsCache.get(AccessTokenKey)
   console.log(token)
   return token
 }
 
-export const setToken = (token: string, remember: boolean) => {
+/** @deprecated */
+export const setAccessToken = (token: string, remember: boolean) => {
   if (remember) {
-    wsCache.set(TokenKey, token)
+    wsCache.set(AccessTokenKey, token)
   }
 }
 
+export const setToken = (oauth2Token: Oauth2TokenType, remember: boolean) => {
+  if (remember) {
+    // wsCache.set(RefreshTokenKey, oauth2Token.refreshToken, { exp: oauth2Token.expiresTime })
+    wsCache.set(RefreshTokenKey, oauth2Token.refreshToken)
+    wsCache.set(AccessTokenKey, oauth2Token.accessToken)
+  }
+}
+
+export const removeAccessToken = () => {
+  wsCache.delete(AccessTokenKey)
+}
+
+// 删除token
 export const removeToken = () => {
-  wsCache.delete(TokenKey)
+  wsCache.delete(AccessTokenKey)
+  wsCache.delete(RefreshTokenKey)
 }

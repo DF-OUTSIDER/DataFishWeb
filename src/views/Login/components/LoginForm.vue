@@ -8,8 +8,6 @@ import { getUserMenuApi } from '@/modules/system/menu/api'
 import { loginApi } from '@/api/login'
 import { useCache } from '@/hooks/web/useCache'
 
-import { setToken, getToken } from '@/hooks/web/jwtToken'
-
 import { useAppStore } from '@/store/modules/app'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useRouter } from 'vue-router'
@@ -17,6 +15,7 @@ import type { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
 import { UserType } from '@/modules/system/user/api/types'
 import { useValidator } from '@/hooks/web/useValidator'
 import { FormSchema } from '@/types/form'
+import { Oauth2TokenType } from '@/api/common/type'
 
 const { required } = useValidator()
 
@@ -137,11 +136,6 @@ const signIn = async () => {
         const res = await loginApi(formData)
 
         if (res) {
-          // 添加 token
-          const token = getToken()
-
-          console.log(token)
-
           wsCache.set(appStore.getUserInfo, res.data)
           // 是否使用动态路由 todo 20230110 appStore.getDynamicRouter 替换为true
           if (true) {

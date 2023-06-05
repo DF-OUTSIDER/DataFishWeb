@@ -63,6 +63,7 @@ export const usePermissionStore = defineStore('permission', {
         // 动态路由，404一定要放到最后面
         this.addRouters = routerMap.concat([
           {
+            id: 404,
             path: '/:path(.*)*',
             redirect: '/404',
             name: '404Page',

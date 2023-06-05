@@ -37,7 +37,7 @@ import { PropType, ref } from 'vue'
 
 import { propTypes } from '@/utils/propTypes'
 
-import { getToken } from '@/hooks/web/jwtToken'
+import { getAccessToken } from '@/hooks/web/jwtToken'
 
 import { ElMessage, ElUpload, ElButton } from 'element-plus'
 import type { UploadInstance, UploadUserFile, UploadProps, UploadRawFile } from 'element-plus'
@@ -91,7 +91,7 @@ const fileList = ref<UploadUserFile[]>(uploadFiles || [])
 const uploadNumber = ref<number>(0)
 
 const uploadHeaders = ref({
-  Authorization: 'Bearer ' + getToken()
+  Authorization: 'Bearer ' + getAccessToken()
   // ,
   // 'tenant-id': getTenantId()
 })

@@ -2,9 +2,9 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2023-01-31 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\dict\views\Dict.vue
+ * @FilePath: \DataFishWeb\src\modules\system\dict\views\Dict.vue
  * @Description: 
- * v-hasPermi="['dict::insert']"
+ *
  * Copyright (c) 2023 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
 <template>
@@ -12,7 +12,9 @@
     <Search :schema="allSchemas.searchSchema" @search="setSearchParams" @reset="setSearchParams" />
 
     <div class="mb-10px">
-      <ElButton type="primary" @click="AddAction">{{ t('common.add') }}</ElButton>
+      <ElButton v-hasPermi="['dict::insert']" type="primary" @click="AddAction">{{
+        t('common.add')
+      }}</ElButton>
       <ElButton :loading="delLoading" type="danger" @click="delData(null, true)">
         {{ t('common.del') }}
       </ElButton>

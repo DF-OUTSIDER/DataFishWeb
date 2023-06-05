@@ -51,7 +51,7 @@ import { ref } from 'vue'
 
 import { ElNotification } from 'element-plus'
 import { ElMessage, ElUpload, ElImageViewer } from 'element-plus'
-import { getToken } from '@/hooks/web/jwtToken'
+import { getAccessToken } from '@/hooks/web/jwtToken'
 
 import type { UploadProps, UploadFile, UploadUserFile } from 'element-plus'
 
@@ -86,7 +86,7 @@ const props = defineProps({
 })
 
 const uploadHeaders = ref({
-  Authorization: 'Bearer ' + getToken()
+  Authorization: 'Bearer ' + getAccessToken()
   //,
   //'tenant-id': getTenantId()
 })

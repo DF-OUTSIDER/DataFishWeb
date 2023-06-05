@@ -21,7 +21,7 @@ import qs from 'qs'
 
 import { config } from './config'
 
-import { setToken, getToken } from '@/hooks/web/jwtToken'
+import { setToken, setAccessToken, getAccessToken } from '@/hooks/web/jwtToken'
 
 import { ElMessage, ElMessageBox } from 'element-plus'
 
@@ -62,7 +62,7 @@ service.interceptors.request.use(
     }
 
     // 添加 token
-    const token = getToken()
+    const token = getAccessToken()
 
     console.log(token)
 
@@ -100,18 +100,12 @@ service.interceptors.response.use(
       // 如果是文件流，直接过
       return response
     } else if (response.data.code === result_code) {
-      // Deprecated
-      if (typeof response.data.data === 'string') {
-        const data = response.data.data as string
-        if (data.startsWith('Bearer ')) {
-          setToken(data, true)
+      if (response.data.data && typeof response.data.data === 'object') {
+        const hasField = Reflect.has(response.data.data, 'accessToken')
+        if (hasField) {
+          const tokenVo = response.data.data as Oauth2TokenType
+          setToken(tokenVo, true)
         }
-      }
-
-      const hasField = Reflect.has(response.data.data, 'accessToken')
-      if (hasField) {
-        const tokenVo = response.data.data as Oauth2TokenType
-        setToken(tokenVo.accessToken, true)
       }
 
       return response.data

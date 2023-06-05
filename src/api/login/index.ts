@@ -11,11 +11,17 @@ import request from '@/config/axios'
 import type { UserType } from '@/modules/system/user/api/types'
 import { Oauth2TokenType } from '../common/type'
 
-// login
-export const loginApi = (data: Oauth2TokenType): Promise<IResponse<Oauth2TokenType>> => {
+// 登录
+export const loginApi = (data: UserType): Promise<IResponse<Oauth2TokenType>> => {
   return request.post({ url: '/auth/login', data })
 }
 
+// 登出
 export const loginOutApi = (): Promise<IResponse> => {
   return request.get({ url: '/auth/loginOut' })
+}
+
+// 获取当前用户信息及权限
+export const getCurrentUserApi = () => {
+  return request.get({ url: '/auth/getCurrentUser' })
 }
