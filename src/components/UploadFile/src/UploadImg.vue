@@ -58,7 +58,7 @@ import { ElMessage, ElUpload, ElImageViewer } from 'element-plus'
 
 import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
-import { getToken } from '@/hooks/web/jwtToken'
+import { getAccessToken } from '@/hooks/web/jwtToken'
 
 type FileTypes =
   | 'image/apng'
@@ -99,7 +99,7 @@ const deleteImg = () => {
 }
 
 const uploadHeaders = ref({
-  Authorization: 'Bearer ' + getToken()
+  Authorization: 'Bearer ' + getAccessToken()
   // ,
   // 'tenant-id': getTenantId()
 })

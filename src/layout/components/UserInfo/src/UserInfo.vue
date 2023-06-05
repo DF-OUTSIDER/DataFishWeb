@@ -1,7 +1,7 @@
 <!--
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\UserInfo\src\UserInfo.vue
+ * @FilePath: \DataFishWeb\src\layout\components\UserInfo\src\UserInfo.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -15,8 +15,10 @@ import { useRouter } from 'vue-router'
 import { loginOutApi } from '@/api/login'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useTagsViewStore } from '@/store/modules/tagsView'
+import { useUserStore } from '@/store/modules/user'
 
 const tagsViewStore = useTagsViewStore()
+const userStore = useUserStore()
 
 const { getPrefixCls } = useDesign()
 
@@ -37,7 +39,7 @@ const loginOut = () => {
     .then(async () => {
       const res = await loginOutApi().catch(() => {})
       if (res) {
-        wsCache.clear()
+        userStore.loginOut()
         tagsViewStore.delAllViews()
         resetRouter() // 重置静态路由表
         replace('/login')
