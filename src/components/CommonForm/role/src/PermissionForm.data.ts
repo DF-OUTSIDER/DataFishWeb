@@ -11,9 +11,31 @@ import i18n from '@/locales'
 import { FormSchema } from '@/types/form'
 
 import { useValidator } from '@/hooks/web/useValidator'
+import { FormProps } from '@/api/common/type'
+import { ElMessage } from 'element-plus'
 const { required } = useValidator()
 
 const { t } = i18n.global
+
+export const formProps = {
+  formExpose: {},
+  actionType: ''
+} as FormProps
+
+const listLinkage = (formProps: FormProps) => {
+  // 此时 formProps?.formExpose?.formModel 没有加载编辑的数据
+  // 获取表单数据
+  const data = formProps?.formExpose?.formModel as Recordable
+  if (data) {
+    const hasInsertSchema = formProps?.formExpose?.getSchema('hasInsert')
+    ElMessage.info(data.hasInsert)
+    if (data.hasInsert) {
+      hasInsertSchema.hidden = false
+    } else {
+      hasInsertSchema.hidden = true
+    }
+  }
+}
 
 const schema = reactive<FormSchema[]>([
   {
@@ -30,7 +52,11 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'hasList',
     label: t('common.list'),
-    component: 'Switch',
+    component: 'SwitchLinkage',
+    componentProps: {
+      formProps: formProps,
+      linkage: listLinkage
+    },
     value: false,
     colProps: {
       span: 4

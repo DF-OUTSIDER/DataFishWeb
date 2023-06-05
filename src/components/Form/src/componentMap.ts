@@ -33,7 +33,7 @@ import { UploadImg, UploadImgs, UploadFile } from '@/components/UploadFile'
 import { ComponentName } from '@/types/components'
 import { IconSelect } from '@/components/Icon'
 import { DictSelect, DictTag } from '@/components/Dict'
-import { InputLinkage, NumberLinkage, SelectLinkage } from '@/components/Linkage'
+import { InputLinkage, NumberLinkage, SelectLinkage, SwitchLinkage } from '@/components/Linkage'
 
 // mark: 组件映射
 const componentMap: Recordable<Component, ComponentName> = {
@@ -66,7 +66,8 @@ const componentMap: Recordable<Component, ComponentName> = {
   DictTag: DictTag,
   InputLinkage: InputLinkage,
   NumberLinkage: NumberLinkage,
-  SelectLinkage: SelectLinkage
+  SelectLinkage: SelectLinkage,
+  SwitchLinkage: SwitchLinkage
 }
 
 export { componentMap }

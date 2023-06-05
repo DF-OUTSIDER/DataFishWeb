@@ -37,6 +37,7 @@ export type ComponentName =
   | 'InputLinkage'
   | 'NumberLinkage'
   | 'SelectLinkage'
+  | 'SwitchLinkage'
 
 export type ColProps = {
   span?: number
