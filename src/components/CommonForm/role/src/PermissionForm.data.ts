@@ -29,9 +29,9 @@ const listLinkage = (formProps: FormProps) => {
   if (data) {
     // 回调判断
     formUtil.isShowCell = (colName: string) => {
-      return data.hasAuthoritys[colName]
+      return data.hasAuthoritys && data.hasAuthoritys[colName]
     }
-    formUtil.isShowSchema(data, formProps, 'hasList')
+    //formUtil.isShowSchema(data, formProps, 'hasList')
     formUtil.isShowSchema(data, formProps, 'hasInsert')
     formUtil.isShowSchema(data, formProps, 'hasUpdate')
     formUtil.isShowSchema(data, formProps, 'hasDelete')

@@ -7,7 +7,8 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-  <ElSwitch v-model="valueRef" />
+  <ElSwitch v-model="valueRef" active-value="100"
+      inactive-value="0" />
 </template>
 
 <script setup lang="ts">
@@ -49,12 +50,12 @@ watch(
     }
     if (val === unref(valueRef)) return
     valueRef.value = val
+  },
+  {
+    deep: true
+    // ,
+    // immediate: true
   }
-  // ,
-  // {
-  //   deep: true,
-  //   immediate: true
-  // }
 )
 
 // 加载完就执行
