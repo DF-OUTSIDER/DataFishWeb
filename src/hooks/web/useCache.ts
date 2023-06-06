@@ -15,7 +15,8 @@ import WebStorageCache from 'web-storage-cache'
 type CacheType = 'sessionStorage' | 'localStorage'
 
 export const USE_KEY = {
-  CURRENT_USER: 'current-user'
+  CURRENT_USER: 'current-user',
+  DICT: 'dict'
 }
 
 export const useCache = (type: CacheType = 'sessionStorage') => {

@@ -13,11 +13,14 @@
 </template>
 
 <script setup lang="ts">
-import { getDictItemsApi } from '@/modules/system/dict/api'
-import { DictItemQuery } from '@/modules/system/dict/api/types'
 import { propTypes } from '@/utils/propTypes'
-import { ElTag } from 'element-plus'
-import { PropType, ref, watch, unref } from 'vue'
+import { ElMessage, ElTag } from 'element-plus'
+import { PropType, ref, watch, onMounted } from 'vue'
+
+import { useDictStoreWithOut } from '@/store/modules/dict'
+
+// 字典存储
+const dictStore = useDictStoreWithOut()
 
 const props = defineProps({
   // 字典码
@@ -44,26 +47,7 @@ let dictItemQuery = {
   enable: true
 }
 
-// interface ListItem {
-//   value: string
-//   label: string
-// }
-
 const tagType: any = ref('info')
-
-getDictItemsApi(dictItemQuery as DictItemQuery).then((res) => {
-  if (res) {
-    const dictArr = res.data
-    if (Array.isArray(dictArr)) {
-      dictArr.forEach((element) => {
-        if (element.code === valueRef.value) {
-          tagLabel.value = element.label
-          tagType.value = element.colorCode
-        }
-      })
-    }
-  }
-})
 
 // 监听, 必须添加，否则校验无法通过
 watch(
@@ -72,4 +56,24 @@ watch(
     emit('update:modelValue', val)
   }
 )
+
+onMounted(async () => {
+  // 先查字典
+  let dictItems = dictStore.getDictItems[dictItemQuery.dictCode]
+  if (!dictItems) {
+    dictItems = await dictStore.initDict(dictItemQuery.dictCode)
+    // dictItems = dictStore.getDictItems[dictItemQuery.dictCode]
+  }
+  if (Array.isArray(dictItems)) {
+    dictItems.forEach((element) => {
+      if (element.code === valueRef.value) {
+        tagLabel.value = element.label
+        tagType.value = element.colorTag.colorStyle
+        return
+      }
+    })
+  } else {
+    ElMessage.error('字典获取失败！')
+  }
+})
 </script>

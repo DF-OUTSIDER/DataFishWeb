@@ -10,12 +10,15 @@ import { useCache } from '@/hooks/web/useCache'
 
 import { useAppStore } from '@/store/modules/app'
 import { usePermissionStore } from '@/store/modules/permission'
+import { useDictStoreWithOut } from '@/store/modules/dict'
+
 import { useRouter } from 'vue-router'
 import type { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
 import { UserType } from '@/modules/system/user/api/types'
 import { useValidator } from '@/hooks/web/useValidator'
 import { FormSchema } from '@/types/form'
 import { Oauth2TokenType } from '@/api/common/type'
+import { getDictApi } from '@/api/common'
 
 const { required } = useValidator()
 
@@ -24,6 +27,7 @@ const emit = defineEmits(['to-register'])
 const appStore = useAppStore()
 
 const permissionStore = usePermissionStore()
+const dictStore = useDictStoreWithOut()
 
 const { currentRoute, addRoute, push } = useRouter()
 
@@ -140,6 +144,7 @@ const signIn = async () => {
           // 是否使用动态路由 todo 20230110 appStore.getDynamicRouter 替换为true
           if (true) {
             getRole()
+            initDict()
           } else {
             await permissionStore.generateRoutes('none').catch(() => {})
             permissionStore.getAddRouters.forEach((route) => {
@@ -154,6 +159,23 @@ const signIn = async () => {
       }
     }
   })
+}
+
+const initDict = async () => {
+  if (!dictStore.getIsSetDict) {
+    // todo 获取所有字典
+    const res = await getDictApi()
+    if (res) {
+      const dictArr = res.data.list
+      dictStore.setDictObj(dictArr)
+      if (Array.isArray(dictArr)) {
+        dictArr.forEach((element) => {
+          dictStore.initDict(element.code)
+        })
+      }
+      dictStore.setIsSetDict(true)
+    }
+  }
 }
 
 // 获取角色信息

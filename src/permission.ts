@@ -48,14 +48,20 @@ router.beforeEach(async (to, from, next) => {
       //   return
       // }
 
-      if (!dictStore.getIsSetDict) {
-        // todo 获取所有字典
-        const res = await getDictApi()
-        if (res) {
-          dictStore.setDictObj(res.data)
-          dictStore.setIsSetDict(true)
-        }
-      }
+      // if (!dictStore.getIsSetDict) {
+      //   // todo 获取所有字典
+      //   const res = await getDictApi()
+      //   if (res) {
+      //     const dictArr = res.data.list
+      //     dictStore.setDictObj(dictArr)
+      //     if (Array.isArray(dictArr)) {
+      //       dictArr.forEach((element) => {
+      //         dictStore.initDict(element.code)
+      //       })
+      //     }
+      //     dictStore.setIsSetDict(true)
+      //   }
+      // }
 
       if (!userStore.isCurrentUser) {
         // 开发者可根据实际情况进行修改
