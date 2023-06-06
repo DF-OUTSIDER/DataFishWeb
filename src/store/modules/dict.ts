@@ -79,6 +79,21 @@ export const useDictStore = defineStore('dict', {
     },
     setIsSetDict(isSetDict: boolean) {
       this.isSetDict = isSetDict
+    },
+    removeDictByCode(dictCode: string) {
+      this.getDictItems
+      this.dictItems.delete(dictCode)
+      if (this.dictItems.delete(dictCode)) {
+        wsCache.set(
+          USE_KEY.DICT,
+          this.dictItems
+          //, { exp: 60 }
+        ) // 60 秒 过期
+      }
+    },
+    getDictByCode(dictCode: string) {
+      this.getDictItems
+      return this.dictItems[dictCode]
     }
   }
 })

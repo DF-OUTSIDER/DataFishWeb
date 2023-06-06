@@ -46,9 +46,9 @@
   >
     <template #header>
       <div class="flex justify-between">
-        <slot name="title">
+        <!-- <slot name="title">
           {{ title }}
-        </slot>
+        </slot> -->
         <Icon
           v-if="fullscreen"
           class="mr-18px cursor-pointer is-hover mt-2px z-10"
@@ -103,6 +103,10 @@ import { DictItemType } from '@/modules/system/dict/api/types'
 
 import DictItemAdd from './DictItemAdd.vue'
 import DictItemEdit from './DictItemEdit.vue'
+import { useDictStoreWithOut } from '@/store/modules/dict'
+import { updateDict } from '@/utils/dict'
+
+const dictStore = useDictStoreWithOut()
 
 const props = defineProps({
   dictId: propTypes.number.def(0)
@@ -214,7 +218,7 @@ const crudSchemas = reactive<CrudSchema[]>([
       return h(
         ElTag,
         {
-          type: row.colorTag.colorStyle
+          type: row.colorTag.colorStyle === 'default' ? '' : row.colorTag.colorStyle
         },
         () => row.colorTag.label
       )
@@ -277,6 +281,8 @@ const addDictItem = async () => {
   data.dictId = dictId.value
   await saveDictItemApi(data).finally(() => {
     getList()
+    // 更新字典数据
+    updateDict(dictId.value)
     dialogVisible.value = false
   })
 }
@@ -288,6 +294,8 @@ const editDictItem = async () => {
   data.dictId = dictId.value
   await saveDictItemApi(data).finally(() => {
     getList()
+    // 更新字典数据
+    updateDict(dictId.value)
     dialogVisible.value = false
   })
 }

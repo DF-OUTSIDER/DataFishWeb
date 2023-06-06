@@ -2,21 +2,19 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2023-01-10 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\CommonDialog\role\src\PermissionDialog.vue
+ * @FilePath: \DataFishWeb\src\components\CommonDialog\role\src\PermissionDialog.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by outsider 515885633@qq.com, All Rights Reserved. 
 -->
 <template>
-  <ContentWrap :title="t('permissionVo.title')" :message="t('common.message')">
-    <PermissionForm ref="writeRef" :current-row="currentRow" />
+  <PermissionForm ref="writeRef" :current-row="currentRow" />
 
-    <template #right>
+  <!-- <template #right>
       <ElButton type="primary" :loading="loading" @click="save">
         {{ t('common.save') }}
       </ElButton>
-    </template>
-  </ContentWrap>
+    </template> -->
 </template>
 
 <script setup lang="ts">
@@ -69,26 +67,26 @@ getRolePermissionDetail()
 
 const writeRef = ref<ComponentRef<typeof PermissionForm>>()
 
-const loading = ref(false)
+//const loading = ref(false)
 
-const save = async () => {
-  const write = unref(writeRef)
-  await write?.elFormRef?.validate(async (isValid) => {
-    if (isValid) {
-      loading.value = true
-      const data = (await write?.getFormData()) as PermissionType
-      const res = await saveMenuApi(data)
-        .catch(() => {})
-        .finally(() => {
-          loading.value = false
-        })
-      if (res) {
-        emitter.emit('getList', 'add')
-        push('/system/menu')
-      }
-    }
-  })
-}
+// const save = async () => {
+//   const write = unref(writeRef)
+//   await write?.elFormRef?.validate(async (isValid) => {
+//     if (isValid) {
+//       loading.value = true
+//       const data = (await write?.getFormData()) as PermissionType
+//       const res = await saveMenuApi(data)
+//         .catch(() => {})
+//         .finally(() => {
+//           loading.value = false
+//         })
+//       if (res) {
+//         emitter.emit('getList', 'add')
+//         push('/system/menu')
+//       }
+//     }
+//   })
+// }
 
 const getPermissionData = async () => {
   const write = unref(writeRef)

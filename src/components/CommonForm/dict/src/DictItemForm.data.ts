@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\CommonForm\dict\src\DictItemForm.data.ts
+ * @FilePath: \DataFishWeb\src\components\CommonForm\dict\src\DictItemForm.data.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -53,19 +53,23 @@ const schema = reactive<FormSchema[]>([
   {
     field: 'colorCode',
     label: t('dictItemVo.colorCode'),
-    component: 'Select',
+    component: 'DictSelect',
     componentProps: {
-      options: [
-        {
-          label: 'option1',
-          value: '1'
-        },
-        {
-          label: 'option2',
-          value: '2'
-        }
-      ]
+      dictCode: 'color_type'
     }
+    // ,
+    // componentProps: {
+    //   options: [
+    //     {
+    //       label: 'option1',
+    //       value: '1'
+    //     },
+    //     {
+    //       label: 'option2',
+    //       value: '2'
+    //     }
+    //   ]
+    // }
   }
 ])
 

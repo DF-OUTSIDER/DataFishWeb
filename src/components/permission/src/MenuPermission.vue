@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-12-29
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\permission\src\MenuPermission.vue
+ * @FilePath: \DataFishWeb\src\components\permission\src\MenuPermission.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
@@ -45,6 +45,7 @@
     </Table>
   </ContentWrap>
   <ElDialog
+    title="菜单权限"
     v-model="dialogTableVisible"
     v-bind="getBindValue"
     :fullscreen="isFullscreen"

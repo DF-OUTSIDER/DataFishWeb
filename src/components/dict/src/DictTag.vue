@@ -68,7 +68,7 @@ onMounted(async () => {
     dictItems.forEach((element) => {
       if (element.code === valueRef.value) {
         tagLabel.value = element.label
-        tagType.value = element.colorTag.colorStyle
+        tagType.value = element.colorTag.colorStyle === 'default' ? '' : element.colorTag.colorStyle
         return
       }
     })

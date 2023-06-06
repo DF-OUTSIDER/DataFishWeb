@@ -251,7 +251,8 @@ export default {
     path: '路径',
     redirect: '重定向URL',
     parent: '父级',
-    component: '组件'
+    component: '组件',
+    type: '菜单类型'
   },
   metaVo: {
     title: '元素标题',

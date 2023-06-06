@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2023-02-02 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\dict\src\DictItemAdd.vue
+ * @FilePath: \DataFishWeb\src\components\CommonTable\dict\src\DictItemAdd.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -11,11 +11,11 @@
   <ContentWrap :title="t('dictItemVo.title')" :message="t('common.message')">
     <DictItemForm ref="writeRef" :current-row="currentRow" />
 
-    <template #right>
+    <!-- <template #right>
       <ElButton type="primary" :loading="loading" @click="save">
         {{ t('common.save') }}
       </ElButton>
-    </template>
+    </template> -->
   </ContentWrap>
 </template>
 
@@ -57,27 +57,27 @@ const currentRow = ref<Nullable<DictItemType>>(null)
 
 const writeRef = ref<ComponentRef<typeof DictItemForm>>()
 
-const loading = ref(false)
+// const loading = ref(false)
 
-const save = async () => {
-  const write = unref(writeRef)
-  await write?.elFormRef?.validate(async (isValid) => {
-    if (isValid) {
-      loading.value = true
-      const data = (await write?.getFormData()) as DictItemType
-      data.dictId = dictId.value
-      const res = await saveDictItemApi(data)
-        .catch(() => {})
-        .finally(() => {
-          loading.value = false
-        })
-      if (res) {
-        emitter.emit('getList', 'add')
-        push('/system/dict')
-      }
-    }
-  })
-}
+// const save = async () => {
+//   const write = unref(writeRef)
+//   await write?.elFormRef?.validate(async (isValid) => {
+//     if (isValid) {
+//       loading.value = true
+//       const data = (await write?.getFormData()) as DictItemType
+//       data.dictId = dictId.value
+//       const res = await saveDictItemApi(data)
+//         .catch(() => {})
+//         .finally(() => {
+//           loading.value = false
+//         })
+//       if (res) {
+//         emitter.emit('getList', 'add')
+//         push('/system/dict')
+//       }
+//     }
+//   })
+// }
 
 const getDictItemData = async () => {
   const write = unref(writeRef)

@@ -33,6 +33,8 @@ export type ComponentName =
   | 'UploadImgs'
   | 'UploadFile'
   | 'DictSelect'
+  | 'DictRadio'
+  | 'DictRadioButton'
   | 'DictTag'
   | 'InputLinkage'
   | 'NumberLinkage'

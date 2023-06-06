@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\menu\data\Menu.data.ts
+ * @FilePath: \DataFishWeb\src\modules\system\menu\data\Menu.data.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -17,8 +17,27 @@ const { required, isEqual } = useValidator()
 
 import { getMenuCascaderApi } from '@/modules/system/menu/api'
 import { ComponentOptions } from '@/types/components'
+import { FormProps } from '@/api/common/type'
 
 const { t } = i18n.global
+
+export const formProps = {
+  formExpose: {},
+  actionType: ''
+} as FormProps
+
+// 字段联动
+const typeLinkage = (formProps: FormProps) => {
+  // 表单联动测试
+  // 获取表单数据
+  const data = formProps?.formExpose?.formModel as Recordable
+  if (data) {
+    ElMessage.info(data.type)
+    // 目录
+    if (data.type === '0') {
+    }
+  }
+}
 
 const crudSchemas = reactive<CrudSchema[]>([
   {
@@ -45,6 +64,31 @@ const crudSchemas = reactive<CrudSchema[]>([
     label: t('menuVo.code'),
     form: {
       component: 'Input',
+      formItemProps: {
+        rules: [required()]
+      }
+    }
+  },
+  {
+    field: 'type',
+    label: t('menuVo.type'),
+    search: {
+      show: true
+    },
+    table: {
+      component: 'DictTag',
+      componentProps: {
+        dictCode: 'menu_type'
+      }
+    },
+    form: {
+      component: 'DictRadioButton',
+      value: '0',
+      componentProps: {
+        dictCode: 'menu_type',
+        formProps: formProps,
+        linkage: typeLinkage
+      },
       formItemProps: {
         rules: [required()]
       }

@@ -1,7 +1,7 @@
 <!--
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\CommonForm\dict\src\DictItemForm.vue
+ * @FilePath: \DataFishWeb\src\components\CommonForm\dict\src\DictItemForm.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
@@ -34,15 +34,15 @@ interface Params {
   dictCode?: string
 }
 
-const getColorDict = async () => {
-  let params: Params = {}
-  params.dictCode = 'color_type'
-  const res = await getDictItemListApi(params as DictItemQuery)
-  if (res) {
-    schema[4].componentProps!.options = res.data.list
-  }
-}
-getColorDict()
+// const getColorDict = async () => {
+//   let params: Params = {}
+//   params.dictCode = 'color_type'
+//   const res = await getDictItemListApi(params as DictItemQuery)
+//   if (res) {
+//     schema[4].componentProps!.options = res.data.list
+//   }
+// }
+// getColorDict()
 
 const rules = reactive({
   name: [required()],

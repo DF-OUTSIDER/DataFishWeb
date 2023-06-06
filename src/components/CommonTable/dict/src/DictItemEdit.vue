@@ -2,16 +2,16 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2023-02-02 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\dict\src\DictItemEdit.vue
+ * @FilePath: \DataFishWeb\src\components\CommonTable\dict\src\DictItemEdit.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
   <DictItemForm ref="writeRef" :current-row="currentRow" />
-  <ElButton type="primary" :loading="loading" @click="save">
+  <!-- <ElButton type="primary" :loading="loading" @click="save">
     {{ t('common.save') }}
-  </ElButton>
+  </ElButton> -->
 </template>
 
 <script setup lang="ts">
@@ -62,26 +62,26 @@ getDictItemDetail()
 
 const writeRef = ref<ComponentRef<typeof DictItemForm>>()
 
-const loading = ref(false)
+// const loading = ref(false)
 
-const save = async () => {
-  const write = unref(writeRef)
-  await write?.elFormRef?.validate(async (isValid) => {
-    if (isValid) {
-      loading.value = true
-      const data = (await write?.getFormData()) as DictItemType
-      const res = await saveDictItemApi(data)
-        .catch(() => {})
-        .finally(() => {
-          loading.value = false
-        })
-      if (res) {
-        emitter.emit('getList', 'add')
-        push('/system/dict')
-      }
-    }
-  })
-}
+// const save = async () => {
+//   const write = unref(writeRef)
+//   await write?.elFormRef?.validate(async (isValid) => {
+//     if (isValid) {
+//       loading.value = true
+//       const data = (await write?.getFormData()) as DictItemType
+//       const res = await saveDictItemApi(data)
+//         .catch(() => {})
+//         .finally(() => {
+//           loading.value = false
+//         })
+//       if (res) {
+//         emitter.emit('getList', 'add')
+//         push('/system/dict')
+//       }
+//     }
+//   })
+// }
 
 const getDictItemData = async () => {
   const write = unref(writeRef)

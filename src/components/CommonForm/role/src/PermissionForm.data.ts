@@ -13,6 +13,7 @@ import { FormSchema } from '@/types/form'
 import { useValidator } from '@/hooks/web/useValidator'
 import { FormProps } from '@/api/common/type'
 import { ElMessage } from 'element-plus'
+import { formUtil } from '@/utils/form'
 const { required } = useValidator()
 
 const { t } = i18n.global
@@ -22,23 +23,18 @@ export const formProps = {
   actionType: ''
 } as FormProps
 
-const isShowSchema = (data: Recordable, formProps: FormProps, colName: string) => {
-  const colSchema = formProps?.formExpose?.getSchema(colName)
-  if (data.hasAuthoritys[colName]) {
-    colSchema.hidden = false
-  } else {
-    colSchema.hidden = true
-  }
-}
-
 const listLinkage = (formProps: FormProps) => {
   // 获取表单数据
   const data = formProps?.formExpose?.formModel as Recordable
   if (data) {
-    isShowSchema(data, formProps, 'hasList')
-    isShowSchema(data, formProps, 'hasInsert')
-    isShowSchema(data, formProps, 'hasUpdate')
-    isShowSchema(data, formProps, 'hasDelete')
+    // 回调判断
+    formUtil.isShowCell = (colName: string) => {
+      return data.hasAuthoritys[colName]
+    }
+    formUtil.isShowSchema(data, formProps, 'hasList')
+    formUtil.isShowSchema(data, formProps, 'hasInsert')
+    formUtil.isShowSchema(data, formProps, 'hasUpdate')
+    formUtil.isShowSchema(data, formProps, 'hasDelete')
   }
 }
 
@@ -62,7 +58,6 @@ const schema = reactive<FormSchema[]>([
       formProps: formProps,
       linkage: listLinkage
     },
-    value: false,
     colProps: {
       span: 4
     }

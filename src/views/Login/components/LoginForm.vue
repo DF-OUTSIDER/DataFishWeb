@@ -164,17 +164,18 @@ const signIn = async () => {
 const initDict = async () => {
   if (!dictStore.getIsSetDict) {
     // todo 获取所有字典
-    const res = await getDictApi()
-    if (res) {
-      const dictArr = res.data.list
-      dictStore.setDictObj(dictArr)
-      if (Array.isArray(dictArr)) {
-        dictArr.forEach((element) => {
-          dictStore.initDict(element.code)
-        })
+    getDictApi().then((res) => {
+      if (res) {
+        const dictArr = res.data.list
+        dictStore.setDictObj(dictArr)
+        if (Array.isArray(dictArr)) {
+          dictArr.forEach((element) => {
+            dictStore.initDict(element.code)
+          })
+        }
+        dictStore.setIsSetDict(true)
       }
-      dictStore.setIsSetDict(true)
-    }
+    })
   }
 }
 

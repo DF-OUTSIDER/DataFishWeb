@@ -2,7 +2,7 @@
  * @Author: outsider 515885633@qq.com
  * @Date: 2022-11-09 
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\CommonTable\system\src\RolePermission.vue
+ * @FilePath: \DataFishWeb\src\components\CommonTable\system\src\RolePermission.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by outsider 515885633@qq.com, All Rights Reserved. 
@@ -12,7 +12,7 @@
     <Search :schema="allSchemas.searchSchema" @search="setSearchParams" @reset="setSearchParams" />
 
     <div class="mb-10px">
-      <ElButton :loading="updateLoading" type="primary" @click="updatePermissions">{{
+      <ElButton :loading="updateLoading" type="primary" @click="updatePermissions(null, true)">{{
         t('permission.update')
       }}</ElButton>
       <ElButton :loading="delLoading" type="danger" @click="delPremissions(null, true)">
@@ -38,9 +38,12 @@
           {{ t('permission.custom') }}
         </ElButton>
       </template>
-    </Table>
-  </ContentWrap>
+    </Table> </ContentWrap
+  ><!-- <slot name="title">
+          {{ title }}
+        </slot> -->
   <ElDialog
+    title="角色权限"
     v-model="dialogTableVisible"
     v-bind="getBindValue"
     :fullscreen="isFullscreen"
@@ -51,9 +54,6 @@
   >
     <template #header>
       <div class="flex justify-between">
-        <slot name="title">
-          {{ title }}
-        </slot>
         <Icon
           v-if="fullscreen"
           class="mr-18px cursor-pointer is-hover mt-2px z-10"
@@ -85,7 +85,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 
 import { useRouter } from 'vue-router'
 
-import { ref, h, reactive, useAttrs, computed, watch } from 'vue'
+import { ref, h, reactive, useAttrs, computed, watch, unref } from 'vue'
 import { ElButton } from 'element-plus'
 
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
@@ -120,7 +120,7 @@ const fullscreen = ref(true)
 const isFullscreen = ref(false)
 const dialogTableVisible = ref(false)
 
-const dialogPermission = ref()
+const dialogPermission = ref<ComponentRef<typeof PermissionDialog>>()
 
 const toggleFull = () => {
   isFullscreen.value = !unref(isFullscreen)
