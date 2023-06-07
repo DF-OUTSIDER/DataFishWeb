@@ -209,6 +209,13 @@ export default {
     basicInfo: '基本信息',
     changePassword: '修改密码'
   },
+  baseVo: {
+    index: '序号',
+    name: '名称',
+    code: '代码',
+    enable: '启用',
+    action: '操作'
+  },
   userProfileVo: {
     title: '个人信息',
     orgNames: '组织',

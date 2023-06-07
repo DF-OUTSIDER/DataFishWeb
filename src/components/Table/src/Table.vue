@@ -17,6 +17,11 @@ import {
 
 import { setItemComponentSlots, setComponentProps } from '../../Form/src/helper'
 
+const headerStyle = {
+  color: '#606266',
+  backgroundColor: '#f8f8f9'
+}
+
 export default defineComponent({
   name: 'Table',
   props: {
@@ -360,6 +365,7 @@ export default defineComponent({
           // 当选择项发生变化时会触发该事件
           onSelection-change={selectionChange}
           {...unref(getBindValue)}
+          header-cell-style={headerStyle}
         >
           {{
             default: () => rnderTableColumn(),
