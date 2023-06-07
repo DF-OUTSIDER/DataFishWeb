@@ -10,7 +10,7 @@
         v-hasPermi="['file::delete']"
         :loading="delLoading"
         type="danger"
-        @click="delData(null, true)"
+        @click="action(null, 'delete')"
       >
         {{ t('common.del') }}
       </ElButton>
@@ -39,6 +39,16 @@
       </template>
     </Table>
   </ContentWrap>
+  <ElDialog
+    v-model="dialogVisible"
+    :title="dialogTitle"
+    :fullscreen="isFullscreen"
+    :destroy-on-close="true"
+    lock-scroll
+    draggable
+    :close-on-click-modal="false"
+    >123</ElDialog
+  >
 </template>
 
 <script setup lang="ts">
@@ -48,8 +58,8 @@
  * @Description:
  * Copyright (c) 2023 by outsider, All Rights Reserved.
  */
-import { ref } from 'vue'
-import { ElButton, ElDrawer } from 'element-plus'
+import { ref, onMounted } from 'vue'
+import { ElButton, ElDialog } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 import { ContentWrap } from '@/components/ContentWrap'
@@ -61,17 +71,16 @@ import { Table } from '@/components/Table'
 import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
-import { crudSchemas } from '../data/UploadFile.data'
-import { useCrudSchemas } from '@/hooks/web/useCrudSchemas'
+import { allSchemas } from '../data/UploadFile.data'
 
-import { getUploadFileListApi, deleteUploadFileListApi } from '@/modules/control/file/api'
-import { UploadFileType } from '@/modules/control/file/api/types'
+import { getUploadFileListApi, deleteUploadFileListApi } from '@/modules/control/upload_file/api'
+import { UploadFileType } from '@/modules/control/upload_file/api/types'
 
-const { t } = useI18n()
+const { t } = i18n.global
 
 const { push } = useRouter()
 
-const { register, tableObject, methods } = useTable<DictType>({
+const { register, tableObject, methods } = useTable<UploadFileType>({
   getListApi: getUploadFileListApi,
   delListApi: deleteUploadFileListApi,
   response: {
@@ -81,16 +90,14 @@ const { register, tableObject, methods } = useTable<DictType>({
 })
 
 const { getList, setSearchParams } = methods
-const { allSchemas } = useCrudSchemas(crudSchemas)
 
 // 显示字典明细配置
-const drawerVisible = ref(false)
-const dictId = ref(0)
+const dialogVisible = ref(false)
 
 const delLoading = ref(false)
 
+// 删除
 const delData = async (row: UploadFileType | null, multiple: boolean) => {
-  tableObject.currentRow = row
   const { delList, getSelections } = methods
   const selections = await getSelections()
   delLoading.value = true
@@ -108,6 +115,7 @@ const action = (row: UploadFileType, type: string) => {
     case 'create':
       {
         // 激活菜单
+        dialogVisible.value = true
       }
       break
     case 'edit':
@@ -118,6 +126,11 @@ const action = (row: UploadFileType, type: string) => {
     case 'detail':
       {
         // 显示详细
+      }
+      break
+    case 'delete':
+      {
+        delData(null, true)
       }
       break
     default:
