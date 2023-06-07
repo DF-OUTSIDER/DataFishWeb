@@ -28,13 +28,13 @@ const listLinkage = (formProps: FormProps) => {
   const data = formProps?.formExpose?.formModel as Recordable
   if (data) {
     // 回调判断
-    formUtil.isShowCell = (colName: string) => {
-      return data.hasAuthoritys && data.hasAuthoritys[colName]
+    formUtil.isHidden = (colName: string) => {
+      return !(data.hasAuthoritys && data.hasAuthoritys[colName])
     }
     //formUtil.isShowSchema(data, formProps, 'hasList')
-    formUtil.isShowSchema(data, formProps, 'hasInsert')
-    formUtil.isShowSchema(data, formProps, 'hasUpdate')
-    formUtil.isShowSchema(data, formProps, 'hasDelete')
+    formUtil.isHiddenSchema(data, formProps, 'hasInsert')
+    formUtil.isHiddenSchema(data, formProps, 'hasUpdate')
+    formUtil.isHiddenSchema(data, formProps, 'hasDelete')
   }
 }
 

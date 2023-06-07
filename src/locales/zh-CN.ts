@@ -257,13 +257,16 @@ export default {
   metaVo: {
     title: '元素标题',
     icon: '元素图标',
+    hidden: '隐藏',
     alwaysShow: '保持显示',
     noCache: '无缓存',
+    breadcrumb: '面包屑中显示',
+    affix: '标签固定',
     remark: '元素',
     noTagsView: '无标签显示',
     canTo: '路由跳转',
-    hidden: '隐藏',
-    activeMenu: '激活菜单'
+    activeMenu: '激活菜单',
+    followAuth: '跟随路由权限'
   },
   permissionVo: {
     title: '权限管理',

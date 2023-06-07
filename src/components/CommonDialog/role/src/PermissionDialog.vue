@@ -59,11 +59,6 @@ const currentRow = ref<Nullable<PermissionType>>(null)
 const getRolePermissionDetail = async () => {
   const res = await getRolePermissionDetailApi(params)
   if (res) {
-    // if (res.data.hasList) {
-    //   res.data.hasList = 'true'
-    // } else {
-    //   res.data.hasList = 'false'
-    // }
     currentRow.value = res.data
   }
 }

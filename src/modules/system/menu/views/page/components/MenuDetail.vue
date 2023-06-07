@@ -53,6 +53,7 @@ type _RouteMeta = {
   activeMenu?: string
   noTagsView?: boolean
   followAuth?: string
+  // 跳转开关，应该是指向 activeMenu
   canTo?: boolean
 }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\router\index.ts
+ * @FilePath: \DataFishWeb\src\router\index.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -11,7 +11,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 
 import { useI18n } from '@/hooks/web/useI18n'
-import constantRouterMap from './constantRouter'
+import constantRouterMap from '@/router/constantRouter'
 
 // const { t } = useI18n()
 

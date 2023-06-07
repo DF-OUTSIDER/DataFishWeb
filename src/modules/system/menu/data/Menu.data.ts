@@ -7,7 +7,7 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 import { PropType, reactive, watch, h } from 'vue'
-import { ElSwitch, ElMessage, ElMessageBox } from 'element-plus'
+import { ElSwitch } from 'element-plus'
 import { FormSchema } from '@/types/form'
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import i18n from '@/locales'
@@ -18,6 +18,7 @@ const { required, isEqual } = useValidator()
 import { getMenuCascaderApi } from '@/modules/system/menu/api'
 import { ComponentOptions } from '@/types/components'
 import { FormProps } from '@/api/common/type'
+import { formUtil } from '@/utils/form'
 
 const { t } = i18n.global
 
@@ -32,125 +33,57 @@ const typeLinkage = (formProps: FormProps) => {
   // 获取表单数据
   const data = formProps?.formExpose?.formModel as Recordable
   if (data) {
-    ElMessage.info(data.type)
-    // 目录
     if (data.type === '0') {
+      // 目录
+      // 显示
+      formUtil.isShowSchema(data, formProps, 'component')
+      formUtil.isShowSchema(data, formProps, 'meta.alwaysShow')
+      formUtil.isShowSchema(data, formProps, 'redirect')
+      // 隐藏
+      formUtil.isHiddenSchema(data, formProps, 'meta.noCache')
+      formUtil.isHiddenSchema(data, formProps, 'meta.noTagsView')
+      formUtil.isHiddenSchema(data, formProps, 'meta.hidden')
+      formUtil.isHiddenSchema(data, formProps, 'meta.activeMenu')
+      formUtil.isHiddenSchema(data, formProps, 'meta.canTo')
+    } else if (data.type === '1') {
+      // 菜单
+      // 显示
+      formUtil.isShowSchema(data, formProps, 'component')
+      formUtil.isShowSchema(data, formProps, 'meta.alwaysShow')
+      formUtil.isShowSchema(data, formProps, 'meta.noCache')
+      formUtil.isShowSchema(data, formProps, 'meta.noTagsView')
+      formUtil.isShowSchema(data, formProps, 'meta.hidden')
+      // 隐藏
+      formUtil.isHiddenSchema(data, formProps, 'redirect')
+      formUtil.isHiddenSchema(data, formProps, 'meta.activeMenu')
+      formUtil.isHiddenSchema(data, formProps, 'meta.canTo')
+    } else if (data.type === '2') {
+      // 按钮
+      // 显示
+      formUtil.isShowSchema(data, formProps, 'component')
+      formUtil.isShowSchema(data, formProps, 'meta.alwaysShow')
+      formUtil.isShowSchema(data, formProps, 'meta.noCache')
+      formUtil.isShowSchema(data, formProps, 'meta.noTagsView')
+      formUtil.isShowSchema(data, formProps, 'meta.hidden')
+      formUtil.isShowSchema(data, formProps, 'meta.activeMenu')
+      formUtil.isShowSchema(data, formProps, 'meta.canTo')
+      // 隐藏
+      formUtil.isHiddenSchema(data, formProps, 'redirect')
+    } else if (data.type === '3') {
+      formUtil.isHiddenSchema(data, formProps, 'component')
+      // 隐藏
+      formUtil.isHiddenSchema(data, formProps, 'redirect')
+      formUtil.isHiddenSchema(data, formProps, 'meta.noCache')
+      formUtil.isHiddenSchema(data, formProps, 'meta.noTagsView')
+      formUtil.isHiddenSchema(data, formProps, 'meta.hidden')
+      formUtil.isHiddenSchema(data, formProps, 'meta.activeMenu')
+      formUtil.isHiddenSchema(data, formProps, 'meta.canTo')
+      formUtil.isHiddenSchema(data, formProps, 'meta.alwaysShow')
     }
   }
 }
 
-const crudSchemas = reactive<CrudSchema[]>([
-  {
-    field: 'id',
-    label: t('menuVo.index'),
-    type: 'index',
-    form: { show: false }
-  },
-  {
-    field: 'name',
-    label: t('menuVo.name'),
-    search: {
-      show: true
-    },
-    form: {
-      component: 'Input',
-      formItemProps: {
-        rules: [required()]
-      }
-    }
-  },
-  {
-    field: 'code',
-    label: t('menuVo.code'),
-    form: {
-      component: 'Input',
-      formItemProps: {
-        rules: [required()]
-      }
-    }
-  },
-  {
-    field: 'type',
-    label: t('menuVo.type'),
-    search: {
-      show: true
-    },
-    table: {
-      component: 'DictTag',
-      componentProps: {
-        dictCode: 'menu_type'
-      }
-    },
-    form: {
-      component: 'DictRadioButton',
-      value: '0',
-      componentProps: {
-        dictCode: 'menu_type',
-        formProps: formProps,
-        linkage: typeLinkage
-      },
-      formItemProps: {
-        rules: [required()]
-      }
-    }
-  },
-  {
-    field: 'sort',
-    label: t('menuVo.sort'),
-    form: {
-      component: 'InputNumber',
-      value: 0,
-      formItemProps: {
-        rules: [required()]
-      }
-    }
-  },
-  {
-    field: 'path',
-    label: t('menuVo.path'),
-    form: {
-      component: 'Input',
-      formItemProps: {
-        rules: [required()]
-      }
-    }
-  },
-  {
-    field: 'component',
-    label: t('menuVo.component'),
-    form: {
-      component: 'Input',
-      formItemProps: {
-        rules: [required()]
-      }
-    }
-  },
-  {
-    field: 'redirect',
-    label: t('menuVo.redirect'),
-    table: { show: false },
-    form: {
-      component: 'Input'
-    }
-  },
-  {
-    field: 'enable',
-    label: t('menuVo.enable'),
-    formatter: (row: AppCustomRouteRecordRaw) => {
-      return h(ElSwitch, { modelValue: row.enable, disabled: true })
-    },
-    width: 80,
-    form: {
-      component: 'Switch',
-      value: true
-    }
-  },
-  {
-    field: 'action',
-    label: t('tableDemo.action'),
-    form: { show: false }
-  }
-])
+const crudSchemas = reactive<CrudSchema[]>([])
 
 const menuCascader = async () => {
   let data: ComponentOptions[] = []
@@ -163,6 +96,116 @@ const menuCascader = async () => {
 
 menuCascader().then((data) => {
   crudSchemas.push(
+    {
+      field: 'id',
+      label: t('menuVo.index'),
+      type: 'index',
+      form: { show: false }
+    },
+    {
+      field: 'name',
+      label: t('menuVo.name'),
+      search: {
+        show: true
+      },
+      form: {
+        component: 'Input',
+        formItemProps: {
+          rules: [required()]
+        }
+      }
+    },
+    {
+      field: 'code',
+      label: t('menuVo.code'),
+      form: {
+        component: 'Input',
+        formItemProps: {
+          rules: [required()]
+        }
+      }
+    },
+    {
+      field: 'type',
+      label: t('menuVo.type'),
+      search: {
+        show: true
+      },
+      table: {
+        component: 'DictTag',
+        componentProps: {
+          dictCode: 'menu_type'
+        }
+      },
+      form: {
+        component: 'DictRadioButton',
+        componentProps: {
+          dictCode: 'menu_type',
+          formProps: formProps,
+          linkage: typeLinkage
+        },
+        formItemProps: {
+          rules: [required()]
+        }
+      }
+    },
+    {
+      field: 'sort',
+      label: t('menuVo.sort'),
+      form: {
+        component: 'InputNumber',
+        value: 0,
+        formItemProps: {
+          rules: [required()]
+        }
+      }
+    },
+    {
+      field: 'path',
+      label: t('menuVo.path'),
+      form: {
+        component: 'Input',
+        formItemProps: {
+          rules: [required()]
+        }
+      }
+    },
+    {
+      field: 'component',
+      label: t('menuVo.component'),
+      form: {
+        component: 'Input',
+        formItemProps: {
+          rules: [required()]
+        }
+      }
+    },
+    {
+      field: 'redirect',
+      label: t('menuVo.redirect'),
+      table: { show: false },
+      form: {
+        component: 'Input'
+      }
+    },
+    {
+      field: 'enable',
+      label: t('menuVo.enable'),
+      formatter: (row: AppCustomRouteRecordRaw) => {
+        return h(ElSwitch, { modelValue: row.enable, disabled: true })
+      },
+      width: 80,
+      form: {
+        component: 'Switch',
+        value: true
+      }
+    },
+    {
+      field: 'action',
+      label: t('tableDemo.action'),
+      width: 230,
+      form: { show: false }
+    },
     {
       field: 'parents',
       label: t('menuVo.parent'),
@@ -217,7 +260,7 @@ menuCascader().then((data) => {
     },
     {
       field: 'meta.alwaysShow',
-      label: t('metaVo.always'),
+      label: t('metaVo.alwaysShow'),
       table: { show: false },
       form: {
         component: 'Switch',
@@ -236,6 +279,15 @@ menuCascader().then((data) => {
         value: false
       }
     },
+    // {
+    //   field: 'meta.affix',
+    //   label: t('metaVo.affix'),
+    //   table: { show: false },
+    //   form: {
+    //     component: 'Switch',
+    //     value: false
+    //   }
+    // },
     {
       field: 'meta.hidden',
       label: t('metaVo.hidden'),

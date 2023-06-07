@@ -28,14 +28,13 @@ import { PropType, ref, watch, unref } from 'vue'
 const props = defineProps({
   // 字典码
   dictCode: propTypes.string.def(''),
-  // 字典数据类型 string | number | boolean
   valueType: {
     type: String as PropType<'string' | 'number' | 'boolean'>,
     default: 'string'
   },
   modelValue: {
-    type: [String, Number, Boolean] as PropType<string | number | boolean>,
-    default: null
+    type: String as PropType<string>,
+    default: '-1'
   },
   formProps: {
     type: Object as PropType<any>,

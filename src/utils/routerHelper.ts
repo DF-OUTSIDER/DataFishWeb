@@ -98,11 +98,12 @@ export const generateRoutesFn2 = (routes: AppCustomRouteRecordRaw[]): AppRouteRe
   const res: AppRouteRecordRaw[] = []
 
   for (const route of routes) {
-    const data: AppRouteRecordRaw = {
+    let data: AppRouteRecordRaw = {
       path: route.path,
       name: route.name,
       redirect: route.redirect,
-      meta: route.meta
+      meta: route.meta,
+      id: 0
     }
     if (route.component) {
       const comModule = modules[`../${route.component}.vue`] || modules[`../${route.component}.tsx`]
@@ -113,6 +114,19 @@ export const generateRoutesFn2 = (routes: AppCustomRouteRecordRaw[]): AppRouteRe
         // 动态加载路由文件，可根据实际情况进行自定义逻辑
         data.component =
           component === '#' ? Layout : component.includes('##') ? getParentLayout() : comModule
+      }
+    } else {
+      // 外链
+      if (isUrl(route.path)) {
+        data = {
+          path: '/external-link',
+          component: Layout,
+          meta: {
+            name: route.name
+          },
+          children: [data]
+        } as AppRouteRecordRaw
+        // 菜单
       }
     }
     // recursive child routes
