@@ -29,7 +29,7 @@ import { propTypes } from '@/utils/propTypes'
 
 import { PermissionForm } from '@/components/CommonForm/role'
 import { getRolePermissionDetailApi } from '@/modules/system/role/api'
-import { PermissionType } from '@/api/permission/types'
+import { PermissionType } from '@/modules/system/permission/api/types'
 
 const props = defineProps({
   roleId: propTypes.number.def(0),
@@ -59,6 +59,11 @@ const currentRow = ref<Nullable<PermissionType>>(null)
 const getRolePermissionDetail = async () => {
   const res = await getRolePermissionDetailApi(params)
   if (res) {
+    // if (res.data.hasList) {
+    //   res.data.hasList = 'true'
+    // } else {
+    //   res.data.hasList = 'false'
+    // }
     currentRow.value = res.data
   }
 }

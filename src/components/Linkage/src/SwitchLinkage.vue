@@ -3,12 +3,11 @@
  * @LastEditors: outsider 515885633@qq.com
  * @FilePath: \DataFishWeb\src\components\Linkage\src\SwitchLinkage.vue
  * @Description: 
- * 
+ * When modelValue is Boolean, field linkage is affected.
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-  <ElSwitch v-model="valueRef" active-value="100"
-      inactive-value="0" />
+  <ElSwitch v-model="valueRef" active-value="true" inactive-value="false" />
 </template>
 
 <script setup lang="ts">
@@ -19,8 +18,8 @@ import { FormProps } from '@/api/common/type'
 
 const props = defineProps({
   modelValue: {
-    type: Boolean as PropType<boolean>,
-    default: null
+    type: String as PropType<string>,
+    default: ''
   },
   formProps: {
     type: Object as PropType<FormProps>,
@@ -43,19 +42,19 @@ const valueRef = ref(props.modelValue)
 // 编辑默认值
 watch(
   () => props.modelValue,
-  (val: boolean) => {
-    if (props.formProps) {
-      // 数据联动
-      props.linkage(props.formProps)
-    }
+  (val: string) => {
+    // if (props.formProps) {
+    //   // 数据联动
+    //   props.linkage(props.formProps)
+    // }
     if (val === unref(valueRef)) return
     valueRef.value = val
-  },
-  {
-    deep: true
-    // ,
-    // immediate: true
   }
+  //{
+  //deep: true
+  // ,
+  // immediate: true
+  //}
 )
 
 // 加载完就执行
@@ -69,7 +68,7 @@ watch(
 // 监听, 必须添加，否则校验无法通过
 watch(
   () => valueRef.value,
-  (val: boolean) => {
+  (val: string) => {
     emit('update:modelValue', val)
 
     if (props.formProps) {
