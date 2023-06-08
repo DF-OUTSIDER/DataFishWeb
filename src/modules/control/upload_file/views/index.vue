@@ -39,16 +39,27 @@
       </template>
     </Table>
   </ContentWrap>
-  <ElDialog
-    v-model="dialogVisible"
-    :title="dialogTitle"
-    :fullscreen="isFullscreen"
-    :destroy-on-close="true"
-    lock-scroll
-    draggable
-    :close-on-click-modal="false"
-    >123</ElDialog
-  >
+  <Dialog v-model="dialogVisible" :title="dialogTitle">
+    <Form
+      v-if="['create', 'edit'].includes(actionType)"
+      ref="formRef"
+      :schema="allSchemas.formSchema"
+    />
+    <Descriptions
+      v-if="actionType === 'detail'"
+      :schema="allSchemas.detailSchema"
+      :data="currentRow || {}"
+    />
+    <template #footer>
+      <ElButton
+        type="primary"
+        v-if="['create', 'edit'].includes(actionType)"
+        @click="submitForm()"
+        >{{ t('dialogDemo.submit') }}</ElButton
+      >
+      <ElButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</ElButton>
+    </template>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -58,8 +69,8 @@
  * @Description:
  * Copyright (c) 2023 by outsider, All Rights Reserved.
  */
-import { ref, onMounted } from 'vue'
-import { ElButton, ElDialog } from 'element-plus'
+import { ref, onMounted, toRef, unref } from 'vue'
+import { ElButton, ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 import { ContentWrap } from '@/components/ContentWrap'
@@ -67,18 +78,30 @@ import { Search } from '@/components/Search'
 import i18n from '@/locales'
 
 import { Table } from '@/components/Table'
+import { Dialog } from '@/components/Dialog'
+import { Form } from '@/components/Form'
+import { Descriptions } from '@/components/Descriptions'
 
 import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
-import { allSchemas } from '../data/UploadFile.data'
+import { allSchemas, formProps } from '../data/UploadFile.data'
 
-import { getUploadFileListApi, deleteUploadFileListApi } from '@/modules/control/upload_file/api'
+import {
+  getUploadFileDetailApi,
+  getUploadFileListApi,
+  deleteUploadFileListApi,
+  saveUploadFileApi
+} from '@/modules/control/upload_file/api'
 import { UploadFileType } from '@/modules/control/upload_file/api/types'
 
 const { t } = i18n.global
 
 const { push } = useRouter()
+
+const formRef = toRef(formProps, 'formExpose')
+// 用于显示详细信息
+const currentRow = ref<Nullable<UploadFileType>>(null)
 
 const { register, tableObject, methods } = useTable<UploadFileType>({
   getListApi: getUploadFileListApi,
@@ -91,13 +114,43 @@ const { register, tableObject, methods } = useTable<UploadFileType>({
 
 const { getList, setSearchParams } = methods
 
-// 显示字典明细配置
+// 对话框相关
+const dialogTitle = ref('edit') // 弹出层标题
 const dialogVisible = ref(false)
-
 const delLoading = ref(false)
+const actionType = ref('') // 操作按钮的类型
+
+// 设置标题
+const setDialogTile = (type: string) => {
+  dialogTitle.value = t('action.' + type)
+  actionType.value = type
+  dialogVisible.value = true
+}
+
+// 修改操作
+const editAction = async (rowId: number) => {
+  setDialogTile('edit')
+  // 设置数据
+  const res = await getUploadFileDetailApi(rowId)
+  //await nextTick()
+  if (res.data) {
+    unref(formRef)?.setValues(res.data)
+  }
+}
+
+// 详细信息
+const detailAction = async (rowId: number) => {
+  setDialogTile('detail')
+  // 设置数据
+  const res = await getUploadFileDetailApi(rowId)
+  if (res.data) {
+    currentRow.value = res.data
+  }
+}
 
 // 删除
-const delData = async (row: UploadFileType | null, multiple: boolean) => {
+const deleteAction = async (row: UploadFileType | null, multiple: boolean) => {
+  setDialogTile('delete')
   const { delList, getSelections } = methods
   const selections = await getSelections()
   delLoading.value = true
@@ -113,29 +166,44 @@ const delData = async (row: UploadFileType | null, multiple: boolean) => {
 const action = (row: UploadFileType, type: string) => {
   switch (type) {
     case 'create':
-      {
-        // 激活菜单
-        dialogVisible.value = true
-      }
+      setDialogTile(type)
       break
     case 'edit':
-      {
-        // 激活菜单
-      }
+      editAction(row.id)
       break
     case 'detail':
-      {
-        // 显示详细
-      }
+      detailAction(row.id)
       break
     case 'delete':
-      {
-        delData(null, true)
-      }
+      deleteAction(null, true)
       break
     default:
       break
   }
+}
+
+// 提交新增/修改的表单
+const submitForm = async () => {
+  const elForm = unref(formRef)?.getElFormRef()
+  if (!elForm) return
+  elForm.validate(async (valid) => {
+    if (valid) {
+      // 提交请求
+      try {
+        const data = unref(formRef)?.formModel as UploadFileType
+        if (actionType.value === 'create') {
+          await saveUploadFileApi(data)
+          ElMessage.success(t('common.createSuccess'))
+        } else if (actionType.value === 'edit') {
+          await saveUploadFileApi(data)
+          ElMessage.success(t('common.editSuccess'))
+        }
+        dialogVisible.value = false
+      } finally {
+        await getList()
+      }
+    }
+  })
 }
 
 // ### 初始化

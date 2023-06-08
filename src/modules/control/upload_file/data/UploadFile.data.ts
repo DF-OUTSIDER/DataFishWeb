@@ -13,11 +13,17 @@ import i18n from '@/locales'
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
 import { useValidator } from '@/hooks/web/useValidator'
 
+import { FormProps } from '@/api/common/type'
 import { UploadFileType } from '../api/types'
 
 const { required } = useValidator()
 
 const { t } = i18n.global
+
+export const formProps = {
+  formExpose: {},
+  actionType: ''
+} as FormProps
 
 const crudSchemas = reactive<CrudSchema[]>([
   {
@@ -84,7 +90,8 @@ const crudSchemas = reactive<CrudSchema[]>([
     field: 'action',
     width: '360px',
     label: t('baseVo.action'),
-    form: { show: false }
+    form: { show: false },
+    detail: { show: false }
   }
 ])
 

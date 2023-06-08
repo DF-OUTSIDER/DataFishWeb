@@ -1,5 +1,7 @@
 export default {
   common: {
+    createSuccess: '新增成功',
+    editSuccess: '编辑成功',
     add: '新增',
     inputText: '请输入',
     selectText: '请选择',
@@ -200,7 +202,11 @@ export default {
     organization: '组织',
     permission: '权限',
     diagram: '图示',
-    dictConfig: '字典配置'
+    dictConfig: '字典配置',
+    create: '新增',
+    edit: '编辑',
+    detail: '信息',
+    delete: '删除'
   },
   userInfo: {
     title: '个人信息管理',

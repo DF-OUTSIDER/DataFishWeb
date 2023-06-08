@@ -1,62 +1,3 @@
-<script setup lang="ts">
-import { ElDialog, ElScrollbar } from 'element-plus'
-import { propTypes } from '@/utils/propTypes'
-import { computed, useAttrs, ref, unref, useSlots, watch, nextTick } from 'vue'
-import { isNumber } from '@/utils/is'
-
-const slots = useSlots()
-
-const props = defineProps({
-  modelValue: propTypes.bool.def(false),
-  title: propTypes.string.def('Dialog'),
-  fullscreen: propTypes.bool.def(true),
-  maxHeight: propTypes.oneOfType([String, Number]).def('500px')
-})
-
-const getBindValue = computed(() => {
-  const delArr: string[] = ['fullscreen', 'title', 'maxHeight']
-  const attrs = useAttrs()
-  const obj = { ...attrs, ...props }
-  for (const key in obj) {
-    if (delArr.indexOf(key) !== -1) {
-      delete obj[key]
-    }
-  }
-  return obj
-})
-
-const isFullscreen = ref(false)
-
-const toggleFull = () => {
-  isFullscreen.value = !unref(isFullscreen)
-}
-
-const dialogHeight = ref(isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight)
-
-watch(
-  () => isFullscreen.value,
-  async (val: boolean) => {
-    await nextTick()
-    if (val) {
-      const windowHeight = document.documentElement.offsetHeight
-      dialogHeight.value = `${windowHeight - 55 - 60 - (slots.footer ? 63 : 0)}px`
-    } else {
-      dialogHeight.value = isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight
-    }
-  },
-  {
-    immediate: true
-  }
-)
-
-const dialogStyle = computed(() => {
-  console.log(unref(dialogHeight))
-  return {
-    height: unref(dialogHeight)
-  }
-})
-</script>
-
 <template>
   <ElDialog
     v-bind="getBindValue"
@@ -65,6 +6,7 @@ const dialogStyle = computed(() => {
     lock-scroll
     draggable
     :close-on-click-modal="false"
+    :style="dialogStyle"
   >
     <template #header>
       <div class="flex justify-between">
@@ -81,7 +23,7 @@ const dialogStyle = computed(() => {
       </div>
     </template>
 
-    <ElScrollbar :style="dialogStyle">
+    <ElScrollbar :style="scrollbarStyle">
       <slot></slot>
     </ElScrollbar>
 
@@ -91,10 +33,84 @@ const dialogStyle = computed(() => {
   </ElDialog>
 </template>
 
+<script setup lang="ts">
+import { ElDialog, ElScrollbar } from 'element-plus'
+import { propTypes } from '@/utils/propTypes'
+import { computed, useAttrs, ref, unref, useSlots, watch, nextTick } from 'vue'
+import { isNumber } from '@/utils/is'
+
+const slots = useSlots()
+
+const props = defineProps({
+  modelValue: propTypes.bool.def(false),
+  title: propTypes.string.def('Dialog'),
+  fullscreen: propTypes.bool.def(true),
+  width: propTypes.oneOfType([String, Number]).def('46%'),
+  minHeight: propTypes.oneOfType([String, Number]).def('300px'),
+  maxHeight: propTypes.oneOfType([String, Number]).def('1080px')
+})
+
+const getBindValue = computed(() => {
+  const delArr: string[] = ['fullscreen', 'title', 'minHeight']
+  const attrs = useAttrs()
+  const obj = { ...attrs, ...props }
+  for (const key in obj) {
+    if (delArr.indexOf(key) !== -1) {
+      delete obj[key]
+    }
+  }
+  return obj
+})
+
+const isFullscreen = ref(false)
+
+const toggleFull = () => {
+  isFullscreen.value = !unref(isFullscreen)
+}
+
+const dialogWidth = ref(isNumber(props.width) ? `${props.width}%` : props.width)
+const dialogMinHeight = ref(isNumber(props.minHeight) ? `${props.minHeight}px` : props.minHeight)
+//const dialogMaxHeight = ref(isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight)
+
+watch(
+  () => isFullscreen.value,
+  async (val: boolean) => {
+    await nextTick()
+    if (val) {
+      const windowHeight = document.documentElement.offsetHeight
+      dialogMinHeight.value = `${windowHeight - 55 - 60 - (slots.footer ? 63 : 0)}px`
+      dialogWidth.value = '100%'
+    } else {
+      dialogMinHeight.value = isNumber(props.minHeight) ? `${props.minHeight}px` : props.minHeight
+      dialogWidth.value = isNumber(props.width) ? `${props.width}%` : props.width
+    }
+  },
+  {
+    immediate: true
+  }
+)
+
+const dialogStyle = computed(() => {
+  return {
+    width: unref(dialogWidth)
+  }
+})
+
+const scrollbarStyle = computed(() => {
+  return {
+    minHeight: unref(dialogMinHeight)
+    //,
+    //maxHeight: unref(dialogMaxHeight)
+  }
+})
+</script>
+
 <style lang="less">
 .@{elNamespace}-dialog__header {
   margin-right: 0 !important;
   border-bottom: 1px solid var(--tags-view-border-color);
+  color: #606266;
+  background-color: #f8f8f9;
 }
 
 .@{elNamespace}-dialog__footer {

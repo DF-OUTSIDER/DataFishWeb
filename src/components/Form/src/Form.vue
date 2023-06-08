@@ -73,13 +73,7 @@ export default defineComponent({
 
     // 对表单赋值
     const setValues = (data: Recordable = {}) => {
-      //let hasField = Reflect.has(data, 'meta')
       formModel.value = Object.assign(unref(formModel), data)
-      // if (!hasField) {
-      //   formModel.value = Object.assign(unref(formModel), data)
-      // } else {
-      //   formModel.value = Object.assign(unref(formModel), data)
-      // }
     }
 
     const setProps = (props: FormProps = {}) => {
@@ -247,7 +241,7 @@ export default defineComponent({
                     {...setComponentProps(item)}
                     style={
                       item?.component === 'Input'
-                        ? { width: '189.5px', ...item.componentProps?.style }
+                        ? { ...item.componentProps?.style }
                         : { ...item.componentProps?.style }
                     }
                     {...(notRenderOptions.includes(item?.component as string) &&
@@ -284,7 +278,7 @@ export default defineComponent({
                     {...setComponentProps(item)}
                     style={
                       item?.component === 'Input'
-                        ? { width: '189.5px', ...item.componentProps?.style }
+                        ? { ...item.componentProps?.style }
                         : { ...item.componentProps?.style }
                     }
                     {...(notRenderOptions.includes(item?.component as string) &&
