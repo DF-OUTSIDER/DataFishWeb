@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\modules\system\dict\data\Dict.data.ts
+ * @FilePath: \DataFishWeb\src\modules\system\dict\data\Dict.data.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -64,7 +64,8 @@ const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'action',
     width: '360px',
-    label: t('tableDemo.action')
+    label: t('tableDemo.action'),
+    form: { show: false }
   }
 ])
 

@@ -55,17 +55,11 @@ const getBindItemValue = (item: DescriptionsSchema) => {
 }
 
 const getFieldValue = (field: string, _data: any) => {
-  //const _meta = _data.value['meta']
   let fields = field.split('.')
   let hasField = Reflect.has(_data, fields[0])
   if (hasField) {
     return _data[fields[0]][fields[1]]
   }
-
-  // let hasField = Reflect.has(_data, '\.')
-  // if (hasField) {
-
-  // }
   return _data
 }
 

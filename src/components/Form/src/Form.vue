@@ -220,7 +220,8 @@ export default defineComponent({
         }
       }
       let field: string = item.field
-      if (!field.startsWith('meta')) {
+      let pos = field.indexOf('.')
+      if (pos == -1 || pos == 0) {
         return (
           <ElFormItem {...(item.formItemProps || {})} prop={item.field} label={item.label || ''}>
             {{
@@ -273,7 +274,7 @@ export default defineComponent({
                   getSlot(slots, field, formModel.value)
                 ) : (
                   <Com
-                    vModel={formModel.value['meta'][fields[1]]}
+                    vModel={formModel.value[fields[0]][fields[1]]}
                     {...(autoSetPlaceholder && setTextPlaceholder(item))}
                     {...setComponentProps(item)}
                     style={

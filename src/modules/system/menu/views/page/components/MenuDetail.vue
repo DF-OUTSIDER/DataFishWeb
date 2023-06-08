@@ -36,7 +36,7 @@
 import { h, PropType, computed, ref, reactive } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 
-import { ElTag, ElSelect, ElOption, ElSwitch } from 'element-plus'
+import { ElSwitch } from 'element-plus'
 import { Descriptions } from '@/components/Descriptions'
 import { DescriptionsSchema } from '@/types/descriptions'
 
@@ -132,31 +132,26 @@ const _noTagsView = ref(false)
 const _hidden = ref(false)
 const _canTo = ref(false)
 
-const hasMeta = (row: any) => {
-  let hasField = Reflect.has(row, 'meta')
-  return hasField
-}
-
 const getMetaValue = (field: string, row: any) => {
   let hasField = Reflect.has(row, 'meta')
   if (hasField) {
     let meta: _RouteMeta = row['meta']
     switch (field) {
       case 'noCache':
-        _noCache.value = meta[field]
+        _noCache.value = meta[field] as boolean
         break
       case 'noTagsView':
-        _alwaysShow.value = meta[field]
+        _alwaysShow.value = meta[field] as boolean
 
         break
       case 'alwaysShow':
-        _noTagsView.value = meta[field]
+        _noTagsView.value = meta[field] as boolean
         break
       case 'hidden':
-        _hidden.value = meta[field]
+        _hidden.value = meta[field] as boolean
         break
       case 'canTo':
-        _canTo.value = meta[field]
+        _canTo.value = meta[field] as boolean
         break
       default:
         break

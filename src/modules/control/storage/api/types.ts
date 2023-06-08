@@ -7,6 +7,15 @@
  */
 import { BaseType } from '@/api/common/type'
 
+type ConfigType = {
+  host: string
+  port: number
+  username: string
+  password: string
+  rootPath: string
+}
+
 export type StorageConfigType = {
-  config: string
+  type: string
+  config: ConfigType
 } & BaseType

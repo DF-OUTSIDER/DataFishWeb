@@ -123,20 +123,21 @@ export const initModel = (schema: FormSchema[], formModel: Recordable) => {
     } else if (v.component && v.component !== 'Divider') {
       // 判断是否菜单 meta 属性
       const field: string = v.field
-      if (!field.startsWith('meta.')) {
+      const pos = field.indexOf('.')
+      if (pos == -1 || pos == 0) {
         // 如果先前已经有值存在，则不进行重新赋值，而是采用现有的值
         const hasField = Reflect.has(model, v.field)
         model[v.field] = hasField ? model[v.field] : v.value !== void 0 ? v.value : ''
       } else {
-        // meta 属性
+        // 子属性
         const fields = v.field.split('.')
-        let hasField = Reflect.has(model, 'meta')
+        let hasField = Reflect.has(model, fields[0])
         if (!hasField) {
-          model['meta'] = {}
+          model[fields[0]] = {}
         }
-        hasField = Reflect.has(model['meta'], fields[1])
-        model['meta'][fields[1]] = hasField
-          ? model['meta'][fields[1]]
+        hasField = Reflect.has(model[fields[0]], fields[1])
+        model[fields[0]][fields[1]] = hasField
+          ? model[fields[0]][fields[1]]
           : v.value !== void 0
           ? v.value
           : ''
