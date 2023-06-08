@@ -67,7 +67,7 @@ import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useRouter } from 'vue-router'
 
-import { ref, h, reactive } from 'vue'
+import { ref, h, reactive, onMounted } from 'vue'
 import { ElButton, ElDrawer, ElSwitch } from 'element-plus'
 
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
@@ -90,7 +90,6 @@ const { register, tableObject, methods } = useTable<AppCustomRouteRecordRaw>({
 })
 
 const { getList, setSearchParams } = methods
-getList()
 
 const { allSchemas } = useCrudSchemas(crudSchemas)
 
@@ -126,6 +125,11 @@ const action = (row: AppCustomRouteRecordRaw, type: string) => {
     push(`/system/menu/menu-${type}?id=${row.id}`)
   }
 }
+
+// ### 初始化
+onMounted(async () => {
+  await getList()
+})
 
 // 暴露子组件可调用的方法
 useEmitt({
