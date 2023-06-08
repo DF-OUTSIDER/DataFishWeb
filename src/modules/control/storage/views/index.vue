@@ -1,13 +1,13 @@
 <template>
-  <ContentWrap title="文件配置" :message="t('common.message')">
+  <ContentWrap title="存储配置" :message="t('common.message')">
     <Search :schema="allSchemas.searchSchema" @search="setSearchParams" @reset="setSearchParams" />
 
     <div class="mb-10px">
-      <ElButton v-hasPermi="['file::insert']" type="primary" @click="action(null, 'create')">{{
+      <ElButton v-hasPermi="['storage::insert']" type="primary" @click="action(null, 'create')">{{
         t('common.add')
       }}</ElButton>
       <ElButton
-        v-hasPermi="['file::delete']"
+        v-hasPermi="['storage::delete']"
         :loading="delLoading"
         type="danger"
         @click="action(null, 'delete')"
@@ -29,7 +29,7 @@
       @register="register"
     >
       <template #action="{ row }">
-        <ElButton v-hasPermi="['file::insert']" type="primary" @click="action(row, 'edit')">
+        <ElButton v-hasPermi="['storage::insert']" type="primary" @click="action(row, 'edit')">
           {{ t('common.edit') }}
         </ElButton>
 
@@ -48,7 +48,7 @@
     <Descriptions
       v-if="actionType === 'detail'"
       :schema="allSchemas.detailSchema"
-      :data="currentRow || {}"
+      :data="detailVo || {}"
     />
     <template #footer>
       <ElButton
@@ -65,13 +65,13 @@
 <script setup lang="ts">
 /*
  * @Author: outsider
- * @Date: 2023-06-07
+ * @Date: 2023-06-08
  * @Description:
+ *
  * Copyright (c) 2023 by outsider, All Rights Reserved.
  */
 import { ref, onMounted, toRef, unref } from 'vue'
 import { ElButton, ElMessage } from 'element-plus'
-//import { useRouter } from 'vue-router'
 
 import { ContentWrap } from '@/components/ContentWrap'
 import { Search } from '@/components/Search'
@@ -85,27 +85,25 @@ import { Descriptions } from '@/components/Descriptions'
 import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
-import { allSchemas, formProps } from '../data/UploadFile.data'
+import { allSchemas, formProps } from '../data/StorageConfig.data'
 
 import {
-  getUploadFileDetailApi,
-  getUploadFileListApi,
-  deleteUploadFileListApi,
-  saveUploadFileApi
-} from '@/modules/control/upload_file/api'
-import { UploadFileType } from '@/modules/control/upload_file/api/types'
+  getStorageConfigDetailApi,
+  getStorageConfigListApi,
+  deleteStorageConfigListApi,
+  saveStorageConfigApi
+} from '@/modules/control/storage/api'
+import { StorageConfigType } from '@/modules/control/storage/api/types'
 
 const { t } = i18n.global
 
-//const { push } = useRouter()
-
 const formRef = toRef(formProps, 'formExpose')
 // 用于显示详细信息
-const currentRow = ref<Nullable<UploadFileType>>(null)
+const detailVo = ref<Nullable<StorageConfigType>>(null)
 
-const { register, tableObject, methods } = useTable<UploadFileType>({
-  getListApi: getUploadFileListApi,
-  delListApi: deleteUploadFileListApi,
+const { register, tableObject, methods } = useTable<StorageConfigType>({
+  getListApi: getStorageConfigListApi,
+  delListApi: deleteStorageConfigListApi,
   response: {
     list: 'list',
     total: 'total'
@@ -131,7 +129,7 @@ const setDialogTile = (type: string) => {
 const editAction = async (rowId: number) => {
   setDialogTile('edit')
   // 设置数据
-  const res = await getUploadFileDetailApi(rowId)
+  const res = await getStorageConfigDetailApi(rowId)
   //await nextTick()
   if (res.data) {
     unref(formRef)?.setValues(res.data)
@@ -142,9 +140,9 @@ const editAction = async (rowId: number) => {
 const detailAction = async (rowId: number) => {
   setDialogTile('detail')
   // 设置数据
-  const res = await getUploadFileDetailApi(rowId)
+  const res = await getStorageConfigDetailApi(rowId)
   if (res.data) {
-    currentRow.value = res.data
+    detailVo.value = res.data
   }
 }
 
@@ -163,7 +161,7 @@ const deleteAction = async (multiple: boolean) => {
 }
 
 // 操作列
-const action = (row: UploadFileType | null, type: string) => {
+const action = (row: StorageConfigType | null, type: string) => {
   switch (type) {
     case 'create':
       setDialogTile(type)
@@ -194,12 +192,12 @@ const submitForm = async () => {
     if (valid) {
       // 提交请求
       try {
-        const data = unref(formRef)?.formModel as UploadFileType
+        const data = unref(formRef)?.formModel as StorageConfigType
         if (actionType.value === 'create') {
-          await saveUploadFileApi(data)
+          await saveStorageConfigApi(data)
           ElMessage.success(t('common.createSuccess'))
         } else if (actionType.value === 'edit') {
-          await saveUploadFileApi(data)
+          await saveStorageConfigApi(data)
           ElMessage.success(t('common.editSuccess'))
         }
         dialogVisible.value = false

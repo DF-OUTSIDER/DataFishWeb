@@ -112,6 +112,11 @@ menuCascader().then((data) => {
         component: 'Input',
         formItemProps: {
           rules: [required()]
+        },
+        componentProps: {
+          style: {
+            width: '189.5px'
+          }
         }
       }
     },
@@ -122,6 +127,11 @@ menuCascader().then((data) => {
         component: 'Input',
         formItemProps: {
           rules: [required()]
+        },
+        componentProps: {
+          style: {
+            width: '189.5px'
+          }
         }
       }
     },
@@ -235,6 +245,11 @@ menuCascader().then((data) => {
         component: 'Input',
         formItemProps: {
           rules: [required()]
+        },
+        componentProps: {
+          style: {
+            width: '189.5px'
+          }
         }
       }
     },
