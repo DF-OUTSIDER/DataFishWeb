@@ -29,6 +29,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.1.7",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@element-plus/icons-vue": "^2.1.0",
     "@iconify/iconify": "^3.0.0",
     "@vueuse/core": "^9.4.0",
     "@wangeditor/editor": "^5.1.22",

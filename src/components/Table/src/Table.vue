@@ -80,6 +80,8 @@ export default defineComponent({
 
     const pageSizeRef = ref(props.pageSize)
 
+    // 用于单选获取选中的行
+    const currentRow = ref()
     const currentPageRef = ref(props.currentPage)
 
     // useTable传入的props
@@ -122,6 +124,10 @@ export default defineComponent({
       selections.value = selection
     }
 
+    const handleCurrentChange = (val: Recordable | null) => {
+      currentRow.value = val
+    }
+
     // todo 未达到预期
     // const rowClick = (row: any, column: any, event: any) => {
     //   if (row) {
@@ -132,6 +138,7 @@ export default defineComponent({
     expose({
       setProps,
       setColumn,
+      currentRow,
       selections,
       elTableRef
     })
@@ -366,6 +373,7 @@ export default defineComponent({
           onSelection-change={selectionChange}
           {...unref(getBindValue)}
           header-cell-style={headerStyle}
+          onCurrent-change={handleCurrentChange}
         >
           {{
             default: () => rnderTableColumn(),

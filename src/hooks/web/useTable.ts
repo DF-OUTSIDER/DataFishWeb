@@ -143,6 +143,10 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
       const table = await getTable()
       return (table?.selections || []) as T[]
     },
+    getCurrentRow: async () => {
+      const table = await getTable()
+      return (table?.currentRow || null) as T
+    },
     // 与Search组件结合
     setSearchParams: (data: Recordable) => {
       tableObject.currentPage = 1

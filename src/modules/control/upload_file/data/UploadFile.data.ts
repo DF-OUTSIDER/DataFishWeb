@@ -67,11 +67,11 @@ const crudSchemas = reactive<CrudSchema[]>([
     label: 'MD5'
   },
   {
-    field: 'relative_path',
+    field: 'relativePath',
     label: '相对路径'
   },
   {
-    field: 'absolute_path',
+    field: 'absolutePath',
     label: '绝对路径'
   },
   {
@@ -79,8 +79,12 @@ const crudSchemas = reactive<CrudSchema[]>([
     label: '类型'
   },
   {
-    field: 'storage_id',
-    label: '存储配置'
+    field: 'storageId',
+    label: '存储配置',
+    table: { show: false },
+    form: {
+      component: 'StorageConfigMixedInput'
+    }
   },
   {
     field: 'url',

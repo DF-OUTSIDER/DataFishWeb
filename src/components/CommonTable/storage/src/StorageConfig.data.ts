@@ -33,14 +33,12 @@ const typeLinkage = (formProps: FormProps) => {
   if (data) {
     if (['3', '4'].includes(data.type)) {
       // FTP\SFTP
-      formUtil.isShowSchema(data, formProps, 'config.host')
       formUtil.isShowSchema(data, formProps, 'config.port')
       formUtil.isShowSchema(data, formProps, 'config.username')
       formUtil.isShowSchema(data, formProps, 'config.password')
       formUtil.isShowSchema(data, formProps, 'config.rootPath')
     } else if (data.type == '1') {
       // 数据库
-      formUtil.isShowSchema(data, formProps, 'config.host')
       formUtil.isShowSchema(data, formProps, 'config.port')
       formUtil.isShowSchema(data, formProps, 'config.username')
       formUtil.isShowSchema(data, formProps, 'config.password')
@@ -48,13 +46,12 @@ const typeLinkage = (formProps: FormProps) => {
       formUtil.isHiddenSchema(data, formProps, 'config.rootPath')
     } else if (data.type == '2') {
       // 本地存储
-      formUtil.isHiddenSchema(data, formProps, 'config.host')
+      // 隐藏
       formUtil.isHiddenSchema(data, formProps, 'config.port')
       formUtil.isHiddenSchema(data, formProps, 'config.username')
       formUtil.isHiddenSchema(data, formProps, 'config.password')
-      // 显示
-      formUtil.isShowSchema(data, formProps, 'config.rootPath')
-      //formUtil.isShowSchema(data, formProps, 'config.domain')
+
+      formUtil.isShowSchema(data, formProps, 'config.domain')
     }
   }
 }
@@ -174,14 +171,15 @@ const crudSchemas = reactive<CrudSchema[]>([
         rules: [required()]
       }
     }
-  },
-  {
-    field: 'action',
-    width: '360px',
-    label: t('baseVo.action'),
-    form: { show: false },
-    detail: { show: false }
   }
+  // ,
+  // {
+  //   field: 'action',
+  //   width: '360px',
+  //   label: t('baseVo.action'),
+  //   form: { show: false },
+  //   detail: { show: false }
+  // }
 ])
 
 export const { allSchemas } = useCrudSchemas(crudSchemas)

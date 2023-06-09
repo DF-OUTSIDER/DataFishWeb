@@ -34,6 +34,7 @@ import { ComponentName } from '@/types/components'
 import { IconSelect } from '@/components/Icon'
 import { DictSelect, DictTag, DictRadio, DictRadioButton } from '@/components/Dict'
 import { InputLinkage, NumberLinkage, SelectLinkage, SwitchLinkage } from '@/components/Linkage'
+import { StorageConfigMixedInput } from '@/components/MixedInput/storage'
 
 // mark: 组件映射
 const componentMap: Recordable<Component, ComponentName> = {
@@ -69,7 +70,8 @@ const componentMap: Recordable<Component, ComponentName> = {
   InputLinkage: InputLinkage,
   NumberLinkage: NumberLinkage,
   SelectLinkage: SelectLinkage,
-  SwitchLinkage: SwitchLinkage
+  SwitchLinkage: SwitchLinkage,
+  StorageConfigMixedInput: StorageConfigMixedInput
 }
 
 export { componentMap }

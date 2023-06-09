@@ -40,6 +40,7 @@ export type ComponentName =
   | 'NumberLinkage'
   | 'SelectLinkage'
   | 'SwitchLinkage'
+  | 'StorageConfigMixedInput'
 
 export type ColProps = {
   span?: number
