@@ -54,7 +54,15 @@ const typeLinkage = (formProps: FormProps) => {
       formUtil.isHiddenSchema(data, formProps, 'config.password')
       // 显示
       formUtil.isShowSchema(data, formProps, 'config.rootPath')
-      //formUtil.isShowSchema(data, formProps, 'config.domain')
+    } else if (data.type == '5') {
+      // SMB 存储
+      formUtil.isHiddenSchema(data, formProps, 'config.host')
+      formUtil.isHiddenSchema(data, formProps, 'config.port')
+
+      // 显示
+      formUtil.isShowSchema(data, formProps, 'config.rootPath')
+      formUtil.isShowSchema(data, formProps, 'config.username')
+      formUtil.isShowSchema(data, formProps, 'config.password')
     }
   }
 }
@@ -160,6 +168,7 @@ const crudSchemas = reactive<CrudSchema[]>([
     label: '密码',
     table: { show: false },
     form: {
+      component: 'InputPassword',
       formItemProps: {
         rules: [required()]
       }
