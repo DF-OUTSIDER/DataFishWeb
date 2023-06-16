@@ -131,15 +131,15 @@ const delLoading = ref(false)
 const actionType = ref('') // 操作按钮的类型
 
 // 设置标题
-const setDialogTile = (type: string) => {
+const setDialogTile = (type: string, visible: boolean) => {
   dialogTitle.value = t('action.' + type)
   actionType.value = type
-  dialogVisible.value = true
+  dialogVisible.value = visible
 }
 
 // 修改操作
 const editAction = async (rowId: number) => {
-  setDialogTile('edit')
+  setDialogTile('edit', true)
   // 设置数据
   const res = await getStorageConfigDetailApi(rowId)
   //await nextTick()
@@ -150,7 +150,7 @@ const editAction = async (rowId: number) => {
 
 // 详细信息
 const detailAction = async (rowId: number) => {
-  setDialogTile('detail')
+  setDialogTile('detail', true)
   // 设置数据
   const res = await getStorageConfigDetailApi(rowId)
   if (res.data) {
@@ -160,7 +160,8 @@ const detailAction = async (rowId: number) => {
 
 // 删除
 const deleteAction = async (multiple: boolean) => {
-  setDialogTile('delete')
+  setDialogTile('delete', false)
+
   const { delList, getSelections } = methods
   const selections = await getSelections()
   delLoading.value = true
@@ -176,7 +177,7 @@ const deleteAction = async (multiple: boolean) => {
 const action = (row: StorageConfigType | null, type: string) => {
   switch (type) {
     case 'create':
-      setDialogTile(type)
+      setDialogTile(type, true)
       break
     case 'edit':
       if (row) {
