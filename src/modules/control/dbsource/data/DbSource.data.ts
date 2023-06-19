@@ -28,7 +28,7 @@ export const formProps = {
 const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'name',
-    label: '名称'
+    label: '数据源名称'
   },
   {
     field: 'enable',
@@ -45,28 +45,46 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
-    field: 'code',
-    label: '数据库名称'
-  },
-  {
-    field: 'username',
-    label: '数据库用户名'
-  },
-  {
-    field: 'password',
-    label: '数据库密码'
-  },
-  {
-    field: 'url',
-    label: '数据库URL'
+    field: 'type',
+    label: '数据库类型'
   },
   {
     field: 'driver',
-    label: '数据库驱动'
+    label: '数据库驱动',
+    table: { show: false }
   },
   {
-    field: 'type',
-    label: '数据库类型'
+    field: 'code',
+    label: '数据库名称',
+    form: {
+      colProps: {
+        span: 24
+      }
+    }
+  },
+  {
+    field: 'username',
+    label: '数据库用户名',
+    table: { show: false }
+  },
+  {
+    field: 'password',
+    label: '数据库密码',
+    form: {
+      component: 'InputPassword'
+    },
+    table: { show: false },
+    detail: { show: false }
+  },
+  {
+    field: 'url',
+    label: '数据库URL',
+    table: { show: false },
+    form: {
+      colProps: {
+        span: 24
+      }
+    }
   },
   {
     field: 'action',
