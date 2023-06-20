@@ -403,6 +403,7 @@ export default {
     listShow: '列表',
     addShow: '新增',
     updateShow: '编辑',
+    detailShow: '详细',
     queryType: '查询',
     fieldType: '字段类型'
   },

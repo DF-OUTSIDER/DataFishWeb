@@ -24,27 +24,24 @@ export type DbColumnConfigType = {
   id: number
   code: string
   name: string
-
+  // java 字段类型
+  fieldType: string
   // 表单类型
   formType: string
-
   // 非空
   notNull: boolean
-
   // 列表显示
   listShow: boolean
   // 新增显示
   addShow: boolean
-
   // 编辑显示
   updateShow: boolean
-
+  // 详细显示
+  detailShow: boolean
   // 查询方式
   queryType: string
-
   // 注释
   comment: string
-
   // 字典预留
   dictCode: string
 }

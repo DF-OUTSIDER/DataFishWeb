@@ -15,7 +15,7 @@ import { useValidator } from '@/hooks/web/useValidator'
 
 import { FormProps } from '@/api/common/type'
 import { StorageConfigType } from '../api/types'
-import { formUtil } from '@/utils/form'
+import { formUtil, getFormData } from '@/utils/form'
 
 const { required } = useValidator()
 
@@ -26,10 +26,26 @@ export const formProps = {
   actionType: ''
 } as FormProps
 
+// 表单初始化方法
+export const initForm = (formProps: FormProps) => {
+  // 获取表单数据
+  const data = getFormData(formProps)
+  if (formProps.actionType === 'create') {
+    // 新增全部隐藏
+    formUtil.isHiddenSchema(data, formProps, 'config.domain')
+    formUtil.isHiddenSchema(data, formProps, 'config.host')
+    formUtil.isHiddenSchema(data, formProps, 'config.port')
+    formUtil.isHiddenSchema(data, formProps, 'config.username')
+    formUtil.isHiddenSchema(data, formProps, 'config.password')
+    formUtil.isHiddenSchema(data, formProps, 'config.rootPath')
+  }
+}
+
 const typeLinkage = (formProps: FormProps) => {
   // 表单联动测试
   // 获取表单数据
-  const data = formProps?.formExpose?.formModel as Recordable
+  const data = getFormData(formProps)
+
   if (data) {
     if (['3', '4'].includes(data.type)) {
       // FTP\SFTP
@@ -98,7 +114,7 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'type',
-    label: t('menuVo.type'),
+    label: '类型',
     search: {
       show: true
     },

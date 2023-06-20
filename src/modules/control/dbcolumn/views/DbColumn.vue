@@ -49,6 +49,7 @@
         <ElSelect
           v-if="row.columnConfig"
           v-model="row.columnConfig.fieldType"
+          v-bind="getFieldType(row)"
           @change="columnChange(row)"
           placeholder="无"
         >
@@ -63,7 +64,10 @@
       </template>
       <template #[`columnConfig.formType`]="{ row }">
         <ElSelect
-          v-if="row.columnConfig"
+          v-if="
+            row.columnConfig &&
+            !['create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+          "
           v-model="row.columnConfig.formType"
           @change="columnChange(row)"
           placeholder="无"
@@ -102,7 +106,10 @@
       </template>
       <template #[`columnConfig.notNull`]="{ row }">
         <ElCheckbox
-          v-if="row.columnConfig"
+          v-if="
+            row.columnConfig &&
+            !['id', 'create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+          "
           v-model="row.columnConfig.notNull"
           @change="columnChange(row)"
           size="small"
@@ -110,7 +117,10 @@
       </template>
       <template #[`columnConfig.addShow`]="{ row }">
         <ElCheckbox
-          v-if="row.columnConfig"
+          v-if="
+            row.columnConfig &&
+            !['id', 'create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+          "
           v-model="row.columnConfig.addShow"
           @change="columnChange(row)"
           size="small"
@@ -118,8 +128,19 @@
       </template>
       <template #[`columnConfig.updateShow`]="{ row }">
         <ElCheckbox
-          v-if="row.columnConfig"
+          v-if="
+            row.columnConfig &&
+            !['id', 'create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+          "
           v-model="row.columnConfig.updateShow"
+          @change="columnChange(row)"
+          size="small"
+        />
+      </template>
+      <template #[`columnConfig.detailShow`]="{ row }">
+        <ElCheckbox
+          v-if="row.columnConfig && row.name != 'id'"
+          v-model="row.columnConfig.detailShow"
           @change="columnChange(row)"
           size="small"
         />
@@ -164,7 +185,8 @@ import {
   ElForm,
   ElCheckbox,
   ElSelect,
-  ElOption
+  ElOption,
+  ElMessage
 } from 'element-plus'
 
 import { useTable } from '@/hooks/web/useTable'
@@ -201,6 +223,19 @@ const { register, tableObject, methods } = useTable<DbColumnType>({
 // 保存修改的行
 const changes = new Map()
 
+// 设置JAVA字段类型
+const getFieldType = (row: DbColumnType) => {
+  if (row.dataType === 'bigint') {
+    row.columnConfig.fieldType = 'Long'
+  } else if (row.dataType === 'bit') {
+    row.columnConfig.fieldType = 'Boolean'
+  } else if (['datetime', 'timestamp'].includes(row.dataType)) {
+    row.columnConfig.fieldType = 'Date'
+  } else if (row.dataType === 'varchar') {
+    row.columnConfig.fieldType = 'String'
+  }
+}
+
 // 选择的行
 //const selections = ref<Recordable[]>([])
 //const changes = ref<DbColumnType[]>([])
@@ -208,6 +243,7 @@ const changes = new Map()
 // 列更新更新行
 const columnChange = (row: DbColumnType) => {
   // alert(row.dataType)
+  ElMessage.info(row.name)
   changes.set(row.code, row)
 }
 
@@ -283,6 +319,12 @@ const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'columnConfig.updateShow',
     label: t('dbColumnConfigVo.updateShow'),
+    width: 60,
+    align: 'center'
+  },
+  {
+    field: 'columnConfig.detailShow',
+    label: t('dbColumnConfigVo.detailShow'),
     width: 60,
     align: 'center'
   },

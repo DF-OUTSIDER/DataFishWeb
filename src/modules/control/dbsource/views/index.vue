@@ -44,6 +44,8 @@
       v-if="['create', 'edit'].includes(actionType)"
       ref="formRef"
       :schema="allSchemas.formSchema"
+      :formProps="formProps"
+      :initForm="initForm"
     />
     <Descriptions
       v-if="actionType === 'detail'"
@@ -85,7 +87,7 @@ import { Descriptions } from '@/components/Descriptions'
 import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
-import { allSchemas, formProps } from '../data/DbSource.data'
+import { allSchemas, formProps, initForm } from '../data/DbSource.data'
 
 import {
   getDbSourceDetailApi,
@@ -122,6 +124,13 @@ const actionType = ref('') // 操作按钮的类型
 const setDialogTile = (type: string, visible: boolean) => {
   dialogTitle.value = t('action.' + type)
   actionType.value = type
+
+  if (['create', 'edit'].includes(type)) {
+    formProps.actionType = type
+  } else {
+    formProps.actionType = ''
+  }
+
   dialogVisible.value = visible
 }
 

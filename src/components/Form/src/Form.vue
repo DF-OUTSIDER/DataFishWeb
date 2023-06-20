@@ -46,7 +46,18 @@ export default defineComponent({
     // 是否自定义内容
     isCustom: propTypes.bool.def(false),
     // 表单label宽度
-    labelWidth: propTypes.oneOfType([String, Number]).def('auto')
+    labelWidth: propTypes.oneOfType([String, Number]).def('auto'),
+    formProps: {
+      type: Object as PropType<FormProps>,
+      default: null
+    },
+    initForm: {
+      type: Function as PropType<(formProps: FormProps) => void>,
+      default(formProps: FormProps) {
+        const data = formProps?.formExpose?.formModel as Recordable
+        console.log(data?.code?.toString())
+      }
+    }
   },
   emits: ['register'],
   setup(props, { slots, expose, emit }) {
@@ -69,6 +80,10 @@ export default defineComponent({
 
     onMounted(() => {
       emit('register', unref(elFormRef)?.$parent, unref(elFormRef))
+      if (props.formProps) {
+        // 表单初始化
+        props.initForm(props.formProps)
+      }
     })
 
     // 对表单赋值

@@ -23,6 +23,10 @@ export const formUtil = {
   }
 }
 
+export const getFormData = (formProps: FormProps) => {
+  return formProps?.formExpose?.formModel as Recordable
+}
+
 // 设置属性隐藏或显示 data.hasAuthoritys[colName]
 const isShowSchema = (data: Recordable, formProps: FormProps, colName: string) => {
   const colSchema = formProps?.formExpose?.getSchema(colName)

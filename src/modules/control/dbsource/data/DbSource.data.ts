@@ -7,7 +7,7 @@
  */
 
 import { h, reactive } from 'vue'
-import { ElSwitch } from 'element-plus'
+import { ElMessage, ElSwitch } from 'element-plus'
 import i18n from '@/locales'
 
 import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
@@ -15,6 +15,7 @@ import { useValidator } from '@/hooks/web/useValidator'
 
 import { FormProps } from '@/api/common/type'
 import { DbSourceType } from '../api/types'
+import { getFormData } from '@/utils/form'
 
 const { required } = useValidator()
 
@@ -22,10 +23,25 @@ const { t } = i18n.global
 
 export const formProps = {
   formExpose: {},
-  actionType: ''
+  actionType: '' // create, edit
 } as FormProps
 
+// 表单初始化方法
+export const initForm = (formProps: FormProps) => {
+  // 获取表单数据
+  const data = getFormData(formProps)
+
+  ElMessage.info('表单初始化方法：' + formProps.actionType)
+}
+
 const crudSchemas = reactive<CrudSchema[]>([
+  {
+    field: 'id',
+    label: t('baseVo.index'),
+    type: 'index',
+    form: { show: false },
+    detail: { show: false }
+  },
   {
     field: 'name',
     label: '数据源名称'
