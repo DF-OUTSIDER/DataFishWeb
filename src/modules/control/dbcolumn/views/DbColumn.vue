@@ -49,7 +49,7 @@
         <ElSelect
           v-if="row.columnConfig"
           v-model="row.columnConfig.fieldType"
-          v-bind="getFieldType(row)"
+          v-bind="initColumn(row)"
           @change="columnChange(row)"
           placeholder="无"
         >
@@ -223,8 +223,9 @@ const { register, tableObject, methods } = useTable<DbColumnType>({
 // 保存修改的行
 const changes = new Map()
 
-// 设置JAVA字段类型
-const getFieldType = (row: DbColumnType) => {
+// 初始化行数据
+const initColumn = (row: DbColumnType) => {
+  // FieldType 设置JAVA字段类型
   if (row.dataType === 'bigint') {
     row.columnConfig.fieldType = 'Long'
   } else if (row.dataType === 'bit') {
@@ -233,6 +234,12 @@ const getFieldType = (row: DbColumnType) => {
     row.columnConfig.fieldType = 'Date'
   } else if (row.dataType === 'varchar') {
     row.columnConfig.fieldType = 'String'
+  }
+  if (!row.columnConfig.name) {
+    row.columnConfig.name = row.columnComment
+  }
+  if (!row.columnConfig.comment) {
+    row.columnConfig.comment = row.columnComment
   }
 }
 
