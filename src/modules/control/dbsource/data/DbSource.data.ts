@@ -43,8 +43,13 @@ const crudSchemas = reactive<CrudSchema[]>([
     detail: { show: false }
   },
   {
-    field: 'name',
-    label: '数据源名称'
+    field: 'code',
+    label: '数据源唯一码',
+    form: {
+      colProps: {
+        span: 24
+      }
+    }
   },
   {
     field: 'enable',
@@ -70,13 +75,8 @@ const crudSchemas = reactive<CrudSchema[]>([
     table: { show: false }
   },
   {
-    field: 'code',
-    label: '数据库名称',
-    form: {
-      colProps: {
-        span: 24
-      }
-    }
+    field: 'name',
+    label: '数据库名称'
   },
   {
     field: 'username',
