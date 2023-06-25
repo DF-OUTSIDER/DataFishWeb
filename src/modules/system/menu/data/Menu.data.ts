@@ -27,6 +27,20 @@ export const formProps = {
   actionType: ''
 } as FormProps
 
+// 表单初始化方法
+export const initForm = (formProps: FormProps) => {
+  // 获取表单数据
+  const data = formProps?.formExpose?.formModel as Recordable
+  // 隐藏
+  formUtil.isHiddenSchema(data, formProps, 'redirect')
+  formUtil.isHiddenSchema(data, formProps, 'meta.noCache')
+  formUtil.isHiddenSchema(data, formProps, 'meta.noTagsView')
+  formUtil.isHiddenSchema(data, formProps, 'meta.hidden')
+  formUtil.isHiddenSchema(data, formProps, 'meta.activeMenu')
+  formUtil.isHiddenSchema(data, formProps, 'meta.canTo')
+  formUtil.isHiddenSchema(data, formProps, 'meta.alwaysShow')
+}
+
 // 字段联动
 const typeLinkage = (formProps: FormProps) => {
   // 表单联动测试
@@ -326,6 +340,4 @@ const crudSchemas = reactive<CrudSchema[]>([
   }
 ])
 
-export { crudSchemas }
-
-// export const { allSchemas } = useCrudSchemas(crudSchemas)
+export const { allSchemas } = useCrudSchemas(crudSchemas)

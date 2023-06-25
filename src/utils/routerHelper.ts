@@ -13,7 +13,8 @@ import { omit, cloneDeep } from 'lodash-es'
 const modules = import.meta.glob([
   '../views/**/*.{vue,tsx}',
   '../**/views/**/*.{vue,tsx}',
-  '../modules/**/views/**/*.{vue,tsx}'
+  '../modules/**/views/**/*.{vue,tsx}',
+  '../modules-pro/**/views/**/*.{vue,tsx}'
 ])
 
 /* Layout */

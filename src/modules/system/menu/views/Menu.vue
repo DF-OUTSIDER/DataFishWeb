@@ -12,8 +12,15 @@
     <Search :schema="allSchemas.searchSchema" @search="setSearchParams" @reset="setSearchParams" />
 
     <div class="mb-10px">
-      <ElButton type="primary" @click="AddAction">{{ t('exampleDemo.add') }}</ElButton>
-      <ElButton :loading="delLoading" type="danger" @click="delData(null, true)">
+      <ElButton v-hasPermi="['menu::insert']" type="primary" @click="action(null, 'create')">{{
+        t('exampleDemo.add')
+      }}</ElButton>
+      <ElButton
+        v-hasPermi="['menu::delete']"
+        :loading="delLoading"
+        type="danger"
+        @click="action(null, 'delete')"
+      >
         {{ t('exampleDemo.del') }}
       </ElButton>
     </div>
@@ -32,7 +39,7 @@
       @register="register"
     >
       <template #action="{ row }">
-        <ElButton type="primary" @click="action(row, 'edit')">
+        <ElButton type="primary" v-hasPermi="['menu::insert']" @click="action(row, 'edit')">
           {{ t('common.edit') }}
         </ElButton>
         <ElButton type="primary" @click="action(row, 'detail')">
@@ -43,6 +50,29 @@
         </ElButton>
       </template>
     </Table>
+    <Dialog v-model="dialogVisible" :title="dialogTitle">
+      <Form
+        v-if="['create', 'edit'].includes(actionType)"
+        ref="formRef"
+        :schema="allSchemas.formSchema"
+        :formProps="formProps"
+        :initForm="initForm"
+      />
+      <Descriptions
+        v-if="actionType === 'detail'"
+        :schema="allSchemas.detailSchema"
+        :data="detailVo || {}"
+      />
+      <template #footer>
+        <ElButton
+          type="primary"
+          v-if="['create', 'edit'].includes(actionType)"
+          @click="submitForm()"
+          >{{ t('dialogDemo.submit') }}</ElButton
+        >
+        <ElButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</ElButton>
+      </template>
+    </Dialog>
     <ElDrawer
       v-model="isShowPermission"
       direction="rtl"
@@ -67,18 +97,30 @@ import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useRouter } from 'vue-router'
 
-import { ref, h, reactive, onMounted } from 'vue'
-import { ElButton, ElDrawer, ElSwitch } from 'element-plus'
+import { ref, h, reactive, onMounted, unref, toRef } from 'vue'
+import { ElButton, ElDrawer, ElMessage, ElSwitch } from 'element-plus'
 
-import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
-
-import { crudSchemas } from '../data/Menu.data'
 import { MenuPermission } from '@/components/permission'
-import { getMenuApi, deleteMenuListApi } from '@/modules/system/menu/api'
+import {
+  getMenuApi,
+  deleteMenuListApi,
+  getMenuDetailApi,
+  saveMenuApi
+} from '@/modules/system/menu/api'
+
+import { Dialog } from '@/components/Dialog'
+import { Form } from '@/components/Form'
+import { Descriptions } from '@/components/Descriptions'
+
+import { allSchemas, formProps, initForm } from '../data/Menu.data'
 
 const { push } = useRouter()
 
 const { t } = useI18n()
+
+const formRef = toRef(formProps, 'formExpose')
+// 用于显示详细信息
+const detailVo = ref<Nullable<AppCustomRouteRecordRaw>>(null)
 
 const { register, tableObject, methods } = useTable<AppCustomRouteRecordRaw>({
   getListApi: getMenuApi,
@@ -91,16 +133,70 @@ const { register, tableObject, methods } = useTable<AppCustomRouteRecordRaw>({
 
 const { getList, setSearchParams } = methods
 
-const { allSchemas } = useCrudSchemas(crudSchemas)
+// 对话框相关
+const dialogTitle = ref('edit') // 弹出层标题
+const dialogVisible = ref(false)
+const delLoading = ref(false)
+const actionType = ref('') // 操作按钮的类型
 
-const AddAction = () => {
-  push('/system/menu/menu-add')
+// 设置标题
+const setDialogTile = (type: string, visible: boolean) => {
+  dialogTitle.value = t('action.' + type)
+  actionType.value = type
+  if (['create', 'edit'].includes(type)) {
+    formProps.actionType = type
+  } else {
+    formProps.actionType = ''
+  }
+  dialogVisible.value = visible
 }
 
-const delLoading = ref(false)
+// const AddAction = () => {
+//   push('/system/menu/menu-add')
+// }
 
-const delData = async (row: AppCustomRouteRecordRaw | null, multiple: boolean) => {
-  tableObject.currentRow = row
+// const delData = async (row: AppCustomRouteRecordRaw | null, multiple: boolean) => {
+//   tableObject.currentRow = row
+//   const { delList, getSelections } = methods
+//   const selections = await getSelections()
+//   delLoading.value = true
+//   await delList(
+//     multiple ? selections.map((v) => v.id) : [tableObject.currentRow?.id as unknown as string],
+//     multiple
+//   ).finally(() => {
+//     delLoading.value = false
+//   })
+// }
+
+const isShowPermission = ref(false)
+
+const menuId = ref(0)
+
+// 修改操作
+const editAction = async (rowId: number) => {
+  setDialogTile('edit', true)
+  // 设置数据
+  const res = await getMenuDetailApi(rowId)
+  //await nextTick()
+  if (res.data) {
+    unref(formRef)?.setValues(res.data)
+  }
+}
+
+// 详细信息
+const detailAction = async (rowId: number) => {
+  setDialogTile('detail', true)
+  // 设置数据
+  const res = await getMenuDetailApi(rowId)
+  if (res.data) {
+    detailVo.value = res.data
+  }
+}
+
+// 删除
+const deleteAction = async (multiple: boolean) => {
+  setDialogTile('delete', false)
+
   const { delList, getSelections } = methods
   const selections = await getSelections()
   delLoading.value = true
@@ -112,18 +208,68 @@ const delData = async (row: AppCustomRouteRecordRaw | null, multiple: boolean) =
   })
 }
 
-const isShowPermission = ref(false)
+// const action = (row: AppCustomRouteRecordRaw, type: string) => {
+//   if (type === '') {
+//   } else {
+//     // 激活菜单
+//     push(`/system/menu/menu-${type}?id=${row.id}`)
+//   }
+// }
 
-const menuId = ref(0)
-
-const action = (row: AppCustomRouteRecordRaw, type: string) => {
-  if (type === 'permission') {
-    menuId.value = row.id
-    isShowPermission.value = true
-  } else {
-    // 激活菜单
-    push(`/system/menu/menu-${type}?id=${row.id}`)
+// 操作列
+const action = (row: AppCustomRouteRecordRaw | null, type: string) => {
+  switch (type) {
+    case 'create':
+      setDialogTile(type, true)
+      break
+    case 'edit':
+      if (row) {
+        editAction(row.id)
+      }
+      break
+    case 'detail':
+      if (row) {
+        //detailAction(row.id)
+        // 激活菜单
+        push(`/system/menu/menu-${type}?id=${row.id}`)
+      }
+      break
+    case 'delete':
+      deleteAction(true)
+      break
+    case 'permission':
+      if (row) {
+        menuId.value = row?.id
+        isShowPermission.value = true
+      }
+      break
+    default:
+      break
   }
+}
+
+// 提交新增/修改的表单
+const submitForm = async () => {
+  const elForm = unref(formRef)?.getElFormRef()
+  if (!elForm) return
+  elForm.validate(async (valid) => {
+    if (valid) {
+      // 提交请求
+      try {
+        const data = unref(formRef)?.formModel as StorageConfigType
+        if (actionType.value === 'create') {
+          await saveMenuApi(data)
+          ElMessage.success(t('common.createSuccess'))
+        } else if (actionType.value === 'edit') {
+          await saveMenuApi(data)
+          ElMessage.success(t('common.editSuccess'))
+        }
+        dialogVisible.value = false
+      } finally {
+        await getList()
+      }
+    }
+  })
 }
 
 // ### 初始化
