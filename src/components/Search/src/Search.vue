@@ -8,6 +8,7 @@ import { useForm } from '@/hooks/web/useForm'
 import { findIndex } from '@/utils'
 import { cloneDeep } from 'lodash-es'
 import { FormSchema } from '@/types/form'
+import { useEmitt } from '@/hooks/web/useEmitt'
 
 const { t } = useI18n()
 
@@ -36,7 +37,9 @@ const props = defineProps({
   inline: propTypes.bool.def(true)
 })
 
-const emit = defineEmits(['search', 'reset'])
+const { emitter } = useEmitt()
+
+//const emit = defineEmits(['search', 'reset'])
 
 const visible = ref(true)
 
@@ -69,7 +72,7 @@ const search = async () => {
     if (isValid) {
       const { getFormData } = methods
       const model = await getFormData()
-      emit('search', model)
+      emitter.emit('search', model)
     }
   })
 }
@@ -78,7 +81,7 @@ const reset = async () => {
   unref(elFormRef)?.resetFields()
   const { getFormData } = methods
   const model = await getFormData()
-  emit('reset', model)
+  emitter.emit('reset', model)
 }
 
 const bottonButtonStyle = computed(() => {

@@ -348,6 +348,7 @@ export default {
     subTasks: '子任务'
   },
   dbTableVo: {
+    dbCode: '数据库代码',
     title: '数据库表管理',
     name: '表名',
     tableSchema: '数据库名',

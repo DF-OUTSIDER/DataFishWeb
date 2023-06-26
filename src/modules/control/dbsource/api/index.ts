@@ -8,6 +8,10 @@
 import request from '@/config/axios'
 import { DbSourceType } from './types'
 
+export const getDbsourcesApi = (params: any): Promise<IResponse> => {
+  return request.get({ url: '/dbSource/getDbsources', params })
+}
+
 export const getDbSourceListApi = (params: any): Promise<IResponse> => {
   return request.get({ url: '/dbSource/list', params })
 }

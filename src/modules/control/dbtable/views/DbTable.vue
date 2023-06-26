@@ -72,8 +72,6 @@ import { useTable } from '@/hooks/web/useTable'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useRouter } from 'vue-router'
 
-import { CrudSchema, useCrudSchemas } from '@/hooks/web/useCrudSchemas'
-
 import { DbTableType } from '@/modules/control/dbtable/api/types'
 import {
   getDbTableListApi,
@@ -84,6 +82,8 @@ import {
 
 import { DbTableConfigType } from '@/modules/control/dbtable/api/types'
 import DbTableConfigWrite from './page/DbTableConfigWrite.vue'
+
+import { allSchemas } from '../data/Dbtable.data'
 
 const { push } = useRouter()
 
@@ -106,60 +106,6 @@ const { register, tableObject, methods } = useTable<DbTableType>({
 const { getList, setSearchParams } = methods
 
 getList()
-
-useEmitt({
-  name: 'getList',
-  callback: (type: string) => {
-    if (type === 'add') {
-      tableObject.currentPage = 1
-    }
-    getList()
-  }
-})
-
-const crudSchemas = reactive<CrudSchema[]>([
-  //   {
-  //     field: 'name',
-  //     label: t('loggerVo.index'),
-  //     type: 'index'
-  //   },
-  {
-    field: 'name',
-    label: t('dbTableVo.name')
-  },
-  {
-    field: 'tableSchema',
-    label: t('dbTableVo.tableSchema')
-  },
-  {
-    field: 'engine',
-    label: t('dbTableVo.engine')
-  },
-  {
-    field: 'tableComment',
-    label: t('dbTableVo.tableComment')
-  },
-  {
-    field: 'createTime',
-    label: t('dbTableVo.createTime'),
-    width: '180px'
-    // ,
-    // form: {
-    //   component: 'DatePicker',
-    //   componentProps: {
-    //     type: 'datetime',
-    //     valueFormat: 'YYYY-MM-DD HH:mm:ss'
-    //   }
-    // }
-  },
-  {
-    field: 'action',
-    label: t('tableDemo.action'),
-    width: '360px'
-  }
-])
-
-const { allSchemas } = useCrudSchemas(crudSchemas)
 
 const delLoading = ref(false)
 const delData = async (row: DbTableType | null, multiple: boolean) => {
@@ -250,4 +196,28 @@ const saveTableConfig = async () => {
     }
   })
 }
+useEmitt({
+  name: 'getList',
+  callback: (type: string) => {
+    if (type === 'add') {
+      tableObject.currentPage = 1
+    }
+    getList()
+  }
+})
+useEmitt({
+  name: 'search',
+  callback: (model: Recordable | undefined) => {
+    tableObject.params = model
+    getList()
+  }
+})
+// 重置搜索查询
+useEmitt({
+  name: 'reset',
+  callback: (model: Recordable | undefined) => {
+    tableObject.params = model
+    getList()
+  }
+})
 </script>
