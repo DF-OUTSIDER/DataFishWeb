@@ -84,6 +84,7 @@ import { DbTableConfigType } from '@/modules/control/dbtable/api/types'
 import DbTableConfigWrite from './page/DbTableConfigWrite.vue'
 
 import { allSchemas } from '../data/Dbtable.data'
+import { getDbSourceDetailApi } from '../../dbsource/api'
 
 const { push } = useRouter()
 
@@ -133,9 +134,12 @@ const currentRow = ref<Nullable<DbTableConfigType>>(null)
 
 // 获取tableConfig
 const getDbTableConfigDetail = async (row: DbTableType) => {
-  const res = await getDbTableConfigDetailApi(row.code)
+  const res = await getDbTableConfigDetailApi(row.code, row.dbsourceId)
   if (res) {
     currentRow.value = res.data
+    if (currentRow.value !== null && !currentRow.value?.dbsourceId) {
+      currentRow.value.dbsourceId = row.dbsourceId
+    }
   }
 }
 

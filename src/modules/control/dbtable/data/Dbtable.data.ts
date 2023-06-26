@@ -27,7 +27,7 @@ const crudSchemas = reactive<CrudSchema[]>([
   //     type: 'index'
   //   },
   {
-    field: 'dbCode',
+    field: 'dbsourceId',
     label: t('dbTableVo.dbCode'),
     search: {
       show: true,
@@ -37,7 +37,7 @@ const crudSchemas = reactive<CrudSchema[]>([
         const res = await getDbsourcesApi()
         if (res) {
           res.data.forEach((element) => {
-            options.push({ label: element.code, value: element.code })
+            options.push({ label: element.code, value: element.id })
           })
         }
         return options
