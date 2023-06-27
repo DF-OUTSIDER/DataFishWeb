@@ -207,6 +207,7 @@ interface Params {
   pageIndex?: number
   pageSize?: number
   tableName?: string
+  dbsourceId?: number
 }
 
 const { t } = useI18n()
@@ -256,6 +257,7 @@ const columnChange = (row: DbColumnType) => {
 
 let params: Params = {}
 params.tableName = query.tableName as string
+params.dbsourceId = query.dbsourceId as number
 tableObject.params = params
 
 const tableName = ref(t('dbColumnVo.title') + ' ' + params.tableName)

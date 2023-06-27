@@ -165,7 +165,7 @@ const action = (row: DbTableType, type: string) => {
       {
         actionType.value = type
         // todo 跳转到
-        push(`/control/dbColumn?tableName=${row.name}`)
+        push(`/control/dbColumn?tableName=${row.name}&dbsourceId=${row.dbsourceId}`)
       }
       break
     // case 'detail':
