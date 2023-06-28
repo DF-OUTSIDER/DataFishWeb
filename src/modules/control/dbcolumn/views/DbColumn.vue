@@ -66,7 +66,15 @@
         <ElSelect
           v-if="
             row.columnConfig &&
-            !['create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+            ![
+              'create_by',
+              'create_time',
+              'update_by',
+              'update_time',
+              'createTime',
+              'updateTime',
+              'deleted'
+            ].includes(row.name)
           "
           v-model="row.columnConfig.formType"
           @change="columnChange(row)"
@@ -108,7 +116,16 @@
         <ElCheckbox
           v-if="
             row.columnConfig &&
-            !['id', 'create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+            ![
+              'id',
+              'create_by',
+              'create_time',
+              'update_by',
+              'update_time',
+              'createTime',
+              'updateTime',
+              'deleted'
+            ].includes(row.name)
           "
           v-model="row.columnConfig.notNull"
           @change="columnChange(row)"
@@ -119,7 +136,16 @@
         <ElCheckbox
           v-if="
             row.columnConfig &&
-            !['id', 'create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+            ![
+              'id',
+              'create_by',
+              'create_time',
+              'update_by',
+              'update_time',
+              'createTime',
+              'updateTime',
+              'deleted'
+            ].includes(row.name)
           "
           v-model="row.columnConfig.addShow"
           @change="columnChange(row)"
@@ -130,7 +156,16 @@
         <ElCheckbox
           v-if="
             row.columnConfig &&
-            !['id', 'create_by', 'create_time', 'update_by', 'update_time'].includes(row.name)
+            ![
+              'id',
+              'create_by',
+              'create_time',
+              'update_by',
+              'update_time',
+              'createTime',
+              'updateTime',
+              'deleted'
+            ].includes(row.name)
           "
           v-model="row.columnConfig.updateShow"
           @change="columnChange(row)"
