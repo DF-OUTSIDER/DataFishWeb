@@ -13,6 +13,7 @@ import PurgeIcons from 'vite-plugin-purge-icons'
 import { viteMockServe } from 'vite-plugin-mock'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import VueMarcos from 'unplugin-vue-macros/vite'
+import DefineOptions from 'unplugin-vue-define-options/vite'
 import { axiosPre } from './src/config/axios/httpSetting'
 
 // https://vitejs.dev/config/
@@ -37,6 +38,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       VueJsx(),
       WindiCSS(),
       progress(),
+      DefineOptions(),
       createStyleImportPlugin({
         resolves: [ElementPlusResolve()],
         libs: [{
