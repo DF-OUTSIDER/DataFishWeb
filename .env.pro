@@ -1,3 +1,11 @@
+###
+ # @Author: outsider 515885633@qq.com
+ # @LastEditors: outsider 515885633@qq.com
+ # @FilePath: \DataFishWeb\.env.pro
+ # @Description: 
+ # 
+ # Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+### 
 # 环境
 NODE_ENV=production
 
@@ -21,3 +29,6 @@ VITE_OUT_DIR=dist-pro
 
 # 标题
 VITE_APP_TITLE=ElementAdmin
+
+# 部署服务器路径
+VITE_TARGET_PATH='http://127.0.0.1:8010'
