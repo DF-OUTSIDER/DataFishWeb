@@ -31,4 +31,7 @@ VITE_OUT_DIR=dist-pro
 VITE_APP_TITLE=ElementAdmin
 
 # 部署服务器路径
-VITE_TARGET_PATH='http://127.0.0.1:8010'
+VITE_TARGET_PATH='http://192.168.31.93:8010'
+
+# 上传路径
+VITE_UPLOAD_URL='http://127.0.0.1:8080/api/v1/uploadFile/upload'

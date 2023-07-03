@@ -90,7 +90,12 @@ const crudSchemas = reactive<CrudSchema[]>([
     field: 'url',
     label: 'URL',
     form: {
-      component: 'UploadFile'
+      component: 'UploadFile',
+      componentProps: {
+        fileType: ['*'],
+        fileSize: 0,
+        limit: 1
+      }
     }
   },
   {

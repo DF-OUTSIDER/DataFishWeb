@@ -22,10 +22,10 @@
     >
       <el-button type="primary"><Icon icon="ep:upload-filled" />选取文件</el-button>
       <template v-if="isShowTip" #tip>
-        <div style="font-size: 8px">
+        <div v-if="fileSize != 0" style="font-size: 8px">
           大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b>
         </div>
-        <div style="font-size: 8px">
+        <div v-if="!fileType.includes('*')" style="font-size: 8px">
           格式为 <b style="color: #f56c6c">{{ fileType.join('/') }}</b> 的文件
         </div>
       </template>
@@ -39,7 +39,7 @@ import { propTypes } from '@/utils/propTypes'
 
 import { getAccessToken } from '@/hooks/web/jwtToken'
 
-import { ElMessage, ElUpload, ElButton, UploadFile } from 'element-plus'
+import { ElMessage, ElUpload, ElButton, UploadFile, ElInput } from 'element-plus'
 import type { UploadInstance, UploadUserFile, UploadProps, UploadRawFile } from 'element-plus'
 
 const emit = defineEmits(['update:modelValue'])
@@ -48,8 +48,8 @@ const props = defineProps({
   modelValue: propTypes.string.def(''),
   title: propTypes.string.def('文件上传'),
   updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
-  fileType: propTypes.array.def(['doc', 'xls', 'ppt', 'txt', 'pdf']), // 文件类型, 例如['png', 'jpg', 'jpeg']
-  fileSize: propTypes.number.def(5), // 大小限制(MB)
+  fileType: propTypes.array.def(['doc', 'xls', 'ppt', 'txt', 'pdf']), // 文件类型, 例如['png', 'jpg', 'jpeg']， * 不限制
+  fileSize: propTypes.number.def(5), // 大小限制(MB), 0不限制
   limit: propTypes.number.def(5), // 数量限制
   autoUpload: propTypes.bool.def(true), // 自动上传
   drag: propTypes.bool.def(false), // 拖拽上传
@@ -110,12 +110,15 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
     if (file.type.indexOf(type) > -1) return true
     return !!(fileExtension && fileExtension.indexOf(type) > -1)
   })
-  const isLimit = file.size < props.fileSize * 1024 * 1024
-  if (!isImg) {
+
+  if (!props.fileType.includes('*') && !isImg) {
     ElMessage.error(`文件格式不正确, 请上传${props.fileType.join('/')}格式!`)
     return false
   }
-  if (!isLimit) {
+
+  const isLimit = file.size < props.fileSize * 1024 * 1024
+
+  if (props.fileSize != 0 && !isLimit) {
     ElMessage.error(`上传文件大小不能超过${props.fileSize}MB!`)
     return false
   }
@@ -166,6 +169,7 @@ const listToString = (list: UploadUserFile[], separator?: string) => {
   for (let i in list) {
     strs += list[i].url + separator
   }
+  // todo
   return strs != '' ? strs.substr(0, strs.length - 1) : ''
 }
 </script>
