@@ -88,7 +88,10 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'url',
-    label: 'URL'
+    label: 'URL',
+    form: {
+      component: 'UploadFile'
+    }
   },
   {
     field: 'action',

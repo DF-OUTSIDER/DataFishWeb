@@ -33,13 +33,13 @@
   </div>
 </template>
 <script setup lang="ts" name="UploadFile">
-import { PropType, ref } from 'vue'
+import { ref, unref, watch } from 'vue'
 
 import { propTypes } from '@/utils/propTypes'
 
 import { getAccessToken } from '@/hooks/web/jwtToken'
 
-import { ElMessage, ElUpload, ElButton } from 'element-plus'
+import { ElMessage, ElUpload, ElButton, UploadFile } from 'element-plus'
 import type { UploadInstance, UploadUserFile, UploadProps, UploadRawFile } from 'element-plus'
 
 const emit = defineEmits(['update:modelValue'])
