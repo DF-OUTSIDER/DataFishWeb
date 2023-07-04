@@ -36,6 +36,9 @@
         <ElButton type="primary" @click="action(row, 'detail')">
           {{ t('common.detail') }}
         </ElButton>
+        <ElButton type="primary" @click="action(row, 'view')">
+          {{ '浏览' }}
+        </ElButton>
       </template>
     </Table>
   </ContentWrap>
