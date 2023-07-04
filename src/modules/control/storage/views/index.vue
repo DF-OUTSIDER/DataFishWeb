@@ -96,7 +96,8 @@ import {
   getStorageConfigDetailApi,
   getStorageConfigListApi,
   deleteStorageConfigListApi,
-  saveStorageConfigApi
+  saveStorageConfigApi,
+  getPathLsApi
 } from '@/modules/control/storage/api'
 import { StorageConfigType } from '@/modules/control/storage/api/types'
 
@@ -171,6 +172,18 @@ const deleteAction = async (multiple: boolean) => {
   })
 }
 
+//
+const viewAction = (row: StorageConfigType | null) => {
+  if (row) {
+    setDialogTile('view', true)
+    getPathLsApi({
+      storageConfigId: row?.id,
+      path: '/',
+      name: ''
+    }).then(() => {})
+  }
+}
+
 // 操作列
 const action = (row: StorageConfigType | null, type: string) => {
   switch (type) {
@@ -189,6 +202,9 @@ const action = (row: StorageConfigType | null, type: string) => {
       break
     case 'delete':
       deleteAction(true)
+      break
+    case 'view':
+      viewAction(row)
       break
     default:
       break

@@ -6,7 +6,7 @@
  * Copyright (c) 2023 by outsider, All Rights Reserved.
  */
 import request from '@/config/axios'
-import { StorageConfigType } from './types'
+import { StorageConfigType, WebExplorerType } from './types'
 
 export const getStorageConfigListApi = (params: any): Promise<IResponse> => {
   return request.get({ url: '/storageConfig/list', params })
@@ -24,4 +24,8 @@ export const saveStorageConfigApi = (
 
 export const getStorageConfigDetailApi = (id: number): Promise<IResponse> => {
   return request.get({ url: '/storageConfig/detail', params: { id } })
+}
+
+export const getPathLsApi = (data: WebExplorerType) => {
+  return request.post({ url: '/webExplorer/pathLs', data })
 }
