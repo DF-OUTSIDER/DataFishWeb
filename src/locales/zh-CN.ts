@@ -206,7 +206,8 @@ export default {
     create: '新增',
     edit: '编辑',
     detail: '信息',
-    delete: '删除'
+    delete: '删除',
+    explorer: '文件浏览'
   },
   userInfo: {
     title: '个人信息管理',

@@ -36,7 +36,7 @@
         <ElButton type="primary" @click="action(row, 'detail')">
           {{ t('common.detail') }}
         </ElButton>
-        <ElButton type="primary" @click="action(row, 'view')">
+        <ElButton type="primary" @click="action(row, 'explorer')">
           {{ '浏览' }}
         </ElButton>
       </template>
@@ -54,6 +54,11 @@
       v-if="actionType === 'detail'"
       :schema="allSchemas.detailSchema"
       :data="detailVo || {}"
+    />
+    <TableExplorer
+      :storageConfigId="storageConfigId"
+      :explorerName="explorerName"
+      v-if="actionType === 'explorer'"
     />
     <template #footer>
       <ElButton
@@ -82,6 +87,8 @@ import { ContentWrap } from '@/components/ContentWrap'
 import { Search } from '@/components/Search'
 import i18n from '@/locales'
 
+import { TableExplorer } from '@/components/Explorer'
+
 import { Table } from '@/components/Table'
 import { Dialog } from '@/components/Dialog'
 import { Form } from '@/components/Form'
@@ -96,8 +103,7 @@ import {
   getStorageConfigDetailApi,
   getStorageConfigListApi,
   deleteStorageConfigListApi,
-  saveStorageConfigApi,
-  getPathLsApi
+  saveStorageConfigApi
 } from '@/modules/control/storage/api'
 import { StorageConfigType } from '@/modules/control/storage/api/types'
 
@@ -123,7 +129,7 @@ const dialogTitle = ref('edit') // 弹出层标题
 const dialogVisible = ref(false)
 const delLoading = ref(false)
 const actionType = ref('') // 操作按钮的类型
-
+const explorerName = ref('')
 // 设置标题
 const setDialogTile = (type: string, visible: boolean) => {
   dialogTitle.value = t('action.' + type)
@@ -172,15 +178,13 @@ const deleteAction = async (multiple: boolean) => {
   })
 }
 
-//
-const viewAction = (row: StorageConfigType | null) => {
+const storageConfigId = ref(0)
+// 文件浏览
+const explorerAction = (row: StorageConfigType | null) => {
   if (row) {
-    setDialogTile('view', true)
-    getPathLsApi({
-      storageConfigId: row?.id,
-      path: '/',
-      name: ''
-    }).then(() => {})
+    setDialogTile('explorer', true)
+    storageConfigId.value = row.id
+    explorerName.value = row.name
   }
 }
 
@@ -203,8 +207,8 @@ const action = (row: StorageConfigType | null, type: string) => {
     case 'delete':
       deleteAction(true)
       break
-    case 'view':
-      viewAction(row)
+    case 'explorer':
+      explorerAction(row)
       break
     default:
       break

@@ -19,9 +19,3 @@ export type StorageConfigType = {
   type: string
   config: ConfigType
 } & BaseType
-
-export type WebExplorerType = {
-  storageConfigId: number
-  name: string
-  path: string
-}

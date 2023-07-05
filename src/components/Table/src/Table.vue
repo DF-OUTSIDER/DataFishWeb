@@ -66,6 +66,13 @@ export default defineComponent({
     treeProps: {
       type: Object as PropType<TreeProps>,
       default: (): TreeProps | undefined => undefined
+    },
+    // 事件
+    rowClick: {
+      type: Function as PropType<((...args: any[]) => any) | undefined>
+    },
+    rowDblclick: {
+      type: Function as PropType<((...args: any[]) => any) | undefined>
     }
   },
   emits: ['update:pageSize', 'update:currentPage', 'register'],
