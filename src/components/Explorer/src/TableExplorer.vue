@@ -66,7 +66,6 @@ const props = defineProps({
     type: String as PropType<string>,
     default: ''
   },
-  filePath: propTypes.string.def('/'),
   callBack: {
     type: Function as PropType<(filePath: string) => void>,
     default(filePath: string) {
@@ -76,8 +75,8 @@ const props = defineProps({
 })
 
 const fileType = ref(1)
-const filePath = ref(props.filePath)
-const breadCrumbList = ref(['/'])
+const filePath = ref('/')
+const breadCrumbList = ref([])
 
 const getTableData = async () => {
   const res = await getPathLsApi({

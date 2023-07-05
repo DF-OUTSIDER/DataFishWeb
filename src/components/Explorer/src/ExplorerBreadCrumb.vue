@@ -31,7 +31,7 @@
       v-show="!isShowInput"
       @click.self="handleClickBreadCrumbSelf"
     >
-      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb separator="/">
         <el-breadcrumb-item
           ><el-tag>[{{ props.explorerName }}]</el-tag></el-breadcrumb-item
         >
@@ -39,7 +39,7 @@
           v-for="(item, index) in breadCrumbList"
           :key="index"
           :to="getRouteQuery(item)"
-          >{{ item.name }}</el-breadcrumb-item
+          >{{ item }}</el-breadcrumb-item
         >
       </el-breadcrumb>
     </div>
@@ -94,6 +94,7 @@ const isShowInput = ref(false)
 //  路径输入
 const inputFilePath = ref(props.filePath)
 const breadCrumbList = ref(props.breadCrumbList)
+alert(breadCrumbList.value)
 
 const filePathInputRef = ref()
 
@@ -101,7 +102,11 @@ const handleClickBreadCrumbSelf = () => {
   isShowInput.value = true
 }
 const handleInputBlurEnter = () => {}
-const getRouteQuery = () => {}
+const getRouteQuery = (name: string) => {
+  //alert(name)
+  console.log(name)
+  return 0
+}
 
 watch(
   () => props.filePath,
@@ -109,12 +114,12 @@ watch(
     inputFilePath.value = val
   }
 )
-watch(
-  () => props.breadCrumbList,
-  (val: string[]) => {
-    breadCrumbList.value = val
-  }
-)
+// watch(
+//   () => props.breadCrumbList,
+//   (val: string[]) => {
+//     breadCrumbList.value = val
+//   }
+// )
 </script>
 
 <style lang="scss" scoped>
