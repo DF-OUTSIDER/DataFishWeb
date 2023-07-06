@@ -33,20 +33,21 @@
     >
       <el-breadcrumb separator="/">
         <el-breadcrumb-item
-          ><el-tag>[{{ props.explorerName }}]</el-tag></el-breadcrumb-item
+          ><a href="javascript:;" @click="toDirectory('/', -1)"
+            ><el-tag type="success">[{{ props.explorerName }}]</el-tag></a
+          ></el-breadcrumb-item
         >
-        <el-breadcrumb-item
-          v-for="(item, index) in breadCrumbList"
-          :key="index"
-          :to="getRouteQuery(item)"
-          >{{ item }}</el-breadcrumb-item
+        <el-breadcrumb-item v-for="(item, index) in breadCrumbList" :key="index"
+          ><a href="javascript:;" @click="toDirectory(item, index)">{{
+            item
+          }}</a></el-breadcrumb-item
         >
       </el-breadcrumb>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ElBreadcrumb, ElBreadcrumbItem, ElInput, ElTag } from 'element-plus'
+import { ElBreadcrumb, ElBreadcrumbItem, ElInput, ElMessage, ElTag } from 'element-plus'
 import { PropType, ref, watch } from 'vue'
 import router from '@/router'
 
@@ -76,6 +77,12 @@ const props = defineProps({
   breadCrumbList: {
     type: Array as PropType<string[]>,
     default: () => []
+  },
+  clickToDirectoryCallBack: {
+    type: Function as PropType<(path: string, index: number) => void>,
+    default(path: string) {
+      console.log(path)
+    }
   }
 })
 
@@ -94,19 +101,17 @@ const isShowInput = ref(false)
 //  路径输入
 const inputFilePath = ref(props.filePath)
 const breadCrumbList = ref(props.breadCrumbList)
-alert(breadCrumbList.value)
 
 const filePathInputRef = ref()
 
+// 跳转到目录
+const toDirectory = (path: string, index: number) => {
+  props.clickToDirectoryCallBack(path, index)
+}
 const handleClickBreadCrumbSelf = () => {
   isShowInput.value = true
 }
 const handleInputBlurEnter = () => {}
-const getRouteQuery = (name: string) => {
-  //alert(name)
-  console.log(name)
-  return 0
-}
 
 watch(
   () => props.filePath,
@@ -114,12 +119,13 @@ watch(
     inputFilePath.value = val
   }
 )
-// watch(
-//   () => props.breadCrumbList,
-//   (val: string[]) => {
-//     breadCrumbList.value = val
-//   }
-// )
+
+watch(
+  () => props.breadCrumbList,
+  (val: string[]) => {
+    breadCrumbList.value = val
+  }
+)
 </script>
 
 <style lang="scss" scoped>

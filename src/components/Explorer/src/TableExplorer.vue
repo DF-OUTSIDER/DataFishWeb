@@ -13,6 +13,7 @@
       :fileType="fileType"
       :filePath="filePath"
       :breadCrumbList="breadCrumbList"
+      :clickToDirectoryCallBack="directoryPathClickCb"
     />
     <Table
       v-model:pageSize="tableObject.pageSize"
@@ -78,6 +79,7 @@ const fileType = ref(1)
 const filePath = ref('/')
 const breadCrumbList = ref([])
 
+// 获取表格数据
 const getTableData = async () => {
   const res = await getPathLsApi({
     storageConfigId: props.storageConfigId,
@@ -86,6 +88,25 @@ const getTableData = async () => {
   })
   return { data: { list: res.data } }
 }
+
+// 面包屑文件夹路径点击回调
+const directoryPathClickCb = async (path: string, index: number) => {
+  if ('/' == path) {
+    filePath.value = '/'
+    breadCrumbList.value = []
+  } else {
+    filePath.value = '/'
+    breadCrumbList.value = breadCrumbList.value.slice(0, index + 1)
+    let i: number
+    for (i = 0; i <= index; i++) {
+      filePath.value += breadCrumbList.value.at(i) + '/'
+    }
+  }
+  // 刷新列表
+  await getList()
+}
+
+// 双击行回调
 const rowDblclick = async (row: WebExplorerEntry) => {
   if (row.isDirectory) {
     filePath.value += row.name + '/'
