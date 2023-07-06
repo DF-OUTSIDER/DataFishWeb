@@ -14,7 +14,6 @@
       ref="filePathInputRef"
       placeholder="请输入路径"
       v-model="inputFilePath"
-      disabled="true"
       size="50"
       :autofocus="true"
       v-show="isShowInput"
@@ -47,15 +46,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ElBreadcrumb, ElBreadcrumbItem, ElInput, ElMessage, ElTag } from 'element-plus'
+import { ElBreadcrumb, ElBreadcrumbItem, ElInput, ElTag } from 'element-plus'
 import { PropType, ref, watch } from 'vue'
-import router from '@/router'
-
-//import { useI18n } from 'vue-i18n'
-
-//const { t } = useI18n() // 国际化
-
-const route = router.currentRoute.value
 
 const props = defineProps({
   explorerName: {
@@ -83,19 +75,16 @@ const props = defineProps({
     default(path: string) {
       console.log(path)
     }
+  },
+  // 失去焦点或回车回调
+  blurEnterExplorerPathCallBack: {
+    type: Function as PropType<(path: string) => void>,
+    default(path: string) {
+      console.log(path)
+    }
   }
 })
 
-// const fileType = props.fileType
-
-const fileTypeMap = ref({
-  1: '全部图片',
-  2: '全部文档',
-  3: '全部视频',
-  4: '全部音乐',
-  5: '其他',
-  6: '回收站'
-})
 //  是否展示路径输入框
 const isShowInput = ref(false)
 //  路径输入
@@ -111,7 +100,18 @@ const toDirectory = (path: string, index: number) => {
 const handleClickBreadCrumbSelf = () => {
   isShowInput.value = true
 }
-const handleInputBlurEnter = () => {}
+
+// 路径输入框失去焦点或用户按下回车时触发
+const handleInputBlurEnter = () => {
+  isShowInput.value = false
+  // 检查路径是否发生了变化
+  if (inputFilePath.value !== props.filePath) {
+    const fixInputFilePath = inputFilePath.value.endsWith('/')
+      ? inputFilePath.value
+      : (inputFilePath.value += '/')
+    props.blurEnterExplorerPathCallBack(fixInputFilePath)
+  }
+}
 
 watch(
   () => props.filePath,
@@ -129,7 +129,6 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-//@import '~_a/styles/varibles.styl';
 
 .explorer-breadcrumb-wrapper {
   padding: 0;

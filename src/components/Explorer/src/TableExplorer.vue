@@ -14,6 +14,7 @@
       :filePath="filePath"
       :breadCrumbList="breadCrumbList"
       :clickToDirectoryCallBack="directoryPathClickCb"
+      :blurEnterExplorerPathCallBack="directoryPathBlurEnterCb"
     />
     <Table
       v-model:pageSize="tableObject.pageSize"
@@ -77,7 +78,7 @@ const props = defineProps({
 
 const fileType = ref(1)
 const filePath = ref('/')
-const breadCrumbList = ref([])
+const breadCrumbList = ref<string[]>([])
 
 // 获取表格数据
 const getTableData = async () => {
@@ -105,6 +106,27 @@ const directoryPathClickCb = async (path: string, index: number) => {
   // 刷新列表
   await getList()
 }
+// 路径输入框失去焦点回调
+const directoryPathBlurEnterCb = async (path: string) => {
+  if ('/' == path) {
+    filePath.value = '/'
+    breadCrumbList.value = []
+  } else {
+    filePath.value = path
+    breadCrumbList.value = []
+    let pathItems: string[] = path.split('/')
+    let i: number
+    let item: string
+    for (i = 0; i < pathItems.length; i++) {
+      item = pathItems.at(i) as string
+      if ('' !== item) {
+        breadCrumbList.value.push(item)
+      }
+    }
+  }
+  // 刷新列表
+  await getList()
+}
 
 // 双击行回调
 const rowDblclick = async (row: WebExplorerEntry) => {
@@ -113,7 +135,6 @@ const rowDblclick = async (row: WebExplorerEntry) => {
     breadCrumbList.value.push(row.name)
     // 刷新列表
     await getList()
-    // props.cellDblclickCallBack(filePath.value)
   } else {
     ElMessage.warning('请双击文件夹进入！')
   }
