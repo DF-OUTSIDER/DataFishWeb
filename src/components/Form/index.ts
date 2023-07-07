@@ -1,7 +1,7 @@
 /*
  * @Author: outsider 515885633@qq.com
  * @LastEditors: outsider 515885633@qq.com
- * @FilePath: \vue-element-plus-admin\src\components\Form\index.ts
+ * @FilePath: \DataFishWeb\src\components\Form\index.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -16,6 +16,7 @@ export interface FormExpose {
   getSchema: (field: string) => FormSchema
   delSchema: (field: string) => void
   addSchema: (formSchema: FormSchema, index?: number) => void
+  updateSchema: (formSchema: FormSchema, field: string) => void
   setSchema: (schemaProps: FormSetPropsType[]) => void
   formModel: Recordable
   getElFormRef: () => ComponentRef<typeof ElForm>

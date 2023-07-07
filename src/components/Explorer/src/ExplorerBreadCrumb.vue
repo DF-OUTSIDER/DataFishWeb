@@ -129,7 +129,6 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-
 .explorer-breadcrumb-wrapper {
   padding: 0;
   height: 30px;

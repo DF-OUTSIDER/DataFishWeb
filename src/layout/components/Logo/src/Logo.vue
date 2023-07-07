@@ -1,3 +1,11 @@
+<!--
+ * @Author: outsider 515885633@qq.com
+ * @LastEditors: outsider 515885633@qq.com
+ * @FilePath: \DataFishWeb\src\layout\components\Logo\src\Logo.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, unref } from 'vue'
 import { useAppStore } from '@/store/modules/app'
@@ -65,7 +73,7 @@ watch(
     to="/"
   >
     <img
-      src="@/assets/imgs/logo.png"
+      src="/api/v1/downloadFile/download/00000000-0000-0000-0000-000000000001"
       class="w-[calc(var(--logo-height)-10px)] h-[calc(var(--logo-height)-10px)]"
     />
     <div

@@ -4,11 +4,13 @@
     <el-upload
       ref="uploadRef"
       :multiple="props.limit > 1"
-      name="file"
+      name="fileStream"
       v-model:file-list="fileList"
       :show-file-list="true"
       :auto-upload="autoUpload"
+      :data="params"
       :action="updateUrl"
+      method="post"
       :headers="uploadHeaders"
       :limit="props.limit"
       :drag="drag"
@@ -33,7 +35,7 @@
   </div>
 </template>
 <script setup lang="ts" name="UploadFile">
-import { ref, unref, watch } from 'vue'
+import { PropType, ref, unref, watch } from 'vue'
 
 import { propTypes } from '@/utils/propTypes'
 
@@ -41,20 +43,37 @@ import { getAccessToken } from '@/hooks/web/jwtToken'
 
 import { ElMessage, ElUpload, ElButton, UploadFile, ElInput } from 'element-plus'
 import type { UploadInstance, UploadUserFile, UploadProps, UploadRawFile } from 'element-plus'
+import { FormProps } from '@/api/common/type'
 
 const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
   modelValue: propTypes.string.def(''),
   title: propTypes.string.def('文件上传'),
-  updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
   fileType: propTypes.array.def(['doc', 'xls', 'ppt', 'txt', 'pdf']), // 文件类型, 例如['png', 'jpg', 'jpeg']， * 不限制
   fileSize: propTypes.number.def(5), // 大小限制(MB), 0不限制
   limit: propTypes.number.def(5), // 数量限制
-  autoUpload: propTypes.bool.def(true), // 自动上传
   drag: propTypes.bool.def(false), // 拖拽上传
-  isShowTip: propTypes.bool.def(true) // 是否显示提示
+  isShowTip: propTypes.bool.def(true), // 是否显示提示
+  updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
+  autoUpload: propTypes.bool.def(true), // 自动上传
+  storageCode: propTypes.string.def('local'),
+  relativePath: propTypes.string.def('/'),
+  formProps: {
+    type: Object as PropType<FormProps>,
+    default: null
+  },
+  linkage: {
+    type: Function as PropType<(formProps: FormProps, data: Recordable) => boolean>,
+    default(formProps: FormProps) {
+      const data = formProps?.formExpose?.formModel as Recordable
+      console.log(data?.code?.toString())
+    }
+  }
 })
+
+// 用于自动上传传输参数
+const params = ref({ storageCode: props.storageCode, relativePath: props.relativePath })
 
 watch(
   () => props.modelValue,
@@ -77,6 +96,22 @@ watch(
     })
   }
 )
+watch(
+  () => props.storageCode,
+  (val: string) => {
+    if (val !== params.value.storageCode) {
+      params.value.storageCode = val
+    }
+  }
+)
+watch(
+  () => props.relativePath,
+  (val: string) => {
+    if (val !== params.value.relativePath) {
+      params.value.relativePath = val
+    }
+  }
+)
 // 传递参考值
 const valueRef = ref(props.modelValue)
 
@@ -97,7 +132,8 @@ const uploadHeaders = ref({
 })
 
 // 文件上传之前判断
-const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
+const beforeUpload: UploadProps['beforeUpload'] = async (file: UploadRawFile) => {
+  // 校验数量
   if (fileList.value.length >= props.limit) {
     ElMessage.error(`上传文件数量不能超过${props.limit}个!`)
     return false
@@ -106,23 +142,32 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
   if (file.name.lastIndexOf('.') > -1) {
     fileExtension = file.name.slice(file.name.lastIndexOf('.') + 1)
   }
-  const isImg = props.fileType.some((type: string) => {
+  // 判断文件类型是否正确
+  const isCorrectType = props.fileType.some((type: string) => {
     if (file.type.indexOf(type) > -1) return true
     return !!(fileExtension && fileExtension.indexOf(type) > -1)
   })
 
-  if (!props.fileType.includes('*') && !isImg) {
+  if (!props.fileType.includes('*') && !isCorrectType) {
     ElMessage.error(`文件格式不正确, 请上传${props.fileType.join('/')}格式!`)
     return false
   }
 
   const isLimit = file.size < props.fileSize * 1024 * 1024
-
+  // 判断文件大小是否正确
   if (props.fileSize != 0 && !isLimit) {
     ElMessage.error(`上传文件大小不能超过${props.fileSize}MB!`)
     return false
   }
-  ElMessage.success('正在上传文件，请稍候...')
+
+  // 自定义校验
+  if (props.formProps) {
+    // 数据联动
+    if ((await props.linkage(props.formProps, {})) === false) {
+      return false
+    }
+  }
+  // ElMessage.success('正在上传文件，请稍候...')
   uploadNumber.value++
 }
 // 处理上传的文件发生变化
@@ -131,17 +176,23 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
 // }
 // 文件上传成功
 const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
-  ElMessage.success('上传成功')
   const fileListNew = fileList.value
   fileListNew.pop()
   fileList.value = fileListNew
-  uploadList.value.push({ name: res.data, url: res.data })
+  uploadList.value.push({ name: res.data.name, url: res.data.url })
+
   if (uploadList.value.length == uploadNumber.value) {
     fileList.value = fileList.value.concat(uploadList.value)
     uploadList.value = []
     uploadNumber.value = 0
     emit('update:modelValue', listToString(fileList.value))
   }
+
+  if (props.formProps) {
+    // 数据联动
+    props.linkage(props.formProps, res.data)
+  }
+  ElMessage.success('上传成功')
 }
 // 文件数超出提示
 const handleExceed: UploadProps['onExceed'] = (): void => {

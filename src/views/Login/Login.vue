@@ -37,7 +37,11 @@ const toLogin = () => {
         :class="`${prefixCls}__left flex-1 bg-gray-500 bg-opacity-20 relative p-30px <xl:hidden`"
       >
         <div class="flex items-center relative text-white">
-          <img src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
+          <img
+            src="/api/v1/downloadFile/download/00000000-0000-0000-0000-000000000001"
+            alt=""
+            class="w-48px h-48px mr-10px"
+          />
           <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
         </div>
         <div class="flex justify-center items-center h-[calc(100%-60px)]">
@@ -57,7 +61,11 @@ const toLogin = () => {
       <div class="flex-1 p-30px <sm:p-10px dark:bg-v-dark relative">
         <div class="flex justify-between items-center text-white @2xl:justify-end @xl:justify-end">
           <div class="flex items-center @2xl:hidden @xl:hidden">
-            <img src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
+            <img
+              src="/api/v1/downloadFile/download/00000000-0000-0000-0000-000000000001"
+              alt=""
+              class="w-48px h-48px mr-10px"
+            />
             <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
           </div>
 

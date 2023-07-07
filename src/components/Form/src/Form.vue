@@ -135,6 +135,12 @@ export default defineComponent({
       }
     }
 
+    const updateSchema = (formSchema: FormSchema, field: string) => {
+      const { schema } = unref(getProps)
+      const index = findIndex(schema, (v: FormSchema) => v.field === field)
+      schema[index] = Object.assign(schema[index], formSchema)
+    }
+
     const getElFormRef = (): ComponentRef<typeof ElForm> => {
       return unref(elFormRef) as ComponentRef<typeof ElForm>
     }
@@ -147,6 +153,7 @@ export default defineComponent({
       delSchema,
       addSchema,
       setSchema,
+      updateSchema,
       getElFormRef
     })
 
