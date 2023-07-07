@@ -11,6 +11,7 @@ export type ComponentName =
   | 'RadioButton'
   | 'Checkbox'
   | 'CheckboxButton'
+  | 'Image'
   | 'Input'
   | 'Autocomplete'
   | 'InputNumber'

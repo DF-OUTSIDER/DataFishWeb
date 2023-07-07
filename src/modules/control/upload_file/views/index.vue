@@ -28,6 +28,9 @@
       }"
       @register="register"
     >
+      <template #url="{ row }">
+        <el-image v-if="row.type.indexOf('image') != -1" :src="row.url" lazy />
+      </template>
       <template #action="{ row }">
         <ElButton v-hasPermi="['file::insert']" type="primary" @click="action(row, 'edit')">
           {{ t('common.edit') }}
@@ -72,7 +75,7 @@
  * Copyright (c) 2023 by outsider, All Rights Reserved.
  */
 import { ref, onMounted, toRef, unref } from 'vue'
-import { ElButton, ElMessage } from 'element-plus'
+import { ElButton, ElMessage, ElImage } from 'element-plus'
 //import { useRouter } from 'vue-router'
 
 import { ContentWrap } from '@/components/ContentWrap'

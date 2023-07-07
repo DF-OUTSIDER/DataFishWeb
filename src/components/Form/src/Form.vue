@@ -255,26 +255,50 @@ export default defineComponent({
 
                 const { autoSetPlaceholder } = unref(getProps)
 
-                return slots[item.field] ? (
-                  getSlot(slots, item.field, formModel.value)
-                ) : (
-                  <Com
-                    vModel={formModel.value[item.field]}
-                    {...(autoSetPlaceholder && setTextPlaceholder(item))}
-                    {...setComponentProps(item)}
-                    style={
-                      item?.component === 'Input'
-                        ? { ...item.componentProps?.style }
-                        : { ...item.componentProps?.style }
-                    }
-                    {...(notRenderOptions.includes(item?.component as string) &&
-                    item?.componentProps?.options
-                      ? { options: item?.componentProps?.options || [] }
-                      : {})}
-                  >
-                    {{ ...slotsMap }}
-                  </Com>
-                )
+                switch (item.component as string) {
+                  case 'Image':
+                    return slots[item.field] ? (
+                      getSlot(slots, item.field, formModel.value)
+                    ) : (
+                      <Com
+                        src={formModel.value[item.field]}
+                        {...(autoSetPlaceholder && setTextPlaceholder(item))}
+                        {...setComponentProps(item)}
+                        style={
+                          item?.component === 'Input'
+                            ? { ...item.componentProps?.style }
+                            : { ...item.componentProps?.style }
+                        }
+                        {...(notRenderOptions.includes(item?.component as string) &&
+                        item?.componentProps?.options
+                          ? { options: item?.componentProps?.options || [] }
+                          : {})}
+                      >
+                        {{ ...slotsMap }}
+                      </Com>
+                    )
+                  default:
+                    return slots[item.field] ? (
+                      getSlot(slots, item.field, formModel.value)
+                    ) : (
+                      <Com
+                        vModel={formModel.value[item.field]}
+                        {...(autoSetPlaceholder && setTextPlaceholder(item))}
+                        {...setComponentProps(item)}
+                        style={
+                          item?.component === 'Input'
+                            ? { ...item.componentProps?.style }
+                            : { ...item.componentProps?.style }
+                        }
+                        {...(notRenderOptions.includes(item?.component as string) &&
+                        item?.componentProps?.options
+                          ? { options: item?.componentProps?.options || [] }
+                          : {})}
+                      >
+                        {{ ...slotsMap }}
+                      </Com>
+                    )
+                }
               }
             }}
           </ElFormItem>
@@ -291,27 +315,50 @@ export default defineComponent({
                 >
 
                 const { autoSetPlaceholder } = unref(getProps)
-
-                return slots[field] ? (
-                  getSlot(slots, field, formModel.value)
-                ) : (
-                  <Com
-                    vModel={formModel.value[fields[0]][fields[1]]}
-                    {...(autoSetPlaceholder && setTextPlaceholder(item))}
-                    {...setComponentProps(item)}
-                    style={
-                      item?.component === 'Input'
-                        ? { ...item.componentProps?.style }
-                        : { ...item.componentProps?.style }
-                    }
-                    {...(notRenderOptions.includes(item?.component as string) &&
-                    item?.componentProps?.options
-                      ? { options: item?.componentProps?.options || [] }
-                      : {})}
-                  >
-                    {{ ...slotsMap }}
-                  </Com>
-                )
+                switch (item.component as string) {
+                  case 'Image':
+                    return slots[field] ? (
+                      getSlot(slots, field, formModel.value)
+                    ) : (
+                      <Com
+                        src={formModel.value[fields[0]][fields[1]]}
+                        {...(autoSetPlaceholder && setTextPlaceholder(item))}
+                        {...setComponentProps(item)}
+                        style={
+                          item?.component === 'Input'
+                            ? { ...item.componentProps?.style }
+                            : { ...item.componentProps?.style }
+                        }
+                        {...(notRenderOptions.includes(item?.component as string) &&
+                        item?.componentProps?.options
+                          ? { options: item?.componentProps?.options || [] }
+                          : {})}
+                      >
+                        {{ ...slotsMap }}
+                      </Com>
+                    )
+                  default:
+                    return slots[field] ? (
+                      getSlot(slots, field, formModel.value)
+                    ) : (
+                      <Com
+                        vModel={formModel.value[fields[0]][fields[1]]}
+                        {...(autoSetPlaceholder && setTextPlaceholder(item))}
+                        {...setComponentProps(item)}
+                        style={
+                          item?.component === 'Input'
+                            ? { ...item.componentProps?.style }
+                            : { ...item.componentProps?.style }
+                        }
+                        {...(notRenderOptions.includes(item?.component as string) &&
+                        item?.componentProps?.options
+                          ? { options: item?.componentProps?.options || [] }
+                          : {})}
+                      >
+                        {{ ...slotsMap }}
+                      </Com>
+                    )
+                }
               }
             }}
           </ElFormItem>

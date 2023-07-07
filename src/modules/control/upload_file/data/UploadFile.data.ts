@@ -195,7 +195,7 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'url',
-    label: '上传',
+    label: '文件',
     form: {
       component: 'UploadFile',
       componentProps: {

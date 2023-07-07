@@ -254,18 +254,34 @@ export default defineComponent({
                   typeof defineComponent
                 >
                 if (Com) {
-                  return (
-                    <Com
-                      vModel={data.row[v.field]}
-                      {...setComponentProps(v)}
-                      {...(notRenderOptions.includes(v?.component as string) &&
-                      v?.componentProps?.options
-                        ? { options: v?.componentProps?.options || [] }
-                        : {})}
-                    >
-                      {{ ...slotsMap }}
-                    </Com>
-                  )
+                  switch (v.component as string) {
+                    case 'Image':
+                      return (
+                        <Com
+                          src={data.row[v.field]}
+                          {...setComponentProps(v)}
+                          {...(notRenderOptions.includes(v?.component as string) &&
+                          v?.componentProps?.options
+                            ? { options: v?.componentProps?.options || [] }
+                            : {})}
+                        >
+                          {{ ...slotsMap }}
+                        </Com>
+                      )
+                    default:
+                      return (
+                        <Com
+                          vModel={data.row[v.field]}
+                          {...setComponentProps(v)}
+                          {...(notRenderOptions.includes(v?.component as string) &&
+                          v?.componentProps?.options
+                            ? { options: v?.componentProps?.options || [] }
+                            : {})}
+                        >
+                          {{ ...slotsMap }}
+                        </Com>
+                      )
+                  }
                 } else {
                   return v.children && v.children.length
                     ? rnderTableColumn(v.children)
@@ -335,18 +351,34 @@ export default defineComponent({
                       typeof defineComponent
                     >
                     if (Com) {
-                      return (
-                        <Com
-                          vModel={data.row[v.field]}
-                          {...setComponentProps(v)}
-                          {...(notRenderOptions.includes(v?.component as string) &&
-                          v?.componentProps?.options
-                            ? { options: v?.componentProps?.options || [] }
-                            : {})}
-                        >
-                          {{ ...slotsMap }}
-                        </Com>
-                      )
+                      switch (v.component as string) {
+                        case 'Image':
+                          return (
+                            <Com
+                              src={data.row[v.field]}
+                              {...setComponentProps(v)}
+                              {...(notRenderOptions.includes(v?.component as string) &&
+                              v?.componentProps?.options
+                                ? { options: v?.componentProps?.options || [] }
+                                : {})}
+                            >
+                              {{ ...slotsMap }}
+                            </Com>
+                          )
+                        default:
+                          return (
+                            <Com
+                              vModel={data.row[v.field]}
+                              {...setComponentProps(v)}
+                              {...(notRenderOptions.includes(v?.component as string) &&
+                              v?.componentProps?.options
+                                ? { options: v?.componentProps?.options || [] }
+                                : {})}
+                            >
+                              {{ ...slotsMap }}
+                            </Com>
+                          )
+                      }
                     } else {
                       return v.children && v.children.length
                         ? rnderTreeTableColumn(v.children)
