@@ -21,7 +21,9 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "_a/*": ["src/assets/*"],
+      "_c/*": ["src/components/*"]
     },
     "types": [
       "@intlify/vite-plugin-vue-i18n/client",

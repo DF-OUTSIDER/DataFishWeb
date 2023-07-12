@@ -149,4 +149,287 @@
     </template>
   </ul>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { PropType, ref } from 'vue'
+//import dirImg from '@/assets/imgs/file/dir.png'
+import wordImg from '@/assets/imgs/file/file_word.svg'
+import excelImg from '@/assets/imgs/file/file_excel.svg'
+import pptImg from '@/assets/imgs/file/file_ppt.svg'
+import {
+	officeFileType,
+	fileSuffixCodeModeMap,
+	markdownFileType
+} from '@/modules/control/storage/api/map'
+
+const props = defineProps({
+  selectedFile: {
+    type: String as PropType<string>,
+    default: ''
+  }
+})
+
+const selectedFile = props.selectedFile;
+//  右键菜单是否显示
+const visible = ref(false)
+// 右键菜单
+const	rightMenu = {
+				top: 0,
+				left: 0,
+				bottom: 'auto',
+				right: 'auto'
+			}
+
+const unzipMenu = {
+  top: 0,
+  bottom: 'auto',
+  left: '126px',
+  right: 'auto'
+}
+
+/**
+ * 打开右键菜单
+ */
+  const handleOpenContextMenu = () => {
+			// 纵坐标设置
+			// if (
+			// 	document.body.clientHeight - this.domEvent.clientY <
+			// 	document.querySelectorAll('#rightMenuList > .right-menu-item').length *
+			// 		36 +
+			// 		10
+			// ) {
+			// 	// 如果到底部的距离小于元素总高度
+			// 	this.rightMenu.top = 'auto'
+			// 	this.rightMenu.bottom = `${
+			// 		document.body.clientHeight - this.domEvent.clientY
+			// 	}px`
+			// 	this.unzipMenu.top = 'auto'
+			// 	this.unzipMenu.bottom = '0px'
+			// } else {
+			// 	this.rightMenu.top = `${this.domEvent.clientY}px`
+			// 	this.rightMenu.bottom = 'auto'
+			// 	this.unzipMenu.top = '0px'
+			// 	this.unzipMenu.bottom = 'auto'
+			// }
+			// // 横坐标设置
+			// if (document.body.clientWidth - this.domEvent.clientX < 138) {
+			// 	// 如果到右边的距离小于元素总宽度
+			// 	this.rightMenu.left = 'auto'
+			// 	this.rightMenu.right = `${
+			// 		document.body.clientWidth - this.domEvent.clientX
+			// 	}px`
+			// 	this.unzipMenu.left = '-200px'
+			// 	this.unzipMenu.right = 'auto'
+			// } else {
+			// 	this.rightMenu.left = `${this.domEvent.clientX + 8}px`
+			// 	this.rightMenu.right = 'auto'
+			// 	this.unzipMenu.left = '126px'
+			// 	this.unzipMenu.right = 'auto'
+			// }
+			// this.visible = true
+		}
+		/**
+		 * 关闭右键列表
+		 */
+		const closeRightMenu = (event: any) => {
+			// if (
+			// 	!event.target.className.includes('operate-more-') &&
+			// 	!event.target.className.includes('unzip-menu-item')
+			// ) {
+			// 	this.visible = false
+			// 	if (this.selectedFile !== undefined) {
+			// 		// 不是在空白处右键时
+			// 		this.callback('cancel')
+			// 	}
+			// }
+		}
+		/**
+		 * 复制按钮点击事件
+		 * @description 向父组件传递当前操作的文件信息，并打开“复制文件对话框”
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleCopyFileBtnClick = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog
+			// 	.copyFile({
+			// 		fileInfo
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 移动按钮点击事件
+		 * @description 向父组件传递当前操作的文件信息，并打开“移动文件对话框”
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleMoveFileBtnClick = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog
+			// 	.moveFile({
+			// 		isBatchMove: false,
+			// 		fileInfo
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 解压缩按钮点击事件
+		 * @description 调用解压缩文件接口，并展示新的文件列表
+		 * @param {object} fileInfo 文件信息
+		 * @param {number} unzipMode 解压模式 0-解压到当前文件夹， 1-自动创建该文件名目录，并解压到目录里， 2-手动选择解压目录
+		 */
+		const handleUnzipFileBtnClick = (fileInfo: any, unzipMode: any) => {
+			// this.visible = false
+			// this.$openDialog
+			// 	.unzipFile({
+			// 		unzipMode: unzipMode,
+			// 		userFileId: fileInfo.userFileId
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 删除按钮点击事件
+		 * @description 区分 删除到回收站中 | 在回收站中彻底删除，打开确认对话框
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleDeleteFileBtnClick = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog
+			// 	.deleteFile({
+			// 		isBatchOperation: false,
+			// 		fileInfo,
+			// 		deleteMode: this.fileType === 6 ? 2 : 1 //  删除类型：1-删除到回收站 2-彻底删除
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 还原按钮点击事件
+		 * @description 调用接口，在回收站中还原文件
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleRestoreFileBtnClick = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog
+			// 	.restoreFile({
+			// 		deleteBatchNum: fileInfo.deleteBatchNum,
+			// 		filePath: fileInfo.filePath
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 文件重命名按钮点击事件
+		 * @description 打开确认对话框让用户输入新的文件名
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleRenameFileBtnClick = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog
+			// 	.renameFile({
+			// 		oldFileName: fileInfo.fileName,
+			// 		userFileId: fileInfo.userFileId
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 文件分享按钮点击事件
+		 * @description 打开对话框让用户选择过期时间和提取码
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleShareFileBtnClick = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog.shareFile({
+			// 	fileInfo: [
+			// 		{
+			// 			userFileId: fileInfo.userFileId
+			// 		}
+			// 	]
+			// })
+		}
+		/**
+		 * 编辑文件夹按钮点击事件
+		 */
+		const handleClickFolderEdit = () => {
+			// router.push({
+			// 	name: 'WebIDE',
+			// 	query: { filePath: this.selectedFile.filePath }
+			// })
+		}
+		/**
+		 * 文件在线编辑按钮点击事件
+		 * @description 打开 代码预览对话框 或 office 编辑页面
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleClickFileEdit = (fileInfo: any) => {
+			// if (this.officeFileType.includes(fileInfo.extendName)) {
+			// 	// office 编辑页面
+			// 	this.$file.getFileOnlineEditPathByOffice(fileInfo)
+			// } else if (this.markdownFileType.includes(fileInfo.extendName)) {
+			// 	// markdown 编辑浮层
+			// 	this.$openBox.markdownPreview({
+			// 		fileInfo: fileInfo,
+			// 		editable: true
+			// 	})
+			// } else {
+			// 	// 代码编辑对话框
+			// 	this.$openBox.codePreview({ fileInfo: fileInfo, isEdit: true })
+			// }
+		}
+		/**
+		 * 文件详情按钮点击事件
+		 * @description 打开对话框展示文件完整信息
+		 * @param {object} fileInfo 文件信息
+		 */
+		const handleShowDetailInfo = (fileInfo: any) => {
+			// this.visible = false
+			// this.$openDialog.showFileDetail({ fileInfo })
+		}
+		/**
+		 * 新建文件夹按钮点击事件
+		 * @description 调用新建文件夹服务，并在弹窗确认回调事件中刷新文件列表
+		 */
+		const handleClickAddFolderBtn = () => {
+			// this.$openDialog
+			// 	.addFolder({
+			// 		filePath: router.currentRoute.query.filePath || '/'
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 新建 office 文件
+		 * @description 调用新建 office 文件服务，并在弹窗确认回调事件中刷新文件列表
+		 * @param {string} 文件扩展名 docx xlsx pptx
+		 */
+		const handleCreateFile = (extendName: any) => {
+			// this.$openDialog
+			// 	.addFile({
+			// 		extendName: extendName
+			// 	})
+			// 	.then((res) => {
+			// 		this.callback(res)
+			// 	})
+		}
+		/**
+		 * 上传文件按钮点击事件
+		 * @description 通过Bus通信，开启全局上传文件流程
+		 * @param {boolean} uploadWay 上传方式 0-文件上传 1-文件夹上传 2-粘贴图片或拖拽上传
+		 */
+		const handleUploadFileBtnClick = (uploadWay: any) => {
+			// this.$openBox.uploadFile({
+			// 	params: this.uploadFileParams,
+			// 	uploadWay,
+			// 	serviceEl: this.serviceEl,
+			// 	callType: true //  callType 调用此服务的方式：1 - 顶部栏，2 - 右键菜单
+			// })
+		}
+</script>
