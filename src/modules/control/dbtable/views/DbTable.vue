@@ -1,6 +1,11 @@
 <template>
   <ContentWrap :title="t('dbTableVo.title')" :message="t('common.message')">
-    <Search :schema="allSchemas.searchSchema" @search="setSearchParams" @reset="setSearchParams" />
+    <Search
+      ref="searchRef"
+      :schema="allSchemas.searchSchema"
+      @search="setSearchParams"
+      @reset="setSearchParams"
+    />
 
     <div class="mb-10px">
       <ElButton :loading="delLoading" type="primary" @click="delData(null, true)">
@@ -95,6 +100,9 @@ interface Params {
 
 const { t } = useI18n()
 
+// 搜索栏
+const searchRef = ref()
+
 const { register, tableObject, methods } = useTable<DbTableType>({
   getListApi: getDbTableListApi,
   //delListApi: deleteLoggerListApi,
@@ -145,6 +153,10 @@ const getDbTableConfigDetail = async (row: DbTableType) => {
 
 // 代码生成
 const codeGenerator = async (row: DbTableType) => {
+  // const model = await unref(searchRef)?.getQueryModel()
+  // if (model) {
+  //   row.dbsourceId = model.dbsourceId
+  // }
   const res = await createCodeApi(row)
   if (res) {
     ElMessage.info('生成成功')

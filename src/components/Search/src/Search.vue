@@ -67,6 +67,12 @@ const newSchema = computed(() => {
 
 const { register, elFormRef, methods } = useForm()
 
+const getQueryModel = async () => {
+  const { getFormData } = methods
+  const model = await getFormData()
+  return model
+}
+
 const search = async () => {
   await unref(elFormRef)?.validate(async (isValid) => {
     if (isValid) {
@@ -94,6 +100,11 @@ const setVisible = () => {
   unref(elFormRef)?.resetFields()
   visible.value = !unref(visible)
 }
+
+// 暴露方法给父级菜单使用
+defineExpose({
+  getQueryModel
+})
 </script>
 
 <template>
