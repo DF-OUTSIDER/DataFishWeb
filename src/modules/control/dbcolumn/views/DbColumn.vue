@@ -268,7 +268,7 @@ const initColumn = (row: DbColumnType) => {
     row.columnConfig.fieldType = 'Boolean'
   } else if (['datetime', 'timestamp'].includes(row.dataType)) {
     row.columnConfig.fieldType = 'Date'
-  } else if (row.dataType === 'varchar') {
+  } else if (['varchar', 'longtext', 'char', 'tinytext'].includes(row.dataType)) {
     row.columnConfig.fieldType = 'String'
   }
   if (!row.columnConfig.name) {
