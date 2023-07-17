@@ -67,7 +67,14 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'type',
-    label: '数据库类型'
+    label: '数据库类型',
+    form: {
+      component: 'DictSelect',
+      componentProps: {
+        dictCode: 'db_source_type',
+        formProps: formProps
+      }
+    }
   },
   {
     field: 'driver',
