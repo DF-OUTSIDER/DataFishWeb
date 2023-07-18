@@ -270,6 +270,8 @@ const initColumn = (row: DbColumnType) => {
     row.columnConfig.fieldType = 'Date'
   } else if (['varchar', 'longtext', 'char', 'tinytext'].includes(row.dataType)) {
     row.columnConfig.fieldType = 'String'
+  } else if (row.dataType === 'int') {
+    row.columnConfig.fieldType = 'Integer'
   }
   if (!row.columnConfig.name) {
     row.columnConfig.name = row.columnComment
