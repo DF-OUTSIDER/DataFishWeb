@@ -10,5 +10,6 @@ import InputLinkage from './src/InputLinkage.vue'
 import NumberLinkage from './src/NumberLinkage.vue'
 import SelectLinkage from './src/SelectLinkage.vue'
 import SwitchLinkage from './src/SwitchLinkage.vue'
+import ImageLinkage from './src/ImageLinkage.vue'
 
-export { InputLinkage, NumberLinkage, SelectLinkage, SwitchLinkage }
+export { InputLinkage, NumberLinkage, SelectLinkage, SwitchLinkage, ImageLinkage }

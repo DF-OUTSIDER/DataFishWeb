@@ -23,3 +23,8 @@ export const saveUploadFileApi = (data: UploadFileType): Promise<IResponse<Uploa
 export const getUploadFileDetailApi = (id: number): Promise<IResponse> => {
   return request.get({ url: '/uploadFile/detail', params: { id } })
 }
+
+// 通过code 获取文件
+export const getUploadFileDetailByCodeApi = (code: string): Promise<IResponse> => {
+  return request.get({ url: '/uploadFile/detailByCode', params: { code } })
+}

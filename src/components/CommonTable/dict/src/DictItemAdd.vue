@@ -29,7 +29,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
 import { propTypes } from '@/utils/propTypes'
-import { DictItemType } from '@/modules/system/dict//api/types'
+import { DictItemType } from '@/modules/system/dict/api/types'
 import { saveDictItemApi } from '@/modules/system/dict/api'
 import { DictItemForm } from '@/components/CommonForm/dict'
 

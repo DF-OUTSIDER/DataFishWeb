@@ -56,11 +56,32 @@ const crudSchemas = reactive<CrudSchema[]>([
   },
   {
     field: 'status',
-    label: '发布状态'
+    label: '发布状态',
+    table: {
+      component: 'Switch',
+      componentProps: {
+        activeValue: 1,
+        inactiveValue: 0,
+        disabled: true
+      }
+    },
+    form: {
+      component: 'Switch',
+      componentProps: {
+        activeValue: 1,
+        inactiveValue: 0
+      }
+    }
   },
   {
     field: 'preview',
-    label: '预览'
+    label: '预览',
+    form: {
+      component: 'Image',
+      componentProps: {
+        src: get
+      }
+    }
   },
   {
     field: 'content',
