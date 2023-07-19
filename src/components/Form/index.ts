@@ -18,6 +18,7 @@ export interface FormExpose {
   addSchema: (formSchema: FormSchema, index?: number) => void
   updateSchema: (formSchema: FormSchema, field: string) => void
   setSchema: (schemaProps: FormSetPropsType[]) => void
+  sourceData: Recordable
   formModel: Recordable
   getElFormRef: () => ComponentRef<typeof ElForm>
 }

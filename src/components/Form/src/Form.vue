@@ -75,7 +75,9 @@ export default defineComponent({
       return propsObj
     })
 
-    // 表单数据
+    // 源数据
+    const sourceData = ref<Recordable>({})
+    // 表单数据，因为配置问题，表单数据属性会少于源数据
     const formModel = ref<Recordable>({})
 
     onMounted(() => {
@@ -88,6 +90,7 @@ export default defineComponent({
 
     // 对表单赋值
     const setValues = (data: Recordable = {}) => {
+      sourceData.value = Object.assign(unref(sourceData), data)
       formModel.value = Object.assign(unref(formModel), data)
     }
 
@@ -147,6 +150,7 @@ export default defineComponent({
 
     expose({
       setValues,
+      sourceData,
       formModel,
       setProps,
       getSchema,
