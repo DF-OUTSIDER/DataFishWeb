@@ -29,12 +29,19 @@ import {
 } from 'element-plus'
 import { InputPassword } from '@/components/InputPassword'
 import { Editor } from '@/components/Editor'
+import { CodeEdit } from '@/components/CodeMirror'
 import { UploadImg, UploadImgs, UploadFile } from '@/components/UploadFile'
 
 import { ComponentName } from '@/types/components'
 import { IconSelect } from '@/components/Icon'
 import { DictSelect, DictTag, DictRadio, DictRadioButton } from '@/components/Dict'
-import { InputLinkage, NumberLinkage, SelectLinkage, SwitchLinkage, ImageLinkage } from '@/components/Linkage'
+import {
+  InputLinkage,
+  NumberLinkage,
+  SelectLinkage,
+  SwitchLinkage,
+  ImageLinkage
+} from '@/components/Linkage'
 import { StorageConfigMixedInput } from '@/components/MixedInput/storage'
 
 // mark: 组件映射
@@ -62,6 +69,7 @@ const componentMap: Recordable<Component, ComponentName> = {
   InputPassword: InputPassword,
   IconSelect: IconSelect,
   Editor: Editor,
+  CodeEdit: CodeEdit,
   UploadImg: UploadImg,
   UploadImgs: UploadImgs,
   UploadFile: UploadFile,

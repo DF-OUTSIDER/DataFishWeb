@@ -30,6 +30,7 @@ export type ComponentName =
   | 'InputPassword'
   | 'IconSelect'
   | 'Editor'
+  | 'CodeEdit'
   | 'UploadImg'
   | 'UploadImgs'
   | 'UploadFile'

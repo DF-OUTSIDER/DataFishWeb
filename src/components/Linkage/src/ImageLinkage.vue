@@ -16,6 +16,8 @@ import { PropType, ref, watch, unref, onMounted } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import { FormProps } from '@/api/common/type'
 
+import { getUploadFileDetailByCodeApi } from '@/modules/control/upload_file/api'
+
 const props = defineProps({
   modelValue: propTypes.string.def(''),
   formProps: {
@@ -36,12 +38,22 @@ const emit = defineEmits(['update:modelValue'])
 const valueRef = ref(props.modelValue)
 const srcRef = ref('')
 
+const setSrc = (code: string) => {
+  getUploadFileDetailByCodeApi(code).then((res) => {
+    if (res) {
+      const data = res.data
+      srcRef.value = data.url
+    }
+  })
+}
+
 // 编辑默认值
 watch(
   () => props.modelValue,
   (val: string) => {
     if (val === unref(valueRef)) return
     valueRef.value = val
+    setSrc(val)
   }
 )
 
@@ -49,8 +61,8 @@ watch(
 watch(
   () => valueRef.value,
   (val: string) => {
+    //setSrc(val)
     emit('update:modelValue', val)
-
     if (props.formProps) {
       // 数据联动
       props.linkage(props.formProps)

@@ -74,24 +74,37 @@ const crudSchemas = reactive<CrudSchema[]>([
     }
   },
   {
+    field: 'content',
+    label: '内容',
+    table: { show: false },
+    form: {
+      colProps: {
+        span: 24
+      },
+      component: 'CodeEdit'
+    }
+  },
+  {
     field: 'preview',
     label: '预览',
     form: {
-      component: 'Image',
+      component: 'ImageLinkage',
       componentProps: {
-        src: get
+        formProps: formProps
       }
     }
   },
   {
-    field: 'content',
-    label: '内容',
-    table: { show: false }
-  },
-  {
     field: 'remark',
     label: '备注',
-    table: { show: false }
+    table: { show: false },
+    form: {
+      component: 'Input',
+      componentProps: {
+        rows: '6',
+        type: 'textarea'
+      }
+    }
   },
   {
     field: 'action',
