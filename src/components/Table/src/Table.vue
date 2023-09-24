@@ -73,6 +73,9 @@ export default defineComponent({
     },
     rowDblclick: {
       type: Function as PropType<((...args: any[]) => any) | undefined>
+    },
+    rowContextmenu: {
+      type: Function as PropType<((...args: any[]) => any) | undefined>
     }
   },
   emits: ['update:pageSize', 'update:currentPage', 'register'],
@@ -135,12 +138,24 @@ export default defineComponent({
       currentRow.value = val
     }
 
-    // todo 未达到预期
-    // const rowClick = (row: any, column: any, event: any) => {
-    //   if (row) {
-    //     unref(elTableRef)?.setCurrentRow(row)
-    //   }
-    // }
+    // 点击行
+    const rowClick = (row: any, column: any, event: any) => {
+      if (row && props.rowClick) {
+        props.rowClick(row, column, event)
+      }
+    }
+
+    const rowDblclick = (row: any, column: any, event: any) => {
+      if (row && props.rowDblclick) {
+        props.rowDblclick(row, column, event)
+      }
+    }
+
+    const rowContextmenu = (row: any, column: any, event: any) => {
+      if (row && props.rowContextmenu) {
+        props.rowContextmenu(row, column, event)
+      }
+    }
 
     expose({
       setProps,
@@ -408,6 +423,9 @@ export default defineComponent({
 
           // 当某一行被点击时会触发该事件
           //current-change={rowClick}
+          onRow-click={rowClick}
+          onRow-dblclick={rowDblclick}
+          onRow-contextmenu={rowContextmenu}
           // 当选择项发生变化时会触发该事件
           onSelection-change={selectionChange}
           {...unref(getBindValue)}
