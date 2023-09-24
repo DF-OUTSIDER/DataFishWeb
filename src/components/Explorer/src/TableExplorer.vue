@@ -7,43 +7,46 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-  <ContentWrap title="文件浏览" :message="t('common.message')">
-    <ExploerBreadCrumb
-      :explorerName="props.explorerName"
-      :fileType="fileType"
-      :filePath="filePath"
-      :breadCrumbList="breadCrumbList"
-      :clickToDirectoryCallBack="directoryPathClickCb"
-      :blurEnterExplorerPathCallBack="directoryPathBlurEnterCb"
-    />
-    <Table
-      v-model:pageSize="tableObject.pageSize"
-      v-model:currentPage="tableObject.currentPage"
-      :columns="allSchemas.tableColumns"
-      :data="tableObject.tableList"
-      :loading="tableObject.loading"
-      :selection="true"
-      @register="register"
-      @rowDblclick="rowDblclick"
-    >
-      <template #name="{ row }">
-        <Icon v-if="row.isDirectory" icon="fa:folder" />
-        <Icon v-if="!row.isDirectory" icon="fa:file-text" /> {{ row.name }}
-      </template>
-      <!-- <template #action="{ row }">
-        <ElButton v-hasPermi="['storage::insert']" type="primary" @click="action(row, 'edit')">
-          {{ t('common.edit') }}
-        </ElButton>
+  <div id="PCDesktop" @click="desktopClick">
+    <ContentWrap title="文件浏览" :message="t('common.message')">
+      <ExploerBreadCrumb
+        :explorerName="props.explorerName"
+        :fileType="fileType"
+        :filePath="filePath"
+        :breadCrumbList="breadCrumbList"
+        :clickToDirectoryCallBack="directoryPathClickCb"
+        :blurEnterExplorerPathCallBack="directoryPathBlurEnterCb"
+      />
+      <Table
+        v-model:pageSize="tableObject.pageSize"
+        v-model:currentPage="tableObject.currentPage"
+        :columns="allSchemas.tableColumns"
+        :data="tableObject.tableList"
+        :loading="tableObject.loading"
+        :selection="true"
+        @register="register"
+        :row-dblclick="rowDblclick"
+        :row-contextmenu="rowContextmenu"
+      >
+        <template #name="{ row }">
+          <Icon v-if="row.isDirectory" icon="fa:folder" />
+          <Icon v-if="!row.isDirectory" icon="fa:file-text" /> {{ row.name }}
+        </template>
+        <!-- <template #action="{ row }">
+          <ElButton v-hasPermi="['storage::insert']" type="primary" @click="action(row, 'edit')">
+            {{ t('common.edit') }}
+          </ElButton>
 
-        <ElButton type="primary" @click="action(row, 'detail')">
-          {{ t('common.detail') }}
-        </ElButton>
-        <ElButton type="primary" @click="action(row, 'explorer')">
-          {{ '浏览' }}
-        </ElButton>
-      </template> -->
-    </Table>
-  </ContentWrap>
+          <ElButton type="primary" @click="action(row, 'detail')">
+            {{ t('common.detail') }}
+          </ElButton>
+          <ElButton type="primary" @click="action(row, 'explorer')">
+            {{ '浏览' }}
+          </ElButton>
+        </template> -->
+      </Table>
+    </ContentWrap>
+  </div>
 </template>
 <script setup lang="ts">
 import i18n from '@/locales'
@@ -60,7 +63,11 @@ import { getPathLsApi } from '@/modules/control/explorer/api'
 import { ElMessage, ElIcon } from 'element-plus'
 import { WebExplorerEntry } from '@/modules/control/explorer/api/types'
 
+import { openContextMenus } from '@/layout/components/ClickMenu'
+
 const { t } = i18n.global
+
+const { openMenu, closeMenu, isShow } = openContextMenus()
 
 const props = defineProps({
   storageConfigId: propTypes.number.def(0),
@@ -106,6 +113,7 @@ const directoryPathClickCb = async (path: string, index: number) => {
   // 刷新列表
   await getList()
 }
+
 // 路径输入框失去焦点回调
 const directoryPathBlurEnterCb = async (path: string) => {
   if ('/' == path) {
@@ -138,6 +146,17 @@ const rowDblclick = async (row: WebExplorerEntry) => {
   } else {
     ElMessage.warning('请双击文件夹进入！')
   }
+}
+
+const desktopClick = () => {
+  closeMenu()
+}
+
+// 右键点击
+const rowContextmenu = (row: WebExplorerEntry, column: any, event: any) => {
+  closeMenu()
+  alert(row.id)
+  openMenu(event)
 }
 
 const { register, tableObject, methods } = useTable<WebExplorerEntry>({
