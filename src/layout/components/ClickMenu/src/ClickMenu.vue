@@ -1,10 +1,19 @@
 <script lang="ts" setup>
+import { useCache } from '@/hooks/web/useCache'
+import { useEmitt } from '@/hooks/web/useEmitt'
+import { WebExplorerType } from '@/modules/control/explorer/api/types'
+
+const { wsCache } = useCache()
+
+const ClickFileKey = 'DF_CLICK_FILE'
 
 const menuItemsGroup = [
   {
     name: '查看(V)',
     arrow: true,
     action: () => {
+      let row = wsCache.get(ClickFileKey)
+      alert(row?.path + ' 查看 ' + row?.storageConfigId)
       console.log('查看')
     }
   },
@@ -51,6 +60,15 @@ const menuItemsGroup = [
     }
   }
 ]
+
+useEmitt({
+  name: 'showMenu',
+  callback: (row: WebExplorerType) => {
+    if (row) {
+      wsCache.set(ClickFileKey, row)
+    }
+  }
+})
 </script>
 <template>
   <div

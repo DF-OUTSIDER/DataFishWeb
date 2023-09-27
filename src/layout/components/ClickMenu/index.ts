@@ -1,6 +1,10 @@
 import { h, render } from 'vue'
 
 import Menu from './src/ClickMenu.vue'
+import { WebExplorerType } from '@/modules/control/explorer/api/types'
+import { useEmitt } from '@/hooks/web/useEmitt'
+
+const { emitter } = useEmitt()
 
 export function openContextMenus() {
   let isShow = false
@@ -10,11 +14,15 @@ export function openContextMenus() {
   window.oncontextmenu = function (e: MouseEvent) {
     e.preventDefault()
     if (isShow) closeMenu()
-    openMenu(e)
+    openMenu(e, null)
   }
 
+  /**
+   * @param row 传入的文件数据
+   * @param e 右键鼠标事件
+   */
   //tips: open the menu
-  function openMenu(e: MouseEvent) {
+  function openMenu(e: MouseEvent, row: WebExplorerType | null) {
     scope = document.getElementById('PCDesktop')
     containerEl = document.createElement('div')
     const vnode = h(Menu)
@@ -40,6 +48,7 @@ export function openContextMenus() {
     // 菜单显示在最前边
     containerEl.style.zIndex = '1000'
     isShow = true
+    emitter.emit('showMenu', row)
   }
 
   //tips: close the menu
