@@ -61,7 +61,7 @@ import { allSchemas } from '../data/ExplorerTable.data'
 
 import { getPathLsApi } from '@/modules/control/explorer/api'
 import { ElMessage, ElIcon } from 'element-plus'
-import { WebExplorerEntry } from '@/modules/control/explorer/api/types'
+import { WebExplorerEntry, WebExplorerType } from '@/modules/control/explorer/api/types'
 
 import { openContextMenus } from '@/layout/components/ClickMenu'
 
@@ -155,8 +155,12 @@ const desktopClick = () => {
 // 右键点击
 const rowContextmenu = (row: WebExplorerEntry, column: any, event: any) => {
   closeMenu()
-  alert(row.id)
-  openMenu(event)
+  let data = {
+    storageConfigId: props.storageConfigId,
+    path: row.path,
+    name: row.name
+  } as WebExplorerType
+  openMenu(event, data)
 }
 
 const { register, tableObject, methods } = useTable<WebExplorerEntry>({

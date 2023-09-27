@@ -9,7 +9,6 @@
 import { BaseType } from '@/api/common/type'
 
 export type WebExplorerEntry = {
-  name: string
   path: string
 } & BaseType
 
