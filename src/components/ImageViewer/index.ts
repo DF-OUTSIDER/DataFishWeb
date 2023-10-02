@@ -13,7 +13,7 @@ export function createImageViewer(options: ImageViewerProps) {
     infinite = true,
     hideOnClickModal = false,
     appendToBody = false,
-    zIndex = 2000,
+    zIndex = 3000,
     show = true
   } = options
 

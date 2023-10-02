@@ -14,7 +14,7 @@
       ref="filePathInputRef"
       placeholder="请输入路径"
       v-model="inputFilePath"
-      size="50"
+      size="large"
       :autofocus="true"
       v-show="isShowInput"
       @blur="handleInputBlurEnter"

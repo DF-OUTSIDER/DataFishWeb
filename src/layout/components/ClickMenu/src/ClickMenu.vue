@@ -2,19 +2,56 @@
 import { useCache } from '@/hooks/web/useCache'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { WebExplorerType } from '@/modules/control/explorer/api/types'
+import { createImageViewer } from '@/components/ImageViewer'
+import { createDplayer } from '@/components/VideoPlayer'
 
 const { wsCache } = useCache()
 
 const ClickFileKey = 'DF_CLICK_FILE'
 
+const openImage = (url: string) => {
+  createImageViewer({
+    urlList: [url]
+  })
+}
+
+const dplayer = (url: string) => {
+  createDplayer({ url: url })
+}
+
 const menuItemsGroup = [
   {
-    name: '查看(V)',
+    name: '查看(V)图片',
     arrow: true,
     action: () => {
       let row = wsCache.get(ClickFileKey)
-      alert(row?.path + ' 查看 ' + row?.storageConfigId)
-      console.log('查看')
+      //alert(row?.path + ' 查看 ' + row?.storageConfigId)
+      //console.log('查看')
+      let fullpath = encodeURI(row?.path)
+      let url =
+        '/api/v1/downloadFile/download/by-fullpath?storageConfigId=' +
+        row?.storageConfigId +
+        '&fullpath=' +
+        fullpath
+      openImage(url)
+      //downByFullpath(row?.storageConfigId, fullpath)
+    }
+  },
+  {
+    name: '播放(V)视频',
+    arrow: true,
+    action: () => {
+      let row = wsCache.get(ClickFileKey)
+      //alert(row?.path + ' 查看 ' + row?.storageConfigId)
+      //console.log('查看')
+      let fullpath = encodeURI(row?.path)
+      let url =
+        '/api/v1/downloadFile/download/by-fullpath?storageConfigId=' +
+        row?.storageConfigId +
+        '&fullpath=' +
+        fullpath
+      dplayer(url)
+      //downByFullpath(row?.storageConfigId, fullpath)
     }
   },
   {
