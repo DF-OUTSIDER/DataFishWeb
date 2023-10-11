@@ -10,3 +10,9 @@ export const downByFullpath = (
     params: { storageConfigId, fullpath }
   })
 }
+
+export const downByCode = (code: string): Promise<IResponse> => {
+  return request.get({
+    url: '/downloadFile/download/' + code
+  })
+}
