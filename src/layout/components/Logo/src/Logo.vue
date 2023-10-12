@@ -11,6 +11,8 @@ import { ref, watch, computed, onMounted, unref } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
 
+//import { downByCode } from '@/modules/control/download_file/api'
+
 const { getPrefixCls } = useDesign()
 
 const prefixCls = getPrefixCls('logo')
@@ -24,6 +26,10 @@ const title = computed(() => appStore.getTitle)
 const layout = computed(() => appStore.getLayout)
 
 const collapse = computed(() => appStore.getCollapse)
+
+// const imgData = ref()
+// imgData.value = await downByCode('00000000-0000-0000-0000-000000000001')
+const logoUrl = ref('/api/v1/downloadFile/download/00000000-0000-0000-0000-000000000001')
 
 onMounted(() => {
   if (unref(collapse)) show.value = false
@@ -73,7 +79,7 @@ watch(
     to="/"
   >
     <img
-      src="/api/v1/downloadFile/download/00000000-0000-0000-0000-000000000001"
+      :src="logoUrl"
       class="w-[calc(var(--logo-height)-10px)] h-[calc(var(--logo-height)-10px)]"
     />
     <div

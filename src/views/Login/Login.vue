@@ -8,7 +8,7 @@ import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
 import { ref } from 'vue'
 
-import { downByCode } from '@/modules/control/download_file/api'
+//import { downByCode } from '@/modules/control/download_file/api'
 
 const { getPrefixCls } = useDesign()
 
@@ -24,8 +24,9 @@ const toRegister = () => {
   isLogin.value = false
 }
 
-const imgData = ref()
-imgData.value = await downByCode('00000000-0000-0000-0000-000000000001')
+//const imgData = ref()
+//imgData.value = await downByCode('00000000-0000-0000-0000-000000000001')
+const logoUrl = ref('/api/v1/downloadFile/download/00000000-0000-0000-0000-000000000001')
 
 const toLogin = () => {
   isLogin.value = true
@@ -42,7 +43,7 @@ const toLogin = () => {
         :class="`${prefixCls}__left flex-1 bg-gray-500 bg-opacity-20 relative p-30px <xl:hidden`"
       >
         <div class="flex items-center relative text-white">
-          <img :src="imgData" alt="" class="w-48px h-48px mr-10px" />
+          <img :src="logoUrl" alt="" class="w-48px h-48px mr-10px" />
           <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
         </div>
         <div class="flex justify-center items-center h-[calc(100%-60px)]">
