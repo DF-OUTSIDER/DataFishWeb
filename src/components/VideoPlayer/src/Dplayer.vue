@@ -1,5 +1,11 @@
 <template>
-  <ElDialog v-model="show" title="Dplayer" :z-index="zIndex" destroy-on-close @opened="initPlayer">
+  <ElDialog
+    v-model="show"
+    title="Dplayer"
+    :z-index="zIndex"
+    :destroy-on-close="true"
+    @opened="initPlayer"
+  >
     <div id="dplayer" ref="dplayerRef"></div>
   </ElDialog>
 </template>
@@ -11,6 +17,9 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { propTypes } from '@/utils/propTypes'
 //import { Dialog } from '@/components/Dialog'
 import { ElDialog, ElScrollbar } from 'element-plus'
+import Hls from 'hls.js'
+
+import { playRemoteMedia } from '@/modules/control/download_file/api'
 
 const props = defineProps({
   url: propTypes.string.def(''),
@@ -36,6 +45,7 @@ const dplayerRef = ref<ComponentRef<typeof DPlayer>>()
 //const { data2 } = toRefs(DialogOptions.options);//传过来的数据
 
 let dp: any
+let timer: any
 // 初始化播放器
 const initPlayer = () => {
   let _container = document.getElementById('dplayer')
@@ -52,20 +62,33 @@ const initPlayer = () => {
     mutex: true, //阻止多个播放器同时播放，当前播放器播放时暂停其他播放器
     // logo: "https://i.loli.net/2019/06/06/5cf8c5d94521136430.png",//自定义的播放按钮图片
     video: {
-      url: props.url
+      url: props.url,
       //, //视频地址
-      // type: 'customHls',
-      // customType: {
-      //   customHls: (video: any, player: any) => {
-      //     // console.log("查看传递的参数", video, player);
-      //     const hls = new Hls() //实例化Hls  用于解析m3u8
-      //     hls.loadSource(video.src)
-      //     hls.attachMedia(video)
-      //   }
-      // }
+      type: 'customHls',
+      customType: {
+        customHls: (video: any, player: any) => {
+          timer = setInterval(() => initHls(video), 10000)
+        }
+      }
     }
   })
 }
+
+const initHls = (video: any) => {
+  playRemoteMedia(video.src).then(() => {
+    // 停止定时器
+    clearInterval(timer)
+    // console.log("查看传递的参数", video, player);
+    const hls = new Hls() //实例化Hls  用于解析m3u8
+    hls.loadSource(video.src)
+    hls.attachMedia(video)
+
+    // 跳转到特定时间
+    dp.seek(1)
+    dp.play()
+  })
+}
+
 onMounted(() => {
   //initPlayer()
 })

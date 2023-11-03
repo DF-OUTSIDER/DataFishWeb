@@ -46,7 +46,7 @@ const menuItemsGroup = [
       //console.log('查看')
       let fullpath = encodeURI(row?.path)
       let url =
-        '/api/v1/downloadFile/download/by-fullpath?storageConfigId=' +
+        '/api/v1/mediaPlayer/play/remote-by-fullpath?storageConfigId=' +
         row?.storageConfigId +
         '&fullpath=' +
         fullpath
